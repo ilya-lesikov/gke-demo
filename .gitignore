@@ -113,4 +113,6 @@ zsdoc/data
 
 # End of https://www.gitignore.io/api/linux,vim,zsh,git,terraform
 
-terraform.tfvars
+/terraform.tfvars
+/third-party/kustomize
+/kustomize-output.yml

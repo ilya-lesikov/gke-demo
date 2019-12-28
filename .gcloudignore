@@ -1,0 +1,3 @@
+#!include:.gitignore
+!/third-party/kustomize
+!/kustomize-output.yml

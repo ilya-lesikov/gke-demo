@@ -1,0 +1,38 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./third-party/google-microservices/kubernetes-manifests/adservice.yaml
+- ./third-party/google-microservices/kubernetes-manifests/cartservice.yaml
+- ./third-party/google-microservices/kubernetes-manifests/checkoutservice.yaml
+- ./third-party/google-microservices/kubernetes-manifests/currencyservice.yaml
+- ./third-party/google-microservices/kubernetes-manifests/emailservice.yaml
+- ./third-party/google-microservices/kubernetes-manifests/frontend.yaml
+- ./third-party/google-microservices/kubernetes-manifests/loadgenerator.yaml
+- ./third-party/google-microservices/kubernetes-manifests/paymentservice.yaml
+- ./third-party/google-microservices/kubernetes-manifests/productcatalogservice.yaml
+- ./third-party/google-microservices/kubernetes-manifests/recommendationservice.yaml
+- ./third-party/google-microservices/kubernetes-manifests/shippingservice.yaml
+images:
+- name: adservice
+  newName: gcr.io/gke-demo-548855/adservice
+- name: cartservice
+  newName: gcr.io/gke-demo-548855/cartservice
+- name: checkoutservice
+  newName: gcr.io/gke-demo-548855/checkoutservice
+- name: currencyservice
+  newName: gcr.io/gke-demo-548855/currencyservice
+- name: emailservice
+  newName: gcr.io/gke-demo-548855/emailservice
+- name: frontend
+  newName: gcr.io/gke-demo-548855/frontend
+- name: loadgenerator
+  newName: gcr.io/gke-demo-548855/loadgenerator
+- name: paymentservice
+  newName: gcr.io/gke-demo-548855/paymentservice
+- name: productcatalogservice
+  newName: gcr.io/gke-demo-548855/productcatalogservice
+- name: recommendationservice
+  newName: gcr.io/gke-demo-548855/recommendationservice
+- name: shippingservice
+  newName: gcr.io/gke-demo-548855/shippingservice
