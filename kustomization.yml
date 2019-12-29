@@ -15,24 +15,24 @@ resources:
 - ./third-party/google-microservices/kubernetes-manifests/redis.yaml
 images:
 - name: adservice
-  newName: gcr.io/gke-demo-7384927/adservice
+  newName: gcr.io/gke-demo-muirtj/adservice
 - name: cartservice
-  newName: gcr.io/gke-demo-7384927/cartservice
+  newName: gcr.io/gke-demo-muirtj/cartservice
 - name: checkoutservice
-  newName: gcr.io/gke-demo-7384927/checkoutservice
+  newName: gcr.io/gke-demo-muirtj/checkoutservice
 - name: currencyservice
-  newName: gcr.io/gke-demo-7384927/currencyservice
+  newName: gcr.io/gke-demo-muirtj/currencyservice
 - name: emailservice
-  newName: gcr.io/gke-demo-7384927/emailservice
+  newName: gcr.io/gke-demo-muirtj/emailservice
 - name: frontend
-  newName: gcr.io/gke-demo-7384927/frontend
+  newName: gcr.io/gke-demo-muirtj/frontend
 - name: loadgenerator
-  newName: gcr.io/gke-demo-7384927/loadgenerator
+  newName: gcr.io/gke-demo-muirtj/loadgenerator
 - name: paymentservice
-  newName: gcr.io/gke-demo-7384927/paymentservice
+  newName: gcr.io/gke-demo-muirtj/paymentservice
 - name: productcatalogservice
-  newName: gcr.io/gke-demo-7384927/productcatalogservice
+  newName: gcr.io/gke-demo-muirtj/productcatalogservice
 - name: recommendationservice
-  newName: gcr.io/gke-demo-7384927/recommendationservice
+  newName: gcr.io/gke-demo-muirtj/recommendationservice
 - name: shippingservice
-  newName: gcr.io/gke-demo-7384927/shippingservice
+  newName: gcr.io/gke-demo-muirtj/shippingservice

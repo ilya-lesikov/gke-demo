@@ -1,5 +1,4 @@
 variable "project_id" {}
-variable "namespace" {}
 variable "terraform_sa_fqdn" {}
 
 variable "cluster" {

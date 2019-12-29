@@ -12,7 +12,7 @@ module "gcp-network" {
   ]
 
   secondary_ranges = {
-    demo-subnet = [
+    "${var.subnet_name}" = [
       {
         range_name    = var.subnet_pods_ip_range_name
         ip_cidr_range = var.subnet_pods_ip_range
@@ -44,15 +44,5 @@ module "gke" {
   istio                  = true
 }
 
-resource "kubernetes_namespace" "current" {
-  metadata {
-    name = var.namespace
-    labels = {
-      istio-injection = "enabled"
-    }
-  }
-}
-
-# FIXME: do we need this???
 data "google_client_config" "default" {
 }

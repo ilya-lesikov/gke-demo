@@ -7,6 +7,5 @@ dependency "project" {
 }
 
 inputs = {
-  namespace = "prod"
   terraform_sa_fqdn = dependency.project.outputs.terraform_sa_fqdn
 }
