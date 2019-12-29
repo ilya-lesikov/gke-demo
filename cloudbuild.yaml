@@ -113,19 +113,6 @@ steps:
         /gke-deploy run -n $_NAMESPACE -c $_CLUSTER -l $_LOCATION \
         -o output-istio -f ./third-party/google-microservices/istio-manifests/
 
-# images:
-#   - 'gcr.io/$PROJECT_ID/emailservice'
-#   - 'gcr.io/$PROJECT_ID/productcatalogservice'
-#   - 'gcr.io/$PROJECT_ID/recommendationservice'
-#   - 'gcr.io/$PROJECT_ID/shippingservice'
-#   - 'gcr.io/$PROJECT_ID/checkoutservice'
-#   - 'gcr.io/$PROJECT_ID/paymentservice'
-#   - 'gcr.io/$PROJECT_ID/currencyservice'
-#   - 'gcr.io/$PROJECT_ID/cartservice'
-#   - 'gcr.io/$PROJECT_ID/frontend'
-#   - 'gcr.io/$PROJECT_ID/loadgenerator'
-#   - 'gcr.io/$PROJECT_ID/adservice'
-
 timeout: '3600s'
 options:
   machineType: 'N1_HIGHCPU_8'
