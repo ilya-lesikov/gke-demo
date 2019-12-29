@@ -1,3 +1,5 @@
+# TODO: pin versions in every module
+
 resource "null_resource" "delay10" {
   provisioner "local-exec" {
     command = "sleep 10"
@@ -16,7 +18,7 @@ resource "google_project_iam_member" "terraform" {
   role = each.key
 
   project = data.google_project.main.project_id
-  member  = resource.google_service_account.terraform.unique_id
+  member  = google_service_account.terraform.unique_id
 }
 
 data "google_service_account" "cloudbuild" {
@@ -28,7 +30,7 @@ resource "google_project_iam_member" "cloudbuild" {
   role = each.key
 
   project = data.google_project.main.project_id
-  member  = resource.google_service_account.cloudbuild.unique_id
+  member  = data.google_service_account.cloudbuild.unique_id
 }
 
 data "google_project" "main" {
@@ -80,7 +82,7 @@ module "gke" {
   ip_range_pods          = module.gcp-network.subnets_secondary_ranges[0]
   ip_range_services      = module.gcp-network.subnets_secondary_ranges[1]
   create_service_account = false
-  service_account = resource.google_service_account.terraform.unique_id
+  service_account = google_service_account.terraform.unique_id
   # FIXME: delete this when upstream monitoring_service changed from `monitoring.googleapis.com`
   monitoring_service     = "monitoring.googleapis.com/kubernetes"
   # FIXME: delete this when upstream logging_service changed from `logging.googleapis.com`

@@ -1,9 +1,23 @@
-#!/bin/bash -e
+#!/bin/bash
+set -euo pipefail
 
-PROJECT=gke-demo-548855
-BILLING_ID=013623-CC1414-7E748C
+PROJECT="$1"
 # TERRAFORM_SA=serviceAccount:924997815781-compute@developer.gserviceaccount.com
 # CLOUDBUILD_SA=serviceAccount:924997815781@cloudbuild.gserviceaccount.com
+
+MICROSERVICES=(
+  adservice
+  cartservice
+  checkoutservice
+  currencyservice
+  emailservice
+  frontend
+  loadgenerator
+  paymentservice
+  productcatalogservice
+  recommendationservice
+  shippingservice
+)
 
 # TERRAFORM_SA_ROLES=(
 #   roles/compute.viewer
@@ -29,22 +43,20 @@ BILLING_ID=013623-CC1414-7E748C
 #   cloudbuild.googleapis.com
 # )
 
-# Create GCP project
-set +e
-out=$(gcloud projects create "$PROJECT" 2>&1)
-ec=$?
-set -e
-if [[ "$out" == *"project ID you specified is already in use"* ]]; then
+info() {
+  echo "[[ INFO ]] $1"
+}
+
+info "Creating GCP project"
+if (gcloud projects describe -q --verbosity=none "$PROJECT"); then
   echo "Project already exists, skipping creation."
-elif [[ $ec -ne 0 ]]; then
-  echo "Aborting, unexpected error occured: $out"
-  exit 1
 else
-  echo "$out"
+  gcloud projects create -q "$PROJECT"
 fi
 
-# Attach billing account to the project
-gcloud beta billing projects link "$PROJECT" --billing-account "$BILLING_ID"
+info "Attaching billing account to the project"
+billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
+gcloud beta billing projects link -q "$PROJECT" --billing-account "$billing_id"
 
 # # Activate required services for the project
 # for service in "${SERVICES[@]}"; do
@@ -63,8 +75,13 @@ gcloud beta billing projects link "$PROJECT" --billing-account "$BILLING_ID"
 #     --member "$CLOUDBUILD_SA" --role="$role"
 # done
 
-# Download Kustomize
+info "Downloading Kustomize"
 if [[ ! -f "./third-party/kustomize" ]]; then
   curl -sSL --output - "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.5.3/kustomize_v3.5.3_linux_amd64.tar.gz" | tar xz
   mv -v kustomize ./third-party/
 fi
+
+info "Kustomizing image tags in k8s manifests"
+for microservice in "${MICROSERVICES[@]}"; do
+  ./third-party/kustomize edit set image "$microservice=gcr.io/$PROJECT/$microservice"
+done
