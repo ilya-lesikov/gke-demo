@@ -113,6 +113,17 @@ zsdoc/data
 
 # End of https://www.gitignore.io/api/linux,vim,zsh,git,terraform
 
+# Created by https://www.gitignore.io/api/terragrunt
+# Edit at https://www.gitignore.io/?templates=terragrunt
+
+### Terragrunt ###
+# terragrunt cache directories
+**/.terragrunt-cache/*
+
+# End of https://www.gitignore.io/api/terragrunt
+
 /terraform.tfvars
 /third-party/kustomize
+/third-party/terraform
+/third-party/terragrunt
 /kustomize-output.yml
