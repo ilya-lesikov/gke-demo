@@ -100,7 +100,7 @@ steps:
     args:
       - '-c'
       - |
-        ./third-party/kustomize build -o ./kustomize-output.yml && \
+        ./bin/kustomize build -o ./kustomize-output.yml && \
         /gke-deploy run -n $_NAMESPACE -c $_CLUSTER -l $_LOCATION \
         -o output-microservices -f ./kustomize-output.yml
 

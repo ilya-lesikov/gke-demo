@@ -44,5 +44,20 @@ module "gke" {
   istio                  = true
 }
 
-data "google_client_config" "default" {
+# resource "null_resource" "sleep60" {
+#   provisioner "local-exec" {
+#     command = "sleep 900"
+#   }
+#   triggers = {
+#     cluster_cert_changed = "${module.gke.ca_certificate}"
+#   }
+# }
+
+resource "null_resource" "populate-kube-config" {
+  provisioner "local-exec" {
+    command = "gcloud container clusters get-credentials ${module.gke.name} && sleep 10"
+  }
+  triggers = {
+    cluster_cert_changed = "${module.gke.ca_certificate}"
+  }
 }

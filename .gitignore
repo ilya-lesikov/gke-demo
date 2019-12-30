@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/linux,vim,zsh,git,terraform
 # Edit at https://www.gitignore.io/?templates=linux,vim,zsh,git,terraform
 
@@ -122,8 +121,6 @@ zsdoc/data
 
 # End of https://www.gitignore.io/api/terragrunt
 
+/bin
 /terraform.tfvars
-/third-party/kustomize
-/third-party/terraform
-/third-party/terragrunt
 /kustomize-output.yml

@@ -9,12 +9,14 @@ resource "google_project_service" "services" {
   service = each.key
 
   project = data.google_project.main.project_id
+  disable_on_destroy = false   # disabling inconsistent and doesn't always work
 }
 
 resource "google_service_account" "terraform" {
   account_id   = "terraform"
   display_name = "Terraform Service Account"
   project = data.google_project.main.project_id
+
   provisioner "local-exec" {
     command = "sleep 10"
   }

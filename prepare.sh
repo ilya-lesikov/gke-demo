@@ -1,8 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-PROJECT="$1"
-REGION="$2"
+project="$1"
+region="$2"
+
 TERRAFORM_VER=0.12.18
 TERRAGRUNT_VER=0.21.10
 KUSTOMIZE_VER=3.5.3
@@ -25,44 +26,46 @@ info() {
   echo "[[ INFO ]] $1"
 }
 
-if (gcloud projects describe -q --verbosity=none "$PROJECT"); then
+if (gcloud projects describe -q --verbosity=none "$project"); then
   info "Project already exists, skipping creation"
 else
   info "Creating GCP project"
-  gcloud projects create -q "$PROJECT"
+  gcloud projects create -q "$project"
 fi
 
 info "Attaching billing account to the project"
 billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
-gcloud beta billing projects link -q "$PROJECT" --billing-account "$billing_id"
+gcloud beta billing projects link -q "$project" --billing-account "$billing_id"
 
-if [[ ! -f "./third-party/terraform" ]]; then
+if [[ ! -f "./bin/terraform" ]]; then
   info "Downloading Terraform"
-  cd ./third-party
+  cd ./bin
   wget -O terraform.zip "https://releases.hashicorp.com/terraform/$TERRAFORM_VER/terraform_${TERRAFORM_VER}_linux_amd64.zip"
   unzip terraform.zip
+  chmod +x terraform
   rm terraform.zip
   cd -
 fi
 
-if [[ ! -f "./third-party/terragrunt" ]]; then
+if [[ ! -f "./bin/terragrunt" ]]; then
   info "Downloading Terragrunt"
-  cd ./third-party/
-  wget -O terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v$TERRAGRUNT_VER/terragrunt_linux_amd64
+  cd ./bin/
+  wget -O terragrunt "https://github.com/gruntwork-io/terragrunt/releases/download/v$TERRAGRUNT_VER/terragrunt_linux_amd64"
+  chmod +x terragrunt
   cd -
 fi
 
-if [[ ! -f "./third-party/kustomize" ]]; then
+if [[ ! -f "./bin/kustomize" ]]; then
   info "Downloading Kustomize"
-  cd ./third-party/
+  cd ./bin/
   curl -sSL --output - "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv$KUSTOMIZE_VER/kustomize_v${KUSTOMIZE_VER}_linux_amd64.tar.gz" | tar xz
+  chmod +x kustomize
   cd -
 fi
 
 info "Kustomizing image tags in k8s manifests"
 for microservice in "${MICROSERVICES[@]}"; do
-  ./third-party/kustomize edit set image \
-    "$microservice=gcr.io/$PROJECT/$microservice"
+  ./bin/kustomize edit set image "$microservice=gcr.io/$project/$microservice"
 done
 
 # FIXME: uncomment
@@ -80,6 +83,6 @@ if [[ ! -f "$GOOGLE_CLOUD_KEYFILE_JSON" ]]; then
 fi
 
 info "Setting up gcloud configuration"
-gcloud config set -q project $PROJECT
-gcloud config set -q compute/region $2
-gcloud config set -q compute/zone $2
+gcloud config set -q project $project
+gcloud config set -q compute/region $region
+gcloud config set -q compute/zone $region
