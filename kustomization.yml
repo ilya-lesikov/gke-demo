@@ -2,18 +2,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ./third-party/google-manifests/kubernetes/adservice.yaml
-- ./third-party/google-manifests/kubernetes/cartservice.yaml
-- ./third-party/google-manifests/kubernetes/checkoutservice.yaml
-- ./third-party/google-manifests/kubernetes/currencyservice.yaml
-- ./third-party/google-manifests/kubernetes/emailservice.yaml
-- ./third-party/google-manifests/kubernetes/frontend.yaml
-- ./third-party/google-manifests/kubernetes/loadgenerator.yaml
-- ./third-party/google-manifests/kubernetes/paymentservice.yaml
-- ./third-party/google-manifests/kubernetes/productcatalogservice.yaml
-- ./third-party/google-manifests/kubernetes/recommendationservice.yaml
-- ./third-party/google-manifests/kubernetes/shippingservice.yaml
-- ./third-party/google-manifests/kubernetes/redis.yaml
+- ./kubernetes/adservice.yaml
+- ./kubernetes/cartservice.yaml
+- ./kubernetes/checkoutservice.yaml
+- ./kubernetes/currencyservice.yaml
+- ./kubernetes/emailservice.yaml
+- ./kubernetes/frontend.yaml
+- ./kubernetes/loadgenerator.yaml
+- ./kubernetes/paymentservice.yaml
+- ./kubernetes/productcatalogservice.yaml
+- ./kubernetes/recommendationservice.yaml
+- ./kubernetes/shippingservice.yaml
+- ./kubernetes/redis.yaml
 images:
 - name: adservice
   newName: gcr.io/gke-demo-1577812932/adservice
