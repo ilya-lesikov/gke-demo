@@ -94,15 +94,15 @@ steps:
   ##################################################
   ########### DEPLOY
   ##################################################
-  - id: 'Deploy microservice images to GKE'
-    name: 'gcr.io/cloud-builders/gke-deploy'
-    entrypoint: /bin/sh
-    args:
-      - '-c'
-      - |
-        ./bin/kustomize build -o ./kustomize-output.yml && \
-        /gke-deploy run -n $_NAMESPACE -c $_CLUSTER -l $_LOCATION \
-        -o output-microservices -f ./kustomize-output.yml
+  # - id: 'Deploy microservice images to GKE'
+  #   name: 'gcr.io/cloud-builders/gke-deploy'
+  #   entrypoint: /bin/sh
+  #   args:
+  #     - '-c'
+  #     - |
+  #       ./bin/kustomize build -o ./kustomize-output.yml && \
+  #       /gke-deploy run -n $_NAMESPACE -c $_CLUSTER -l $_LOCATION \
+  #       -o output-microservices -f ./kustomize-output.yml
 
   # - id: 'Apply istio manifests'
   #   name: 'gcr.io/cloud-builders/gke-deploy'
