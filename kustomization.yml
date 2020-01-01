@@ -1,38 +1,39 @@
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ./third-party/google-microservices/kubernetes-manifests/adservice.yaml
-- ./third-party/google-microservices/kubernetes-manifests/cartservice.yaml
-- ./third-party/google-microservices/kubernetes-manifests/checkoutservice.yaml
-- ./third-party/google-microservices/kubernetes-manifests/currencyservice.yaml
-- ./third-party/google-microservices/kubernetes-manifests/emailservice.yaml
-- ./third-party/google-microservices/kubernetes-manifests/frontend.yaml
-- ./third-party/google-microservices/kubernetes-manifests/loadgenerator.yaml
-- ./third-party/google-microservices/kubernetes-manifests/paymentservice.yaml
-- ./third-party/google-microservices/kubernetes-manifests/productcatalogservice.yaml
-- ./third-party/google-microservices/kubernetes-manifests/recommendationservice.yaml
-- ./third-party/google-microservices/kubernetes-manifests/shippingservice.yaml
-- ./third-party/google-microservices/kubernetes-manifests/redis.yaml
+- ./third-party/google-manifests/kubernetes/adservice.yaml
+- ./third-party/google-manifests/kubernetes/cartservice.yaml
+- ./third-party/google-manifests/kubernetes/checkoutservice.yaml
+- ./third-party/google-manifests/kubernetes/currencyservice.yaml
+- ./third-party/google-manifests/kubernetes/emailservice.yaml
+- ./third-party/google-manifests/kubernetes/frontend.yaml
+- ./third-party/google-manifests/kubernetes/loadgenerator.yaml
+- ./third-party/google-manifests/kubernetes/paymentservice.yaml
+- ./third-party/google-manifests/kubernetes/productcatalogservice.yaml
+- ./third-party/google-manifests/kubernetes/recommendationservice.yaml
+- ./third-party/google-manifests/kubernetes/shippingservice.yaml
+- ./third-party/google-manifests/kubernetes/redis.yaml
 images:
 - name: adservice
-  newName: gcr.io/gke-demo-1577729304/adservice
+  newName: gcr.io/gke-demo-1577812932/adservice
 - name: cartservice
-  newName: gcr.io/gke-demo-1577729304/cartservice
+  newName: gcr.io/gke-demo-1577812932/cartservice
 - name: checkoutservice
-  newName: gcr.io/gke-demo-1577729304/checkoutservice
+  newName: gcr.io/gke-demo-1577812932/checkoutservice
 - name: currencyservice
-  newName: gcr.io/gke-demo-1577729304/currencyservice
+  newName: gcr.io/gke-demo-1577812932/currencyservice
 - name: emailservice
-  newName: gcr.io/gke-demo-1577729304/emailservice
+  newName: gcr.io/gke-demo-1577812932/emailservice
 - name: frontend
-  newName: gcr.io/gke-demo-1577729304/frontend
+  newName: gcr.io/gke-demo-1577812932/frontend
 - name: loadgenerator
-  newName: gcr.io/gke-demo-1577729304/loadgenerator
+  newName: gcr.io/gke-demo-1577812932/loadgenerator
 - name: paymentservice
-  newName: gcr.io/gke-demo-1577729304/paymentservice
+  newName: gcr.io/gke-demo-1577812932/paymentservice
 - name: productcatalogservice
-  newName: gcr.io/gke-demo-1577729304/productcatalogservice
+  newName: gcr.io/gke-demo-1577812932/productcatalogservice
 - name: recommendationservice
-  newName: gcr.io/gke-demo-1577729304/recommendationservice
+  newName: gcr.io/gke-demo-1577812932/recommendationservice
 - name: shippingservice
-  newName: gcr.io/gke-demo-1577729304/shippingservice
+  newName: gcr.io/gke-demo-1577812932/shippingservice

@@ -104,14 +104,14 @@ steps:
         /gke-deploy run -n $_NAMESPACE -c $_CLUSTER -l $_LOCATION \
         -o output-microservices -f ./kustomize-output.yml
 
-  - id: 'Apply istio manifests'
-    name: 'gcr.io/cloud-builders/gke-deploy'
-    entrypoint: /bin/sh
-    args:
-      - '-c'
-      - |
-        /gke-deploy run -n $_NAMESPACE -c $_CLUSTER -l $_LOCATION \
-        -o output-istio -f ./third-party/google-microservices/istio-manifests/
+  # - id: 'Apply istio manifests'
+  #   name: 'gcr.io/cloud-builders/gke-deploy'
+  #   entrypoint: /bin/sh
+  #   args:
+  #     - '-c'
+  #     - |
+  #       /gke-deploy run -n $_NAMESPACE -c $_CLUSTER -l $_LOCATION \
+  #       -o output-istio -f ./third-party/google-manifests/istio/
 
 timeout: '3600s'
 options:

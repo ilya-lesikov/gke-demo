@@ -41,7 +41,7 @@ module "gke" {
   monitoring_service     = "monitoring.googleapis.com/kubernetes"
   # FIXME: delete this when upstream logging_service changed from `logging.googleapis.com`
   logging_service        = "logging.googleapis.com/kubernetes"
-  istio                  = true
+  # istio                  = true
 }
 
 # resource "null_resource" "sleep60" {
