@@ -1,5 +1,3 @@
-# TODO: pin versions in every module
-
 data "google_project" "main" {
   project_id = var.project_id
 }

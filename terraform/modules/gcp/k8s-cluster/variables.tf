@@ -1,8 +1,9 @@
 variable "project_id" {}
 variable "terraform_sa_fqdn" {}
+variable "environment" {}
 
 variable "cluster" {
-  default = "cluster-demo"
+  default = "cluster-demo-${var.environment}"
 }
 
 variable "net_name" {
