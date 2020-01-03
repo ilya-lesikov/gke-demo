@@ -14,6 +14,7 @@ resource "kubernetes_namespace" "argocd" {
     #   istio-injection = "enabled"
     # }
   }
+  count = var.argo_install ? 1 : 0
 }
 
 # data "local_file" "argocd" {
@@ -21,14 +22,17 @@ resource "kubernetes_namespace" "argocd" {
 # }
 
 data "http" "argocd-install-manifests" {
-  url = "https://raw.githubusercontent.com/argoproj/argo-cd/v${argocd_ver}/manifests/install.yaml"
+  url = "https://raw.githubusercontent.com/argoproj/argo-cd/v${var.argocd_ver}/manifests/install.yaml"
+  count = var.argo_install ? 1 : 0
 }
 
 resource "k8s_manifest" "argocd" {
-  for_each = toset(split("---", data.http.argocd-install-manifests.body))
+  # Don't even ask wtf is this. We need it this way to reference variables from
+  # resources with possible "count = 0", i.e. resources that might not exist
+  for_each = length(data.http.argocd-install-manifests.*.body) > 0 ? toset(split("---", join("", data.http.argocd-install-manifests.*.body))) : toset([])
   content   = each.key
 
-  namespace = kubernetes_namespace.argocd.id
+  namespace = element(concat(kubernetes_namespace.argocd.*.id, list("")), 0)
 }
 
 resource "kubernetes_namespace" "argo-rollouts" {
@@ -38,6 +42,7 @@ resource "kubernetes_namespace" "argo-rollouts" {
     #   istio-injection = "enabled"
     # }
   }
+  count = var.argo_install ? 1 : 0
 }
 
 # data "local_file" "argo-rollouts" {
@@ -45,12 +50,13 @@ resource "kubernetes_namespace" "argo-rollouts" {
 # }
 
 data "http" "argo-rollouts-install-manifests" {
-  url = "https://raw.githubusercontent.com/argoproj/argo-rollouts/v${argo_rollouts_ver}/manifests/install.yaml"
+  url = "https://raw.githubusercontent.com/argoproj/argo-rollouts/v${var.argo_rollouts_ver}/manifests/install.yaml"
+  count = var.argo_install ? 1 : 0
 }
 
 resource "k8s_manifest" "argo-rollouts" {
-  for_each = toset(split("---", data.http.argo-rollouts-install-manifests.body))
+  for_each = length(data.http.argo-rollouts-install-manifests.*.body) > 0 ? toset(split("---", join("", data.http.argo-rollouts-install-manifests.*.body))) : toset([])
   content   = each.key
 
-  namespace = kubernetes_namespace.argo-rollouts.id
+  namespace = element(concat(kubernetes_namespace.argo-rollouts.*.id, list("")), 0)
 }

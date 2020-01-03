@@ -1,9 +1,16 @@
 variable "project_id" {}
 variable "region" {}
+variable "zones" {
+  type = list(string)
+}
 variable "cluster" {}
 
 variable "namespace" {
   default = "main"
+}
+
+variable "argo_install" {
+  default = false
 }
 
 variable "argocd_ver" {

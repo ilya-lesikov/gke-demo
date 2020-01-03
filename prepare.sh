@@ -3,6 +3,7 @@ set -euo pipefail
 
 project="$1"
 region="$2"
+zone="$3"
 
 TERRAFORM_VER=0.12.18
 TERRAGRUNT_VER=0.21.10
@@ -85,4 +86,4 @@ fi
 info "Setting up gcloud configuration"
 gcloud config set -q project $project
 gcloud config set -q compute/region $region
-gcloud config set -q compute/zone $region
+gcloud config set -q compute/zone $zone

@@ -1,4 +1,3 @@
----
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -16,24 +15,24 @@ resources:
 - ./kubernetes/redis.yaml
 images:
 - name: adservice
-  newName: gcr.io/gke-demo-1577812932/adservice
+  newName: gcr.io/gke-demo-1577719075/adservice
 - name: cartservice
-  newName: gcr.io/gke-demo-1577812932/cartservice
+  newName: gcr.io/gke-demo-1577719075/cartservice
 - name: checkoutservice
-  newName: gcr.io/gke-demo-1577812932/checkoutservice
+  newName: gcr.io/gke-demo-1577719075/checkoutservice
 - name: currencyservice
-  newName: gcr.io/gke-demo-1577812932/currencyservice
+  newName: gcr.io/gke-demo-1577719075/currencyservice
 - name: emailservice
-  newName: gcr.io/gke-demo-1577812932/emailservice
+  newName: gcr.io/gke-demo-1577719075/emailservice
 - name: frontend
-  newName: gcr.io/gke-demo-1577812932/frontend
+  newName: gcr.io/gke-demo-1577719075/frontend
 - name: loadgenerator
-  newName: gcr.io/gke-demo-1577812932/loadgenerator
+  newName: gcr.io/gke-demo-1577719075/loadgenerator
 - name: paymentservice
-  newName: gcr.io/gke-demo-1577812932/paymentservice
+  newName: gcr.io/gke-demo-1577719075/paymentservice
 - name: productcatalogservice
-  newName: gcr.io/gke-demo-1577812932/productcatalogservice
+  newName: gcr.io/gke-demo-1577719075/productcatalogservice
 - name: recommendationservice
-  newName: gcr.io/gke-demo-1577812932/recommendationservice
+  newName: gcr.io/gke-demo-1577719075/recommendationservice
 - name: shippingservice
-  newName: gcr.io/gke-demo-1577812932/shippingservice
+  newName: gcr.io/gke-demo-1577719075/shippingservice

@@ -1,9 +1,13 @@
 output "project_id" {
-  value = module.gke.project_id
+  value = var.project_id
 }
 
 output "region" {
   value = module.gke.region
+}
+
+output "zones" {
+  value = var.zones
 }
 
 output "cluster" {
