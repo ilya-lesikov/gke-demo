@@ -38,6 +38,14 @@ info "Attaching billing account to the project"
 billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
 gcloud beta billing projects link -q "$project" --billing-account "$billing_id"
 
+if (gsutil ls -b "gs://$project-terraform-state/"); then
+  info "Cloud Storage bucket for Terraform state already exists, skipping creation"
+else
+  info "Creating Cloud Storage bucket for Terraform state"
+  gsutil mb -l eu "gs://$project-terraform-state"
+  gsutil versioning set on "gs://$project-terraform-state"
+fi
+
 if [[ ! -f "./bin/terraform" ]]; then
   info "Downloading Terraform"
   cd ./bin
@@ -65,9 +73,11 @@ if [[ ! -f "./bin/kustomize" ]]; then
 fi
 
 info "Kustomizing image tags in k8s manifests"
+cd ./kubernetes/
 for microservice in "${MICROSERVICES[@]}"; do
-  ./bin/kustomize edit set image "$microservice=gcr.io/$project/$microservice"
+  ../bin/kustomize edit set image "$microservice=gcr.io/$project/$microservice"
 done
+cd -
 
 # FIXME: uncomment
 # info "Setting up \$GOOGLE_CLOUD_KEYFILE_JSON environment variable"

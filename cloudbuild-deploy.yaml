@@ -1,0 +1,16 @@
+---
+steps:
+  - id: 'Deploy microservice images to GKE'
+    name: 'gcr.io/cloud-builders/gke-deploy'
+    entrypoint: /bin/sh
+    args:
+      - '-c'
+      - |
+        cd ./kubernetes && \
+        ../bin/kustomize build -o ./kustomize-output.yml && \
+        /gke-deploy run -n $_NAMESPACE -c $_CLUSTER -l $_LOCATION \
+        -o output-microservices -f ./kustomize-output.yml
+
+timeout: '3600s'
+options:
+  machineType: 'N1_HIGHCPU_8'

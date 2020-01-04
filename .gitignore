@@ -121,6 +121,6 @@ zsdoc/data
 
 # End of https://www.gitignore.io/api/terragrunt
 
-/bin
-/terraform.tfvars
-/kustomize-output.yml
+/bin/kustomize
+/bin/terraform
+/bin/terragrunt

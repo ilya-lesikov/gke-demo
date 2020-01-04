@@ -1,9 +1,13 @@
+terraform {
+  backend "gcs" {}
+}
+
 locals {
   cluster = "cluster-demo-${var.environment}"
-  net_name = "net-demo-${var.environment}"
-  subnet_name = "subnet-demo-${var.environment}"
-  subnet_pods_ip_range_name = "ip-range-pods-${var.environment}"
-  subnet_services_ip_range_name = "ip-range-services-${var.environment}"
+  net_name = "demo-${var.environment}"
+  subnet_name = "demo-${var.environment}"
+  subnet_pods_ip_range_name = "pods-${var.environment}"
+  subnet_services_ip_range_name = "services-${var.environment}"
 }
 
 module "gcp-network" {
@@ -58,7 +62,7 @@ data "google_compute_subnetwork" "subnet" {
 }
 
 resource "google_compute_router" "main" {
-  name    = "main-${var.environment}"
+  name    = "${var.environment}"
   # project = var.project_id
   # region  = module.gcp-network.subnets_regions[0]
   network = module.gcp-network.network_name
@@ -103,8 +107,8 @@ module "gke" {
     name               = "main"
     machine_type       = "n1-standard-1"
     min_count          = 1
-    max_count          = 1
-    disk_size_gb       = 15
+    max_count          = 4
+    disk_size_gb       = 12
     disk_type          = "pd-ssd"
     auto_upgrade       = true
     service_account = var.terraform_sa_fqdn

@@ -2,6 +2,10 @@ terraform {
   source = "../../../..//modules/gcp/k8s-cluster/"
 }
 
+include {
+  path = find_in_parent_folders()
+}
+
 dependency "gcp-project" {
   config_path = "../../../common/gcp/project"
 }

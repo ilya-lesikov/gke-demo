@@ -1,3 +1,7 @@
+terraform {
+  backend "gcs" {}
+}
+
 data "google_project" "main" {
   project_id = var.project_id
 }

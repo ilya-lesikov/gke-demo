@@ -2,6 +2,10 @@ terraform {
   source = "../../..//modules/kubernetes/"
 }
 
+include {
+  path = find_in_parent_folders()
+}
+
 dependency "gcp-k8s-cluster" {
   config_path = "../gcp/k8s-cluster"
   # skip_outputs = true

@@ -1,3 +1,7 @@
+terraform {
+  backend "gcs" {}
+}
+
 resource "kubernetes_namespace" "current" {
   metadata {
     name = var.namespace

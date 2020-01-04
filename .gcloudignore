@@ -1,3 +1,2 @@
 #!include:.gitignore
 !/bin/kustomize
-!/kustomize-output.yml

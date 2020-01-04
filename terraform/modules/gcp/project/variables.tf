@@ -8,6 +8,7 @@ variable "services" {
     "containerregistry.googleapis.com",
     "cloudbuild.googleapis.com",
     "cloudbilling.googleapis.com",
+    "dns.googleapis.com",   # for pulling images from GCR from private cluster
   ]
   type = list(string)
 }
