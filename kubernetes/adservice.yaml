@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: adservice
-  replicas: 2
+  # replicas: 2
   strategy:
     canary:
       steps:

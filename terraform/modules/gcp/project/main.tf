@@ -41,3 +41,11 @@ resource "google_project_iam_member" "cloudbuild" {
   member = "serviceAccount:${data.google_project.main.number}@cloudbuild.gserviceaccount.com"
   depends_on = [google_project_service.services]
 }
+
+resource "google_storage_bucket_iam_binding" "artifacts" {
+  bucket = "artifacts.${var.project_id}.appspot.com"
+  role = "roles/storage.objectViewer"
+  members = [
+    "serviceAccount:${google_service_account.terraform.email}",
+  ]
+}

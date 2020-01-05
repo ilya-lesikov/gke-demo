@@ -7,7 +7,6 @@ resources:
 - currencyservice.yaml
 - emailservice.yaml
 - frontend.yaml
-- loadgenerator.yaml
 - paymentservice.yaml
 - productcatalogservice.yaml
 - recommendationservice.yaml
@@ -26,8 +25,6 @@ images:
   newName: gcr.io/gke-demo-1577719075/emailservice
 - name: frontend
   newName: gcr.io/gke-demo-1577719075/frontend
-- name: loadgenerator
-  newName: gcr.io/gke-demo-1577719075/loadgenerator
 - name: paymentservice
   newName: gcr.io/gke-demo-1577719075/paymentservice
 - name: productcatalogservice

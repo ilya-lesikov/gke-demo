@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: productcatalogservice
-  replicas: 2
+  # replicas: 2
   strategy:
     canary:
       steps:

@@ -3,6 +3,8 @@ variable "region" {}
 variable "zones" {
   type = list(string)
 }
+variable "machine_type" {}
+variable "max_nodes" {}
 variable "terraform_sa_fqdn" {}
 variable "environment" {}
 variable "master_cidr" {}

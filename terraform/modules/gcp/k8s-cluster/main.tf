@@ -62,7 +62,7 @@ data "google_compute_subnetwork" "subnet" {
 }
 
 resource "google_compute_router" "main" {
-  name    = "${var.environment}"
+  name    = var.environment
   # project = var.project_id
   # region  = module.gcp-network.subnets_regions[0]
   network = module.gcp-network.network_name
@@ -105,10 +105,10 @@ module "gke" {
 
   node_pools = [{
     name               = "main"
-    machine_type       = "n1-standard-1"
+    machine_type       = var.machine_type
     min_count          = 1
-    max_count          = 4
-    disk_size_gb       = 12
+    max_count          = var.max_nodes
+    disk_size_gb       = 15
     disk_type          = "pd-ssd"
     auto_upgrade       = true
     service_account = var.terraform_sa_fqdn
@@ -117,7 +117,10 @@ module "gke" {
 
 resource "null_resource" "populate-kube-config" {
   provisioner "local-exec" {
-    command = "gcloud container clusters get-credentials ${module.gke.name} && sleep 10"
+    command = <<SCRIPT
+      gcloud container clusters get-credentials --zone=${var.zones[0]} ${module.gke.name} \
+      && sleep 10
+    SCRIPT
   }
   triggers = {
     cluster_cert_changed = "${module.gke.ca_certificate}"

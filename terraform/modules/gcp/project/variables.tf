@@ -22,6 +22,7 @@ variable "terraform_sa_roles" {
     "roles/resourcemanager.projectIamAdmin",
     "roles/compute.networkAdmin",
     "roles/storage.objectViewer",   # for pulling images from GCR
+    "roles/monitoring.metricWriter",   # to write metrics
   ]
   type = list(string)
 }

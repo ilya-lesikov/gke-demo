@@ -2,8 +2,8 @@
 set -euo pipefail
 
 project="$1"
-region="$2"
-zone="$3"
+# region="$2"
+# zone="$3"
 
 TERRAFORM_VER=0.12.18
 TERRAGRUNT_VER=0.21.10
@@ -16,7 +16,6 @@ MICROSERVICES=(
   currencyservice
   emailservice
   frontend
-  loadgenerator
   paymentservice
   productcatalogservice
   recommendationservice
@@ -38,12 +37,12 @@ info "Attaching billing account to the project"
 billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
 gcloud beta billing projects link -q "$project" --billing-account "$billing_id"
 
-if (gsutil ls -b "gs://$project-terraform-state/"); then
+if (gsutil ls -b "gs://${project}_terraform-state/"); then
   info "Cloud Storage bucket for Terraform state already exists, skipping creation"
 else
   info "Creating Cloud Storage bucket for Terraform state"
-  gsutil mb -l eu "gs://$project-terraform-state"
-  gsutil versioning set on "gs://$project-terraform-state"
+  gsutil mb -l eu "gs://${project}_terraform-state"
+  gsutil versioning set on "gs://${project}_terraform-state"
 fi
 
 if [[ ! -f "./bin/terraform" ]]; then
@@ -95,5 +94,5 @@ fi
 
 info "Setting up gcloud configuration"
 gcloud config set -q project $project
-gcloud config set -q compute/region $region
-gcloud config set -q compute/zone $zone
+# gcloud config set -q compute/region $region
+# gcloud config set -q compute/zone $zone

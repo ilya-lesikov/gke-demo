@@ -2,6 +2,24 @@ terraform {
   backend "gcs" {}
 }
 
+locals {
+  timestamp = timestamp()
+}
+
+# TODO: Context from k8s provider configuration not respected. Wait until fixed
+# upstream (if ever) and remove this resource. "depends_on" with this resource has
+# to be added to every k8s provider-dependent resource
+# resource "null_resource" "use-context" {
+#   provisioner "local-exec" {
+#     command = <<SCRIPT
+#       kubectl config use-context "gke_${var.project_id}_${var.zones[0]}_${var.cluster}"
+#     SCRIPT
+#   }
+#   triggers = {
+#     every_time = local.timestamp
+#   }
+# }
+
 resource "kubernetes_namespace" "current" {
   metadata {
     name = var.namespace
@@ -9,6 +27,7 @@ resource "kubernetes_namespace" "current" {
     #   istio-injection = "enabled"
     # }
   }
+  # depends_on = [null_resource.use-context]
 }
 
 resource "kubernetes_namespace" "argocd" {
@@ -18,6 +37,7 @@ resource "kubernetes_namespace" "argocd" {
     #   istio-injection = "enabled"
     # }
   }
+  # depends_on = [null_resource.use-context]
   count = var.argo_install ? 1 : 0
 }
 
@@ -46,6 +66,7 @@ resource "kubernetes_namespace" "argo-rollouts" {
     #   istio-injection = "enabled"
     # }
   }
+  # depends_on = [null_resource.use-context]
   count = var.argo_install ? 1 : 0
 }
 
