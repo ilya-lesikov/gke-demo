@@ -7,13 +7,6 @@ spec:
   selector:
     matchLabels:
       app: emailservice
-  # replicas: 2
-  strategy:
-    canary:
-      steps:
-      - setWeight: 50
-      - pause:
-          duration: 60
   template:
     metadata:
       labels:

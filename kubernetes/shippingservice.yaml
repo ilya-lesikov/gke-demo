@@ -7,13 +7,6 @@ spec:
   selector:
     matchLabels:
       app: shippingservice
-  replicas: 2
-  strategy:
-    canary:
-      steps:
-      - setWeight: 50
-      - pause:
-          duration: 60
   template:
     metadata:
       labels:

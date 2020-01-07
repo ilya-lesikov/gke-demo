@@ -4,6 +4,7 @@ variable "zones" {
   type = list(string)
 }
 variable "cluster" {}
+variable "endpoint" {}
 
 variable "namespace" {
   default = "main"
@@ -20,3 +21,12 @@ variable "argocd_ver" {
 variable "argo_rollouts_ver" {
   default = "0.6.2"
 }
+
+variable "github_infra_owner" {
+  default = "ilya-lesikov"
+}
+
+variable "github_infra_reponame" {
+  default = "gke-demo"
+}
+
