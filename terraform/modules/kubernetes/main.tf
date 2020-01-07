@@ -3,22 +3,8 @@ terraform {
 }
 
 locals {
-  timestamp = timestamp()
+  context = "gke_${var.project_id}_${var.zones[0]}_${var.cluster}"
 }
-
-# TODO: Context from k8s provider configuration not respected. Wait until fixed
-# upstream (if ever) and remove this resource. "depends_on" with this resource has
-# to be added to every k8s provider-dependent resource
-# resource "null_resource" "use-context" {
-#   provisioner "local-exec" {
-#     command = <<SCRIPT
-#       kubectl config use-context "gke_${var.project_id}_${var.zones[0]}_${var.cluster}"
-#     SCRIPT
-#   }
-#   triggers = {
-#     every_time = local.timestamp
-#   }
-# }
 
 resource "kubernetes_namespace" "current" {
   metadata {
@@ -57,6 +43,29 @@ resource "k8s_manifest" "argocd" {
   content   = each.key
 
   namespace = element(concat(kubernetes_namespace.argocd.*.id, list("")), 0)
+}
+
+data "kubernetes_service" "argocd-server" {
+  metadata {
+    name = "argocd-server"
+    namespace = element(concat(kubernetes_namespace.argocd.*.id, list("")), 0)
+  }
+  depends_on = [k8s_manifest.argocd]
+  count = var.argo_install ? 1 : 0
+}
+
+resource "null_resource" "expose-argocd" {
+  provisioner "local-exec" {
+    command = <<SCRIPT
+      kubectl patch service argocd-server \
+      --namespace "${element(concat(kubernetes_namespace.argocd.*.id, list("")), 0)}" \
+      --context "${local.context}" --patch '{"spec": {"type": "LoadBalancer"}}'
+    SCRIPT
+  }
+  triggers = {
+    service_changed = data.kubernetes_service.argocd-server[0].metadata[0].resource_version
+  }
+  count = var.argo_install ? 1 : 0
 }
 
 resource "kubernetes_namespace" "argo-rollouts" {

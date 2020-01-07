@@ -1,13 +1,5 @@
 terraform {
   source = "../../..//modules/kubernetes/"
-  before_hook "" {
-    commands     = ["apply", "plan", "destroy"]
-    execute      = [
-      "sh",
-      "-c",
-      "kubectl config use-context $(kubectl config get-contexts -o name | grep \"gke_${get_env("TF_VAR_project_id", "")}_.*-prod\" | head -n1)"
-    ]
-  }
 }
 
 include {

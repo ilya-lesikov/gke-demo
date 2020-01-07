@@ -1,4 +1,9 @@
 variable "project_id" {}
+variable "github_microservices_owner" {}
+variable "github_microservices_reponame" {}
+variable "microservices" {
+  type = list(string)
+}
 
 variable "services" {
   default = [

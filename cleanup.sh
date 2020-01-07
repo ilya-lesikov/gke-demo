@@ -19,6 +19,11 @@ for environ in prod staging; do
   done
 done
 
+triggers=$(gcloud -q beta builds triggers list | awk '$0~/^id: / {print $2}' | tr '\n' ' ')
+for trigger in $(printf $triggers); do
+  gcloud -q beta builds triggers delete $trigger
+done
+
 find -name ".terragrunt-cache" -exec rm -rf '{}' \;
 
 gcloud -q config unset compute/region
