@@ -11,11 +11,17 @@ dependency "gcp-k8s-cluster" {
   # skip_outputs = true
 }
 
+dependency "kubernetes-prod" {
+  config_path = "../../prod/kubernetes"
+  skip_outputs = true
+}
+
 inputs = {
   project_id = dependency.gcp-k8s-cluster.outputs.project_id
   region = dependency.gcp-k8s-cluster.outputs.region
   zones = dependency.gcp-k8s-cluster.outputs.zones
   cluster = dependency.gcp-k8s-cluster.outputs.cluster
   endpoint = dependency.gcp-k8s-cluster.outputs.endpoint
+  argo_rollouts_install = true
   # cluster_ca_certificate = dependency.gcp-k8s-cluster.outputs.cluster_ca_certificate
 }

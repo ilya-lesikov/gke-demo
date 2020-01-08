@@ -9,6 +9,8 @@ include {
 inputs = {
   github_microservices_owner = "ilya-lesikov"
   github_microservices_reponame = "google-microservices-demo"
+  github_community_cloud_builders_owner = "ilya-lesikov"
+  github_community_cloud_builders_reponame = "google-cloud-builders-community"
   microservices = [
     "adservice",
     "cartservice",
@@ -22,5 +24,3 @@ inputs = {
     "shippingservice",
   ]
 }
-
-prevent_destroy = true

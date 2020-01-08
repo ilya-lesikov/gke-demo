@@ -6,4 +6,7 @@ remote_state {
   }
 }
 
+# locals {
+# }
+
 skip = true

@@ -10,7 +10,11 @@ variable "namespace" {
   default = "main"
 }
 
-variable "argo_install" {
+variable "argocd_install" {
+  default = false
+}
+
+variable "argo_rollouts_install" {
   default = false
 }
 
@@ -29,4 +33,3 @@ variable "github_infra_owner" {
 variable "github_infra_reponame" {
   default = "gke-demo"
 }
-

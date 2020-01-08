@@ -1,4 +1,5 @@
 #!/bin/bash -u
+# DON'T USE IT UNLESS YOU REALLY KNOW WHAT YOU ARE DOING
 
 project="$1"
 service_account="terraform@$project.iam.gserviceaccount.com"
@@ -6,6 +7,11 @@ service_account="terraform@$project.iam.gserviceaccount.com"
 gcloud -q iam service-accounts delete $service_account
 gsutil iam ch -d serviceAccount:$service_account gs://artifacts.$project.appspot.com
 gsutil -m rm -r gs://${project}_terraform-state
+
+for fwrule in $(gcloud compute firewall-rules list \
+  | awk '$2~/demo-(staging|prod)/ {print $1}'); do
+  gcloud -q compute firewall-rules delete $fwrule
+done
 
 for environ in prod staging; do
   for region in europe-west4 europe-west2; do
@@ -19,8 +25,7 @@ for environ in prod staging; do
   done
 done
 
-triggers=$(gcloud -q beta builds triggers list | awk '$0~/^id: / {print $2}' | tr '\n' ' ')
-for trigger in $(printf $triggers); do
+for trigger in $(gcloud -q beta builds triggers list | awk '$0~/^id: / {print $2}' | tr '\n' ' '); do
   gcloud -q beta builds triggers delete $trigger
 done
 

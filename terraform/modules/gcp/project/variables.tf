@@ -1,6 +1,8 @@
 variable "project_id" {}
 variable "github_microservices_owner" {}
 variable "github_microservices_reponame" {}
+variable "github_community_cloud_builders_owner" {}
+variable "github_community_cloud_builders_reponame" {}
 variable "microservices" {
   type = list(string)
 }

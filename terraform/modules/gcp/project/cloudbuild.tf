@@ -31,3 +31,32 @@ resource "google_cloudbuild_trigger" "build-microservice" {
     SCRIPT
   }
 }
+
+resource "google_cloudbuild_trigger" "build-terragrunt-builder" {
+  provider = google-beta
+
+  name = "build-terragrunt-builder"
+  description = "Build and push GCB Terragrunt builder"
+  github {
+    owner = var.github_community_cloud_builders_owner
+    name = var.github_community_cloud_builders_reponame
+    push {
+      branch = "master"
+    }
+  }
+  included_files = [
+    "terragrunt/**",
+  ]
+  ignored_files = [
+    "terragrunt/README.markdown",
+    "terragrunt/examples",
+  ]
+  filename = "terragrunt/cloudbuild.yaml"
+
+  provisioner "local-exec" {
+    command = <<SCRIPT
+      gcloud beta builds triggers run build-terragrunt-builder \
+      --branch master --project "${var.project_id}"
+    SCRIPT
+  }
+}
