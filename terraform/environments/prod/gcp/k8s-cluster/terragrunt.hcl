@@ -11,7 +11,6 @@ dependency "gcp-project" {
 }
 
 inputs = {
-  terraform_sa_fqdn = dependency.gcp-project.outputs.terraform_sa_fqdn
   environment = "prod"
   master_cidr = "172.16.0.0/28"
   subnet_primary_ip_range = "172.20.0.0/20"
@@ -21,4 +20,5 @@ inputs = {
   zones = ["europe-west2-a"]
   machine_type = "n1-standard-4"
   max_nodes = 2
+  terraform_sa_fqdn = dependency.gcp-project.outputs.terraform_sa_fqdn
 }

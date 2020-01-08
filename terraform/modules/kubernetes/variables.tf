@@ -4,32 +4,26 @@ variable "zones" {
   type = list(string)
 }
 variable "cluster" {}
+variable "environment" {}
 variable "endpoint" {}
+variable "github_infra_owner" {}
+variable "github_infra_reponame" {}
+variable "argocd_ver" {}
+variable "argo_rollouts_ver" {}
+variable "hipstershop_namespace" {}
 
-variable "namespace" {
-  default = "main"
+variable "management_context" {
+  default = null  # If "null" then use regular local.context
 }
 
 variable "argocd_install" {
   default = false
 }
 
-variable "argo_rollouts_install" {
+variable "argocd_manager_install" {
   default = false
 }
 
-variable "argocd_ver" {
-  default = "1.3.6"
-}
-
-variable "argo_rollouts_ver" {
-  default = "0.6.2"
-}
-
-variable "github_infra_owner" {
-  default = "ilya-lesikov"
-}
-
-variable "github_infra_reponame" {
-  default = "gke-demo"
+variable "argo_rollouts_install" {
+  default = false
 }

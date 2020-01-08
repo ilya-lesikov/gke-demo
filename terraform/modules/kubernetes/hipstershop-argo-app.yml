@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: hipstershop
+  name: "${app_name}"
 spec:
   project: default
   source:
