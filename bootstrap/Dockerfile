@@ -10,7 +10,7 @@ ENV TF_PROVIDER_K8S_VER 0.5.0
 WORKDIR /tmp
 
 RUN apt-get update && \
-    apt-get install -y unzip curl ca-certificates && \
+    apt-get install -y unzip curl ca-certificates jq && \
     gcloud -q components install beta kubectl && \
     gcloud -q components update && \
     mkdir /git
@@ -55,6 +55,7 @@ RUN apt-get remove --purge -y unzip curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# TODO:
 # COPY kustomize.bash /opt/kustomize.bash
 # ENTRYPOINT ["/opt/kustomize.bash"]
 

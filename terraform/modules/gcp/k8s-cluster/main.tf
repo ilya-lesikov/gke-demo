@@ -123,6 +123,8 @@ resource "null_resource" "populate-kube-config" {
     SCRIPT
   }
   triggers = {
-    cluster_cert_changed = "${module.gke.ca_certificate}"
+    always = uuid()
+    # cluster_cert_changed = "${module.gke.ca_certificate}"
+    # different_kubeconfig = "${filemd5("~/.kube/config")}"
   }
 }
