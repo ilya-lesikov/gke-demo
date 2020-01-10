@@ -26,7 +26,18 @@ info() {
   echo "[[ INFO ]] $1"
 }
 
-if (gcloud -q auth print-access-token 1>/dev/null); then
+abort() {
+  echo "[[ ERROR ]] $1"
+  exit 1
+}
+
+set +u
+if [[ -z "$GCP_PROJECT" ]]; then
+  abort '$GCP_PROJECT environment variable must be set. Aborting.'
+fi
+set -u
+
+if (gcloud -q auth print-access-token 2>&1 1>/dev/null); then
   info "You are already authenticated in gcloud, skipping authenication"
 else
   info "Authenticating in GCP with gcloud"
@@ -35,7 +46,7 @@ fi
 
 info "Setting up \$GOOGLE_CLOUD_KEYFILE_JSON environment variable"
 export GOOGLE_CLOUD_KEYFILE_JSON="$HOME/.config/gcloud/application_default_credentials.json"
-if ! (grep "GOOGLE_CLOUD_KEYFILE_JSON" "$HOME/.profile" 1>/dev/null); then
+if ! (grep "GOOGLE_CLOUD_KEYFILE_JSON" "$HOME/.profile" 2>&1 1>/dev/null); then
   echo "export GOOGLE_CLOUD_KEYFILE_JSON=\"$GOOGLE_CLOUD_KEYFILE_JSON\"" >> "$HOME/.profile"
 fi
 
@@ -44,7 +55,7 @@ if [[ ! -f "$GOOGLE_CLOUD_KEYFILE_JSON" ]]; then
   gcloud auth application-default login --no-launch-browser
 fi
 
-if (gcloud projects describe -q --verbosity=none "$GCP_PROJECT"); then
+if (gcloud projects describe -q --verbosity=none "$GCP_PROJECT" 2>&1 1>/dev/null); then
   info "Project already exists, skipping creation"
 else
   info "Creating GCP project"
@@ -56,12 +67,12 @@ info "Attaching billing account to the project"
 billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
 gcloud beta billing projects link -q "$GCP_PROJECT" --billing-account "$billing_id"
 
-if (gsutil ls -b "gs://${project}_terraform-state/"); then
+if (gsutil ls -b "gs://${GCP_PROJECT}_terraform-state/" 2>&1 1>/dev/null); then
   info "Cloud Storage bucket for Terraform state already exists, skipping creation"
 else
   info "Creating Cloud Storage bucket for Terraform state"
-  gsutil mb -l eu "gs://${project}_terraform-state"
-  gsutil versioning set on "gs://${project}_terraform-state"
+  gsutil mb -l eu "gs://${GCP_PROJECT}_terraform-state"
+  gsutil versioning set on "gs://${GCP_PROJECT}_terraform-state"
 fi
 
 # if [[ ! -f "./bin/terraform" ]]; then
