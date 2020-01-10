@@ -32,8 +32,8 @@ abort() {
 }
 
 set +u
-if [[ -z "$GCP_PROJECT" ]]; then
-  abort '$GCP_PROJECT environment variable must be set. Aborting.'
+if [[ -z "$TF_VAR_project_id" ]]; then
+  abort '$TF_VAR_project_id environment variable must be set. Aborting.'
 fi
 set -u
 
@@ -55,24 +55,24 @@ if [[ ! -f "$GOOGLE_CLOUD_KEYFILE_JSON" ]]; then
   gcloud auth application-default login --no-launch-browser
 fi
 
-if (gcloud projects describe -q --verbosity=none "$GCP_PROJECT" 2>&1 1>/dev/null); then
+if (gcloud projects describe -q --verbosity=none "$TF_VAR_project_id" 2>&1 1>/dev/null); then
   info "Project already exists, skipping creation"
 else
   info "Creating GCP project"
-  gcloud projects create -q "$GCP_PROJECT"
+  gcloud projects create -q "$TF_VAR_project_id"
 fi
-gcloud config set -q project "$GCP_PROJECT"
+gcloud config set -q project "$TF_VAR_project_id"
 
 info "Attaching billing account to the project"
 billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
-gcloud beta billing projects link -q "$GCP_PROJECT" --billing-account "$billing_id"
+gcloud beta billing projects link -q "$TF_VAR_project_id" --billing-account "$billing_id"
 
-if (gsutil ls -b "gs://${GCP_PROJECT}_terraform-state/" 2>&1 1>/dev/null); then
+if (gsutil ls -b "gs://${TF_VAR_project_id}_terraform-state/" 2>&1 1>/dev/null); then
   info "Cloud Storage bucket for Terraform state already exists, skipping creation"
 else
   info "Creating Cloud Storage bucket for Terraform state"
-  gsutil mb -l eu "gs://${GCP_PROJECT}_terraform-state"
-  gsutil versioning set on "gs://${GCP_PROJECT}_terraform-state"
+  gsutil mb -l eu "gs://${TF_VAR_project_id}_terraform-state"
+  gsutil versioning set on "gs://${TF_VAR_project_id}_terraform-state"
 fi
 
 # if [[ ! -f "./bin/terraform" ]]; then
@@ -104,7 +104,7 @@ fi
 # info "Kustomizing image tags in k8s manifests"
 # cd ./kubernetes/
 # for microservice in "${MICROSERVICES[@]}"; do
-#   ../bin/kustomize edit set image "$microservice=gcr.io/$GCP_PROJECT/$microservice"
+#   ../bin/kustomize edit set image "$microservice=gcr.io/$TF_VAR_project_id/$microservice"
 # done
 # cd -
 
