@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-project="$1"
+# project="$1"
 # region="$2"
 # zone="$3"
 
@@ -44,17 +44,17 @@ if [[ ! -f "$GOOGLE_CLOUD_KEYFILE_JSON" ]]; then
   gcloud auth application-default login --no-launch-browser
 fi
 
-if (gcloud projects describe -q --verbosity=none "$project"); then
+if (gcloud projects describe -q --verbosity=none "$GCP_PROJECT"); then
   info "Project already exists, skipping creation"
 else
   info "Creating GCP project"
-  gcloud projects create -q "$project"
+  gcloud projects create -q "$GCP_PROJECT"
 fi
-gcloud config set -q project $project
+gcloud config set -q project "$GCP_PROJECT"
 
 info "Attaching billing account to the project"
 billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
-gcloud beta billing projects link -q "$project" --billing-account "$billing_id"
+gcloud beta billing projects link -q "$GCP_PROJECT" --billing-account "$billing_id"
 
 if (gsutil ls -b "gs://${project}_terraform-state/"); then
   info "Cloud Storage bucket for Terraform state already exists, skipping creation"
@@ -93,7 +93,7 @@ fi
 # info "Kustomizing image tags in k8s manifests"
 # cd ./kubernetes/
 # for microservice in "${MICROSERVICES[@]}"; do
-#   ../bin/kustomize edit set image "$microservice=gcr.io/$project/$microservice"
+#   ../bin/kustomize edit set image "$microservice=gcr.io/$GCP_PROJECT/$microservice"
 # done
 # cd -
 

@@ -1,6 +1,4 @@
-FROM gcr.io/cloud-builders/gcloud
-
-ARG PROJECT_NAME
+FROM gcr.io/cloud-builders/gcloud-slim
 
 ENV TERRAFORM_VER 0.12.18
 ENV TERRAGRUNT_VER 0.21.10
@@ -9,7 +7,10 @@ ENV ARGO_ROLLOUTS_VER 0.6.0
 ENV ARGOCD_VER 1.3.6
 
 RUN apt-get update && \
-    apt-get install -y wget unzip curl ca-certificates
+    apt-get install -y wget unzip curl ca-certificates && \
+    gcloud -q components install beta kubectl && \
+    gcloud -q components update && \
+    mkdir /git
 
 # Install Kustomize
 RUN curl -sSL -o kustomize.tar.gz \
@@ -51,5 +52,6 @@ RUN apt-get remove --purge -y wget unzip curl && \
 # COPY entrypoint.bash /opt/entrypoint.bash
 # ENTRYPOINT ["/opt/entrypoint.bash"]
 
+WORKDIR /git
 ENTRYPOINT []
 CMD ["/usr/bin/tail", "-f", "/dev/null"]
