@@ -20,9 +20,12 @@ data "http" "argocd-install-manifests" {
 
 resource "k8s_manifest" "argocd" {
   # Don't even ask wtf is this. We need it this way to reference variables from
-  # resources with possible "count = 0", i.e. resources that might not exist
-  for_each = length(data.http.argocd-install-manifests.*.body) > 0 ? toset(split("---", join("", data.http.argocd-install-manifests.*.body))) : toset([])
-  content   = each.key
+  # resources with possible "count = 0", i.e. resources that might not exist.
+  # Also we are using maps for for_each to provide sane names for resource
+  # instances. Instances are accessible like k8s_manifest.argocd["3"] (note
+  # "" around "index" since this is a key of map, not an index of list)
+  for_each = length(data.http.argocd-install-manifests.*.body) > 0 ? zipmap(range(length(split("---", join("", data.http.argocd-install-manifests.*.body)))), split("---", join("", data.http.argocd-install-manifests.*.body))) : {}
+  content   = each.value
   namespace = element(concat(kubernetes_namespace.argocd.*.id, list("")), 0)
 }
 
@@ -157,7 +160,8 @@ data "http" "argo-rollouts-install-manifests" {
 }
 
 resource "k8s_manifest" "argo-rollouts" {
-  for_each = length(data.http.argo-rollouts-install-manifests.*.body) > 0 ? toset(split("---", join("", data.http.argo-rollouts-install-manifests.*.body))) : toset([])
-  content   = each.key
+  # fuck my life
+  for_each = length(data.http.argo-rollouts-install-manifests.*.body) > 0 ? zipmap(range(length(split("---", join("", data.http.argo-rollouts-install-manifests.*.body)))), split("---", join("", data.http.argo-rollouts-install-manifests.*.body))) : {}
+  content   = each.value
   namespace = element(concat(kubernetes_namespace.argo-rollouts.*.id, list("")), 0)
 }
