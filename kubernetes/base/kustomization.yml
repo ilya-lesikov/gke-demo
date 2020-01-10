@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+configurations:
+  - ./third-party/rollout-transform.yaml
+
+resources:
+  - adservice.yaml
+  - cartservice.yaml
+  - checkoutservice.yaml
+  - currencyservice.yaml
+  - emailservice.yaml
+  - frontend.yaml
+  - paymentservice.yaml
+  - productcatalogservice.yaml
+  - recommendationservice.yaml
+  - shippingservice.yaml
+  - redis.yaml
+
+patches:
+  - path: ./patch-canary.yml
+    target:
+      group: argoproj.io
+      kind: Rollout
+      version: v1alpha1

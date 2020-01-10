@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: "https://github.com/${github_infra_owner}/${github_infra_reponame}"
     targetRevision: master
-    path: kubernetes
+    path: "${manifests_dir}"
 
     kustomize:
       images:

@@ -18,6 +18,7 @@ data "template_file" "hipstershop-argo-app" {
     project = var.project_id
     k8s_cluster_url = local.endpoint
     app_namespace = var.hipstershop_namespace
+    manifests_dir = "kubernetes/overlays/${var.environment}"
   }
 }
 
