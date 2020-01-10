@@ -1,13 +1,13 @@
 FROM gcr.io/cloud-builders/gcloud-slim
 
-ENV TERRAFORM_VER 0.12.18
+ENV TERRAFORM_VER 0.12.19
 ENV TERRAGRUNT_VER 0.21.10
 ENV KUSTOMIZE_VER 3.5.3
 ENV ARGO_ROLLOUTS_VER 0.6.0
 ENV ARGOCD_VER 1.3.6
 
 RUN apt-get update && \
-    apt-get install -y wget unzip curl ca-certificates && \
+    apt-get install -y unzip curl ca-certificates && \
     gcloud -q components install beta kubectl && \
     gcloud -q components update && \
     mkdir /git
@@ -41,7 +41,7 @@ RUN curl -sSL -o /usr/local/bin/kubectl-argo-rollouts \
     chmod +x /usr/local/bin/kubectl-argo-rollouts
 
 # Cleanup
-RUN apt-get remove --purge -y wget unzip curl && \
+RUN apt-get remove --purge -y unzip curl && \
     apt-get --purge -y autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
