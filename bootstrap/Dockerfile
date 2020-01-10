@@ -5,6 +5,9 @@ ENV TERRAGRUNT_VER 0.21.10
 ENV KUSTOMIZE_VER 3.5.3
 ENV ARGO_ROLLOUTS_VER 0.6.0
 ENV ARGOCD_VER 1.3.6
+ENV TF_PROVIDER_K8S_VER 0.5.0
+
+WORKDIR /tmp
 
 RUN apt-get update && \
     apt-get install -y unzip curl ca-certificates && \
@@ -16,7 +19,6 @@ RUN apt-get update && \
 RUN curl -sSL -o kustomize.tar.gz \
     "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VER}/kustomize_v${KUSTOMIZE_VER}_linux_amd64.tar.gz" && \
     tar xvzf kustomize.tar.gz && \
-    rm kustomize.tar.gz && \
     chmod +x kustomize && \
     mv kustomize /usr/local/bin/kustomize
 
@@ -24,11 +26,18 @@ RUN curl -sSL -o kustomize.tar.gz \
 RUN curl -sSL -o terraform.zip \
     "https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_linux_amd64.zip" && \
     unzip terraform.zip && \
-    rm terraform.zip && \
     curl -sSL -o terragrunt \
     "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VER}/terragrunt_linux_amd64" && \
     chmod +x terraform terragrunt && \
     mv terraform terragrunt /usr/local/bin/
+
+# Download Terraform custom providers
+RUN curl -sSL -o terraform-provider-k8s.tar.gz \
+    "https://github.com/banzaicloud/terraform-provider-k8s/releases/download/v${TF_PROVIDER_K8S_VER}/terraform-provider-k8s_${TF_PROVIDER_K8S_VER}_linux_amd64.tar.gz" && \
+    tar xvf terraform-provider-k8s.tar.gz && \
+    chmod +x terraform-provider-k8s && \
+    mv terraform-provider-k8s /usr/local/sbin/
+COPY terraformrc "$HOME/.terraformrc"
 
 # Install Argo CD cli
 RUN curl -sSL -o /usr/local/bin/argocd \
@@ -48,9 +57,6 @@ RUN apt-get remove --purge -y unzip curl && \
 
 # COPY kustomize.bash /opt/kustomize.bash
 # ENTRYPOINT ["/opt/kustomize.bash"]
-
-# COPY entrypoint.bash /opt/entrypoint.bash
-# ENTRYPOINT ["/opt/entrypoint.bash"]
 
 WORKDIR /git
 ENTRYPOINT []
