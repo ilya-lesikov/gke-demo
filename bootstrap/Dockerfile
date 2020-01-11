@@ -10,7 +10,7 @@ ENV TF_PROVIDER_K8S_VER 0.5.0
 WORKDIR /tmp
 
 RUN apt-get update && \
-    apt-get install -y unzip curl ca-certificates jq && \
+    apt-get install -y unzip curl ca-certificates jq vim-tiny && \
     gcloud -q components install beta kubectl && \
     gcloud -q components update && \
     mkdir /git
@@ -37,7 +37,7 @@ RUN curl -sSL -o terraform-provider-k8s.tar.gz \
     tar xvf terraform-provider-k8s.tar.gz && \
     chmod +x terraform-provider-k8s && \
     mv terraform-provider-k8s /usr/local/sbin/
-COPY terraformrc "$HOME/.terraformrc"
+COPY terraformrc "/root/.terraformrc"
 
 # Install Argo CD cli
 RUN curl -sSL -o /usr/local/bin/argocd \
@@ -50,7 +50,7 @@ RUN curl -sSL -o /usr/local/bin/kubectl-argo-rollouts \
     chmod +x /usr/local/bin/kubectl-argo-rollouts
 
 # Cleanup
-RUN apt-get remove --purge -y unzip curl && \
+RUN apt-get remove --purge -y unzip && \
     apt-get --purge -y autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*

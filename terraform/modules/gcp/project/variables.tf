@@ -1,4 +1,6 @@
 variable "project_id" {}
+variable "github_infra_owner" {}
+variable "github_infra_reponame" {}
 variable "github_microservices_owner" {}
 variable "github_microservices_reponame" {}
 variable "github_community_cloud_builders_owner" {}

@@ -14,6 +14,8 @@ resource "google_cloudbuild_trigger" "build-test-microservice" {
   }
   substitutions = {
     _APP = each.key
+    _GITHUB_DEMO_OWNER = var.github_infra_owner
+    _GITHUB_DEMO_REPONAME = var.github_infra_reponame
   }
   included_files = [
     "src/${each.key}/**",
@@ -24,12 +26,12 @@ resource "google_cloudbuild_trigger" "build-test-microservice" {
   ]
   filename = "gcb-build-test.yml"
 
-  provisioner "local-exec" {
-    command = <<SCRIPT
-      gcloud beta builds triggers run build-${each.key} \
-      --branch master --project "${var.project_id}"
-    SCRIPT
-  }
+  # provisioner "local-exec" {
+  #   command = <<SCRIPT
+  #     gcloud beta builds triggers run build-${each.key} \
+  #     --branch master --project "${var.project_id}"
+  #   SCRIPT
+  # }
 }
 
 resource "google_cloudbuild_trigger" "build-all-microservices" {
