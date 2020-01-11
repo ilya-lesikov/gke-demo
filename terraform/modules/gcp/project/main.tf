@@ -4,12 +4,12 @@ terraform {
 
 locals {
   terraform_sa = "serviceAccount:${google_service_account.terraform.email}"
-  cloudbuild_sa = "serviceAccount:${var.project_id}@cloudbuild.gserviceaccount.com"
+  cloudbuild_sa = "serviceAccount:${data.google_project.main.number}@cloudbuild.gserviceaccount.com"
 }
 
-# data "google_project" "main" {
-#   project_id = var.project_id
-# }
+data "google_project" "main" {
+  project_id = var.project_id
+}
 
 resource "google_project_service" "services" {
   for_each = toset(var.services)
@@ -51,7 +51,7 @@ resource "google_storage_bucket_iam_binding" "artifacts" {
   bucket = "artifacts.${var.project_id}.appspot.com"
   role = "roles/storage.objectViewer"
   members = [
-    "serviceAccount:${google_service_account.terraform.email}",
+    local.terraform_sa,
     local.cloudbuild_sa,
   ]
 }
