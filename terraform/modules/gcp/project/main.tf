@@ -2,9 +2,14 @@ terraform {
   backend "gcs" {}
 }
 
-data "google_project" "main" {
-  project_id = var.project_id
+locals {
+  terraform_sa = "serviceAccount:${google_service_account.terraform.email}"
+  cloudbuild_sa = "serviceAccount:${var.project_id}@cloudbuild.gserviceaccount.com"
 }
+
+# data "google_project" "main" {
+#   project_id = var.project_id
+# }
 
 resource "google_project_service" "services" {
   for_each = toset(var.services)
@@ -29,7 +34,7 @@ resource "google_project_iam_member" "terraform" {
   role = each.key
 
   # project = google_project_service.services[var.services[0]].project
-  member  = "serviceAccount:${google_service_account.terraform.email}"
+  member  = local.terraform_sa
   depends_on = [google_project_service.services]
 }
 
@@ -38,7 +43,7 @@ resource "google_project_iam_member" "cloudbuild" {
   role = each.key
 
   # project = google_project_service.services[var.services[0]].project
-  member = "serviceAccount:${data.google_project.main.number}@cloudbuild.gserviceaccount.com"
+  member = local.cloudbuild_sa
   depends_on = [google_project_service.services]
 }
 
@@ -47,5 +52,6 @@ resource "google_storage_bucket_iam_binding" "artifacts" {
   role = "roles/storage.objectViewer"
   members = [
     "serviceAccount:${google_service_account.terraform.email}",
+    local.cloudbuild_sa,
   ]
 }
