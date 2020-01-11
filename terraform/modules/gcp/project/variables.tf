@@ -41,6 +41,7 @@ variable "cloudbuild_sa_roles" {
     "roles/compute.viewer",
     "roles/container.clusterAdmin",
     "roles/container.developer",
+    "roles/iam.serviceAccountUser",   # to access terraform SA for k8s cluster provisioning
     "roles/compute.networkAdmin",
     "roles/storage.objectViewer",   # for pulling images from GCR
     "roles/monitoring.metricWriter",   # to write metrics
