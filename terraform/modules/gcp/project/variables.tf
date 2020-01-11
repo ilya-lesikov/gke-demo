@@ -38,7 +38,14 @@ variable "terraform_sa_roles" {
 
 variable "cloudbuild_sa_roles" {
   default = [
-    "roles/container.developer"
+    "roles/compute.viewer",
+    "roles/container.clusterAdmin",
+    "roles/container.developer",
+    "roles/iam.serviceAccountAdmin",
+    "roles/resourcemanager.projectIamAdmin",
+    "roles/compute.networkAdmin",
+    "roles/storage.objectViewer",   # for pulling images from GCR
+    "roles/monitoring.metricWriter",   # to write metrics
   ]
   type = list(string)
 }
