@@ -55,10 +55,6 @@ RUN apt-get remove --purge -y unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# TODO:
-# COPY kustomize.bash /opt/kustomize.bash
-# ENTRYPOINT ["/opt/kustomize.bash"]
-
 WORKDIR /git
 ENTRYPOINT []
 CMD ["/usr/bin/tail", "-f", "/dev/null"]

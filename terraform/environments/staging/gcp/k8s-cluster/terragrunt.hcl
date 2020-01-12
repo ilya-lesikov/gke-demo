@@ -19,6 +19,6 @@ inputs = {
   region = "europe-west4"
   zones = ["europe-west4-a"]
   machine_type = "n1-standard-2"
-  max_nodes = 2
+  max_nodes = 3
   terraform_sa_fqdn = dependency.gcp-project.outputs.terraform_sa_fqdn
 }

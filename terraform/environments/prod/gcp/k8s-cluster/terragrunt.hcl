@@ -18,7 +18,7 @@ inputs = {
   subnet_pods_ip_range = "10.8.0.0/14"
   region = "europe-west2"
   zones = ["europe-west2-a"]
-  machine_type = "n1-standard-4"
-  max_nodes = 2
+  machine_type = "n1-standard-2"
+  max_nodes = 3
   terraform_sa_fqdn = dependency.gcp-project.outputs.terraform_sa_fqdn
 }

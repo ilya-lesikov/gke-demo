@@ -18,6 +18,7 @@ variable "services" {
     "cloudbuild.googleapis.com",
     "cloudbilling.googleapis.com",
     "dns.googleapis.com",   # for pulling images from GCR from private cluster
+    "cloudkms.googleapis.com",
   ]
   type = list(string)
 }
