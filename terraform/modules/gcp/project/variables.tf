@@ -9,6 +9,10 @@ variable "microservices" {
   type = list(string)
 }
 
+variable "ssh_dir_path" {
+  default = "/root/.ssh"
+}
+
 variable "services" {
   default = [
     "compute.googleapis.com",

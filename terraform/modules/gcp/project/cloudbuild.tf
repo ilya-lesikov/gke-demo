@@ -16,6 +16,9 @@ resource "google_cloudbuild_trigger" "build-test-microservice" {
     _APP = each.key
     _GITHUB_DEMO_OWNER = var.github_infra_owner
     _GITHUB_DEMO_REPONAME = var.github_infra_reponame
+    _KMS_KEYRING_NAME = data.google_kms_key_ring.keyring-main.name
+    _KMS_KEY_NAME_GITHUB = data.google_kms_crypto_key.key-github.name
+    _SSH_PK_ENC = google_kms_secret_ciphertext.ssh-pk.ciphertext
   }
   included_files = [
     "src/${each.key}/**",

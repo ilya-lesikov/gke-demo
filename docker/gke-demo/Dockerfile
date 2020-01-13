@@ -6,6 +6,7 @@ ENV KUSTOMIZE_VER 3.5.3
 ENV ARGO_ROLLOUTS_VER 0.6.0
 ENV ARGOCD_VER 1.3.6
 ENV TF_PROVIDER_K8S_VER 0.5.0
+ENV TF_PROVIDER_GITFILE_VER 1.0
 
 WORKDIR /tmp
 
@@ -31,12 +32,19 @@ RUN curl -sSL -o terraform.zip \
     chmod +x terraform terragrunt && \
     mv terraform terragrunt /usr/local/bin/
 
-# Download Terraform custom providers
+# Install Terraform k8s provider
 RUN curl -sSL -o terraform-provider-k8s.tar.gz \
     "https://github.com/banzaicloud/terraform-provider-k8s/releases/download/v${TF_PROVIDER_K8S_VER}/terraform-provider-k8s_${TF_PROVIDER_K8S_VER}_linux_amd64.tar.gz" && \
     tar xvf terraform-provider-k8s.tar.gz && \
     chmod +x terraform-provider-k8s && \
     mv terraform-provider-k8s /usr/local/sbin/
+
+# Install Terraform gitfile provider
+RUN curl -sSL -o /usr/local/sbin/terraform-provider-gitfile \
+    "https://github.com/ilya-lesikov/terraform-provider-gitfile/releases/download/${TF_PROVIDER_GITFILE_VER}/terraform-provider-gitfile" && \
+    chmod +x /usr/local/sbin/terraform-provider-gitfile
+
+# Provide custom providers configuration
 COPY terraformrc "/root/.terraformrc"
 
 # Install Argo CD cli

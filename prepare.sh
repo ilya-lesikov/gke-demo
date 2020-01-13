@@ -41,6 +41,7 @@ if (gcloud -q auth print-access-token 2>&1 1>/dev/null); then
   info "You are already authenticated in gcloud, skipping authenication"
 else
   info "Authenticating in GCP with gcloud"
+  printf '\n\nSecurity notice: here we are authenticating you in your GCP account for you to be able to use "gcloud" command:\n\n'
   gcloud -q auth login
 fi
 
@@ -52,6 +53,7 @@ fi
 
 if [[ ! -f "$GOOGLE_CLOUD_KEYFILE_JSON" ]]; then
   info "Setting up application-default service account for GCP"
+  printf '\n\nSecurity notice: and here we are getting your application-default key to access your GCP account with any program/SDK that is not "gcloud" command line utility:\n\n'
   gcloud auth application-default login --no-launch-browser
 fi
 
@@ -74,6 +76,15 @@ else
   gsutil mb -l eu "gs://${TF_VAR_project_id}_terraform-state"
   gsutil versioning set on "gs://${TF_VAR_project_id}_terraform-state"
 fi
+
+if [[ -f "/root/.ssh/id_rsa" ]]; then
+  info "SSH key already exists, skipping"
+else
+  info "Creating new SSH key"
+  ssh-keygen -N '' -t rsa -b 4096 -f /root/.ssh/id_rsa
+fi
+
+printf "\n[[ USER ACTION REQUIRED ]]\n\nGo to https://github.com/ilya-lesikov/gke-demo/settings/keys/new (change repo owner and name to the owner and name of your forked repo), check \"Allow write access\" and put this public key in \"Key\" textbox:\n\n$(cat /root/.ssh/id_rsa.pub)\n\nIf you already added this key as a Deploy key, just ignore this.\nSecurity note: adding this key as \"Deploy key\" will only give write/read access to this particular repo. We will use this in Google Cloud Build to Kustomize, commit and push some manifests.\n\n[[ USER ACTION REQUIRED (see above)]]\n"
 
 # if [[ ! -f "./bin/terraform" ]]; then
 #   info "Downloading Terraform"
