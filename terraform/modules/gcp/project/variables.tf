@@ -50,6 +50,7 @@ variable "cloudbuild_sa_roles" {
     "roles/compute.networkAdmin",
     "roles/storage.objectViewer",   # for pulling images from GCR
     "roles/monitoring.metricWriter",   # to write metrics
+    "roles/cloudkms.cryptoKeyDecrypter",   # decrypt KMS keys
   ]
   type = list(string)
 }
