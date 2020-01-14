@@ -13,6 +13,7 @@ images:
   newTag: 0a3641a
 - name: currencyservice
   newName: gcr.io/gke-demo-1577719075/currencyservice
+  newTag: d666771
 - name: emailservice
   newName: gcr.io/gke-demo-1577719075/emailservice
 - name: frontend
