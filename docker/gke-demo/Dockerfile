@@ -32,14 +32,14 @@ RUN curl -sSL -o terraform.zip \
     chmod +x terraform terragrunt && \
     mv terraform terragrunt /usr/local/bin/
 
-# Install Terraform k8s provider
+# Install Terraform "k8s" provider
 RUN curl -sSL -o terraform-provider-k8s.tar.gz \
     "https://github.com/banzaicloud/terraform-provider-k8s/releases/download/v${TF_PROVIDER_K8S_VER}/terraform-provider-k8s_${TF_PROVIDER_K8S_VER}_linux_amd64.tar.gz" && \
     tar xvf terraform-provider-k8s.tar.gz && \
     chmod +x terraform-provider-k8s && \
     mv terraform-provider-k8s /root/.terraform.d/plugins/linux_amd64
 
-# Install Terraform gitfile provider
+# Install Terraform "gitfile" provider
 RUN curl -sSL -o /root/.terraform.d/plugins/linux_amd64/terraform-provider-gitfile \
     "https://github.com/ilya-lesikov/terraform-provider-gitfile/releases/download/${TF_PROVIDER_GITFILE_VER}/terraform-provider-gitfile" && \
     chmod +x /root/.terraform.d/plugins/linux_amd64/terraform-provider-gitfile
