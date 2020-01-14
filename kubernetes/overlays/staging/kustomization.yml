@@ -8,6 +8,7 @@ images:
   newTag: 0a3641a
 - name: cartservice
   newName: gcr.io/gke-demo-1577719075/cartservice
+  newTag: 0a3641a
 - name: checkoutservice
   newName: gcr.io/gke-demo-1577719075/checkoutservice
 - name: currencyservice
