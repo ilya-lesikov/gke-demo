@@ -1,0 +1,20 @@
+name: Release gke-demo image
+on:
+  push:
+    paths:
+    - 'docker/gke-demo/**'
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build and push to Docker Hub
+      uses: elgohr/Publish-Docker-Github-Action@2.12
+      with:
+        name: ilyalesikov/gke-demo
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        context: docker/gke-demo
