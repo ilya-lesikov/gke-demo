@@ -18,6 +18,7 @@ images:
   newTag: d666771
 - name: emailservice
   newName: gcr.io/gke-demo-1577719075/emailservice
+  newTag: fbf5f98
 - name: frontend
   newName: gcr.io/gke-demo-1577719075/frontend
 - name: paymentservice
