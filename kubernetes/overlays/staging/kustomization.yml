@@ -1,10 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+resources:
+- ../../base
+
 images:
 - name: adservice
-  newName: gcr.io/gke-demo-1577719075/adservice
-  newTag: 0a3641a
+  newName: test
 - name: cartservice
   newName: gcr.io/gke-demo-1577719075/cartservice
   newTag: 0a3641a
@@ -26,6 +28,3 @@ images:
   newName: gcr.io/gke-demo-1577719075/recommendationservice
 - name: shippingservice
   newName: gcr.io/gke-demo-1577719075/shippingservice
-
-resources:
-- ../../base
