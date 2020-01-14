@@ -14,7 +14,7 @@ RUN apt-get update && \
     apt-get install -y unzip curl ca-certificates jq vim-tiny && \
     gcloud -q components install beta kubectl && \
     gcloud -q components update && \
-    mkdir /git
+    mkdir -p /git /root/.terraform.d/plugins/linux_amd64
 
 # Install Kustomize
 RUN curl -sSL -o kustomize.tar.gz \
@@ -37,15 +37,12 @@ RUN curl -sSL -o terraform-provider-k8s.tar.gz \
     "https://github.com/banzaicloud/terraform-provider-k8s/releases/download/v${TF_PROVIDER_K8S_VER}/terraform-provider-k8s_${TF_PROVIDER_K8S_VER}_linux_amd64.tar.gz" && \
     tar xvf terraform-provider-k8s.tar.gz && \
     chmod +x terraform-provider-k8s && \
-    mv terraform-provider-k8s /usr/local/sbin/
+    mv terraform-provider-k8s /root/.terraform.d/plugins/linux_amd64
 
 # Install Terraform gitfile provider
-RUN curl -sSL -o /usr/local/sbin/terraform-provider-gitfile \
+RUN curl -sSL -o /root/.terraform.d/plugins/linux_amd64/terraform-provider-gitfile \
     "https://github.com/ilya-lesikov/terraform-provider-gitfile/releases/download/${TF_PROVIDER_GITFILE_VER}/terraform-provider-gitfile" && \
-    chmod +x /usr/local/sbin/terraform-provider-gitfile
-
-# Provide custom providers configuration
-COPY terraformrc "/root/.terraformrc"
+    chmod +x /root/.terraform.d/plugins/linux_amd64/terraform-provider-gitfile
 
 # Install Argo CD cli
 RUN curl -sSL -o /usr/local/bin/argocd \
