@@ -26,5 +26,10 @@ resource "k8s_manifest" "hipstershop-argo-app" {
   provider = k8s.management-cluster
   content   = data.template_file.hipstershop-argo-app.rendered
   namespace = var.argocd_install ? element(concat(kubernetes_namespace.argocd.*.id, list("")), 0) : "argocd"
+  # provisioner "local-exec" {
+  #   command = <<SCRIPT
+  #     argocd app wait "hipstershop-${var.environment}" --health --sync --timeout 300
+  #   SCRIPT
+  # }
   depends_on = [k8s_manifest.argocd]
 }

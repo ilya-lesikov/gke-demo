@@ -11,7 +11,7 @@ locals {
 }
 
 module "gcp-network" {
-  source       = "terraform-google-modules/network/google"
+  source       = "..//google-network"
   project_id   = var.project_id
   network_name = local.net_name
 
@@ -78,7 +78,7 @@ resource "google_compute_router_nat" "main" {
 }
 
 module "gke" {
-  source  = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
+  source  = "..//google-gke"
   project_id             = var.project_id
   name                   = local.cluster
   regional               = false

@@ -8,7 +8,7 @@ tgfiles="$(find "$SCRIPT_DIR/terraform/environments" -name terragrunt.hcl \
 
 for tgfile in $tgfiles; do
   cd "$(dirname "$tgfile")"
-  terragrunt init -input=false -upgrade=true || true
+  terragrunt init -input=false || true
 done
 
 

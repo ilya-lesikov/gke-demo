@@ -171,7 +171,7 @@ resource "null_resource" "argocd-login" {
   provisioner "local-exec" {
     command = <<SCRIPT
       IP="$(kubectl get services argocd-server --context "${local.context}" -n argocd \
-      --no-headers -o "custom-columns=OUT:.status.loadBalancer.ingress[0].ip")"
+      --no-headers -o "custom-columns=IP:.status.loadBalancer.ingress[0].ip")"
 
       PASS="$(kubectl get pods --context "${local.context}" -n argocd \
       -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2)"
