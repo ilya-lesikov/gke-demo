@@ -42,15 +42,16 @@ variable "terraform_sa_roles" {
 }
 
 variable "cloudbuild_sa_roles" {
+  # TODO: Cloudbuild SA needs pretty extensive permissions to run our
+  # Terraform automation, there has to be better way
   default = [
-    "roles/compute.viewer",
-    "roles/container.clusterAdmin",
-    "roles/container.developer",
-    "roles/iam.serviceAccountUser",   # to access terraform SA for k8s cluster provisioning
-    "roles/compute.networkAdmin",
-    "roles/storage.objectViewer",   # for pulling images from GCR
-    "roles/monitoring.metricWriter",   # to write metrics
-    "roles/cloudkms.cryptoKeyDecrypter",   # decrypt KMS keys
+    "roles/compute.admin",
+    "roles/container.admin",
+    "roles/iam.securityAdmin",
+    "roles/storage.admin",
+    "roles/monitoring.admin",
+    "roles/cloudkms.admin",
+    "roles/cloudkms.cryptoKeyEncrypterDecrypter",
   ]
   type = list(string)
 }
