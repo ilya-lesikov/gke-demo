@@ -28,6 +28,7 @@ images:
   newName: gcr.io/gke-demo-1577719075/productcatalogservice
 - name: recommendationservice
   newName: gcr.io/gke-demo-1577719075/recommendationservice
+  newTag: ca3536c
 - name: shippingservice
   newName: gcr.io/gke-demo-1577719075/shippingservice
   newTag: ca3536c
