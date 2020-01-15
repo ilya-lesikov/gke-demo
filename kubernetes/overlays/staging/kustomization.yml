@@ -30,3 +30,4 @@ images:
   newName: gcr.io/gke-demo-1577719075/recommendationservice
 - name: shippingservice
   newName: gcr.io/gke-demo-1577719075/shippingservice
+  newTag: ca3536c
