@@ -26,6 +26,7 @@ images:
   newTag: e7c94fe
 - name: productcatalogservice
   newName: gcr.io/gke-demo-1577719075/productcatalogservice
+  newTag: 0a626c3
 - name: recommendationservice
   newName: gcr.io/gke-demo-1577719075/recommendationservice
   newTag: ca3536c
