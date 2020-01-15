@@ -165,3 +165,23 @@ resource "k8s_manifest" "argo-rollouts" {
   content   = each.value
   namespace = element(concat(kubernetes_namespace.argo-rollouts.*.id, list("")), 0)
 }
+
+# TODO: change password from default one and store it in Google KMS
+resource "null_resource" "argocd-login" {
+  provisioner "local-exec" {
+    command = <<SCRIPT
+      IP="$(kubectl get services argocd-server --context "${local.context}" -n argocd \
+      --no-headers -o "custom-columns=OUT:.status.loadBalancer.ingress[0].ip")"
+
+      PASS="$(kubectl get pods --context "${local.context}" -n argocd \
+      -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2)"
+
+      argocd login "$IP" --username admin --password "$PASS" --insecure
+    SCRIPT
+  }
+  triggers = {
+    service_changed = data.kubernetes_service.argocd-server[0].metadata[0].resource_version
+  }
+  count = var.argocd_install ? 1 : 0
+  depends_on = [null_resource.expose-argocd]
+}

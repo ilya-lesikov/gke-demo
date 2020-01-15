@@ -1,6 +1,21 @@
+FROM golang:alpine AS terraform-bundler-builder
+
+RUN apk --no-cache add git unzip && \
+    go get -d -v github.com/hashicorp/terraform && \
+    go install ./src/github.com/hashicorp/terraform/tools/terraform-bundle
+
+COPY terraform-bundle.hcl .
+
+# Bundle Terraform standard plugins and Terraform itself since Hashicorp servers
+# are so unreliable
+RUN terraform-bundle package terraform-bundle.hcl && \
+    mkdir -p terraform-bundle && \
+    unzip -d terraform-bundle terraform_*.zip
+
+################################################################
+
 FROM gcr.io/cloud-builders/gcloud-slim
 
-ENV TERRAFORM_VER 0.12.19
 ENV TERRAGRUNT_VER 0.21.10
 ENV KUSTOMIZE_VER 3.5.3
 ENV ARGO_ROLLOUTS_VER 0.6.0
@@ -16,6 +31,14 @@ RUN apt-get update && \
     gcloud -q components update && \
     mkdir -p /git /root/.terraform.d/plugins/linux_amd64
 
+# Install Terraform
+COPY --from=terraform-bundler-builder /go/terraform-bundle/terraform \
+    /usr/local/bin/
+
+# Install Terraform plugins
+COPY --from=terraform-bundler-builder /go/terraform-bundle/terraform-provider-* \
+    /root/.terraform.d/plugins/linux_amd64/
+
 # Install Kustomize
 RUN curl -sSL -o kustomize.tar.gz \
     "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VER}/kustomize_v${KUSTOMIZE_VER}_linux_amd64.tar.gz" && \
@@ -23,14 +46,10 @@ RUN curl -sSL -o kustomize.tar.gz \
     chmod +x kustomize && \
     mv kustomize /usr/local/bin/kustomize
 
-# Install Terraform/Terragrunt
-RUN curl -sSL -o terraform.zip \
-    "https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_linux_amd64.zip" && \
-    unzip terraform.zip && \
-    curl -sSL -o terragrunt \
+# Install Terragrunt
+RUN curl -sSL -o /usr/local/bin/terragrunt \
     "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VER}/terragrunt_linux_amd64" && \
-    chmod +x terraform terragrunt && \
-    mv terraform terragrunt /usr/local/bin/
+    chmod +x /usr/local/bin/terragrunt
 
 # Install Terraform "k8s" provider
 RUN curl -sSL -o terraform-provider-k8s.tar.gz \
