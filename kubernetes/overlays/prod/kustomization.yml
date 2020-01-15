@@ -19,6 +19,7 @@ images:
   newName: gcr.io/gke-demo-1577719075/frontend
 - name: paymentservice
   newName: gcr.io/gke-demo-1577719075/paymentservice
+  newTag: 306fa63
 - name: productcatalogservice
   newName: gcr.io/gke-demo-1577719075/productcatalogservice
 - name: recommendationservice
