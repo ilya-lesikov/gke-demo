@@ -22,6 +22,12 @@ steps:
     args:
       - -c
       - |
+        cat /root/.profile
+        echo $$HOME
+        env
+        echo $$APPS
+        exit 1
+
         for app in $$APPS; do
           executor --cache=true --single-snapshot=true \
             --context=third-party/microservices/src/$$app \
