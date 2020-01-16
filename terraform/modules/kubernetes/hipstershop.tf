@@ -13,8 +13,8 @@ data "template_file" "hipstershop-argo-app" {
 
   vars = {
     app_name = "hipstershop-${var.environment}"
-    github_infra_owner = var.github_infra_owner
-    github_infra_reponame = var.github_infra_reponame
+    github_demo_owner = var.github_demo_owner
+    github_demo_reponame = var.github_demo_reponame
     project = var.project_id
     k8s_cluster_url = local.endpoint
     app_namespace = var.hipstershop_namespace
@@ -31,5 +31,8 @@ resource "k8s_manifest" "hipstershop-argo-app" {
   #     argocd app wait "hipstershop-${var.environment}" --health --sync --timeout 300
   #   SCRIPT
   # }
-  depends_on = [k8s_manifest.argocd]
+  depends_on = [
+    k8s_manifest.argocd,
+    kubernetes_namespace.current,
+  ]
 }

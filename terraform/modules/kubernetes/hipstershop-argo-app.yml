@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: "https://github.com/${github_infra_owner}/${github_infra_reponame}"
+    repoURL: "https://github.com/${github_demo_owner}/${github_demo_reponame}"
     targetRevision: master
     path: "${manifests_dir}"
 

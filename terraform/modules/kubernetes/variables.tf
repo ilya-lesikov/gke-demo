@@ -6,8 +6,8 @@ variable "zones" {
 variable "cluster" {}
 variable "environment" {}
 variable "endpoint" {}
-variable "github_infra_owner" {}
-variable "github_infra_reponame" {}
+variable "github_demo_owner" {}
+variable "github_demo_reponame" {}
 variable "argocd_ver" {}
 variable "argo_rollouts_ver" {}
 variable "hipstershop_namespace" {}

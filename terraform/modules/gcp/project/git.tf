@@ -48,7 +48,7 @@ resource "null_resource" "known-hosts-github" {
 }
 
 resource "gitfile_checkout" "repo-gke-demo" {
-    repo = "git@github.com:${var.github_infra_owner}/${var.github_infra_reponame}"
+    repo = "git@github.com:${var.github_demo_owner}/${var.github_demo_reponame}"
     branch = "master"
     path = "./tmp/gke-demo"
     depends_on = [

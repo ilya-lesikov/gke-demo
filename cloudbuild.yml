@@ -1,0 +1,157 @@
+---
+steps:
+  - id: Setup
+    name: gcr.io/cloud-builders/git
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        git submodule update --init
+        apps="$(echo $TAG_NAME | cut -d'_' -f2- | tr '_' ' ')"
+        if [[ "$$apps" == "all" ]]; then
+          apps="$(ls -m third-party/microservices/src/ | tr -d ',')"
+        fi
+        echo export APPS="$$apps" >> /root/.profile
+
+  - id: Build, push microservices to GCR
+    name: gcr.io/kaniko-project/executor
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        for app in $$APPS; do
+          executor --cache=true --single-snapshot=true --context=./src/$$app \
+            --destination=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
+        done
+
+  - id: Decrypt ssh private key
+    name: gcr.io/cloud-builders/gcloud
+    # dir: ./${_GITHUB_DEMO_REPONAME}
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        base64 -d id_rsa.enc | \
+        gcloud kms decrypt --ciphertext-file=- --plaintext-file=/root/.ssh/id_rsa \
+          --location=global --keyring=$_KMS_KEYRING_NAME --key=$_KMS_KEY_NAME_GITHUB
+
+  - id: Setup git repo
+    name: gcr.io/cloud-builders/git
+    # dir: ./${_GITHUB_DEMO_REPONAME}
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        cat <<EOF > /root/.ssh/config
+        Hostname github.com
+        IdentityFile /root/.ssh/id_rsa
+        EOF
+
+        chmod 600 /root/.ssh/id_rsa
+        ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
+
+        git config --global user.name "Google Cloud Build"
+        git config --global user.email "gcb@example.org"
+    # git remote set-url origin git@github.com:${_GITHUB_DEMO_OWNER}/${_GITHUB_DEMO_REPONAME}
+
+  - id: "[staging] Update images tags to new versions in Kubernetes manifests"
+    name: ilyalesikov/kustomize
+    # dir: ./${_GITHUB_DEMO_REPONAME}/kubernetes/overlays/staging
+    dir: ./kubernetes/overlays/staging
+    entrypoint: bash
+    # entrypoint: kustomize
+    args:
+      - -c
+      - |
+        for app in $$APPS; do
+          kustomize edit set image $$app=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
+        done
+
+  - id: "[staging] Commit, push images tags update"
+    name: gcr.io/cloud-builders/git
+    # dir: ./${_GITHUB_DEMO_REPONAME}/kubernetes/overlays/staging
+    dir: ./kubernetes/overlays/staging
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        git add kustomization.yml && \
+        git commit -m '[CI/staging] Update images tags' && \
+        git push
+
+  - id: "[staging] Deploy, test applications"
+    name: ilyalesikov/gke-demo
+    dir: ./terraform/environments/staging/kubernetes
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        terragrunt apply-all --terragrunt-non-interactive \
+          --terragrunt-include-external-dependencies
+        argocd app wait hipstershop-staging --health --sync --timeout 300
+
+        # TODO: implement proper e2e testing
+        ip="$(kubectl get services -n hipstershop frontend-external \
+            -o custom-columns=IP:.status.loadBalancer.ingress[0].ip --no-headers)"
+        tries=0
+        until (curl -sSL "http://$$ip" | grep '>Buy<' 1>/dev/null); do
+          if [[ $tries -gt 20 ]]; then
+            break
+          fi
+          tries=$((tries+1))
+          sleep 2
+        done
+
+  - id: "[staging] Destroy applications"
+    name: ilyalesikov/gke-demo
+    dir: ./terraform/environments/staging/kubernetes
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        terragrunt destroy -target=k8s_manifest.hipstershop-argo-app -auto-approve
+
+  - id: "[prod] Update images tags to new versions in Kubernetes manifests"
+    name: ilyalesikov/kustomize
+    dir: ./kubernetes/overlays/prod
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        for app in $$APPS; do
+          kustomize edit set image $$app=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
+        done
+
+  - id: "[prod] Commit, push images tags update"
+    name: gcr.io/cloud-builders/git
+    dir: ./kubernetes/overlays/prod
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        git pull --rebase --autostash && \
+        git add kustomization.yml && \
+        git commit -m '[CI/prod] Update images tags' && \
+        git push
+
+  - id: "[prod] Wait for application to be synced and healthy"
+    name: ilyalesikov/gke-demo
+    dir: ./terraform/environments/staging/kubernetes
+    entrypoint: argocd
+    args:
+      - app
+      - wait
+      - hipstershop-prod
+      - --health
+      - --sync
+      - --timeout
+      - 300
+
+timeout: 45m
+options:
+  volumes:
+    - name: root
+      path: /root
+  env:
+    - HOME=/root
+    - TF_VAR_project_id=$PROJECT_ID
