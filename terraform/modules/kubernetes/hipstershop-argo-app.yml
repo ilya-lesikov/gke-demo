@@ -3,6 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: "${app_name}"
+  namespace: "${app_namespace}"
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
@@ -12,24 +13,12 @@ spec:
     targetRevision: master
     path: "${manifests_dir}"
 
-    kustomize:
-      images:
-      - "adservice=gcr.io/${project}/adservice"
-      - "cartservice=gcr.io/${project}/cartservice"
-      - "checkoutservice=gcr.io/${project}/checkoutservice"
-      - "currencyservice=gcr.io/${project}/currencyservice"
-      - "emailservice=gcr.io/${project}/emailservice"
-      - "paymentservice=gcr.io/${project}/paymentservice"
-      - "productcatalogservice=gcr.io/${project}/productcatalogservice"
-      - "recommendationservice=gcr.io/${project}/recommendationservice"
-      - "shippingservice=gcr.io/${project}/shippingservice"
-      - "frontend=gcr.io/${project}/frontend"
+    kustomize: {}
 
   destination:
     server: "${k8s_cluster_url}"
-    namespace: "${app_namespace}"
+    namespace: "${destination_namespace}"
 
-  # syncPolicy:
-  #   automated:
+  syncPolicy: {}
   #     prune: true
   #     selfHeal: true
