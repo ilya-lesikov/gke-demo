@@ -1,17 +1,17 @@
 ---
 steps:
-  - id: Test
-    name: ilyalesikov/gke-demo
-    entrypoint: bash
-    args:
-      - -ceuo
-      - pipefail
-      - |
-        find /root/.terraform.d/
-        ls -lh /root/.terraform.d/plugins/linux_amd64/
-        echo $$HOME
-        ls /root/.terraformrc
-        exit 1
+  # - id: Test
+  #   name: ilyalesikov/gke-demo
+  #   entrypoint: bash
+  #   args:
+  #     - -ceuo
+  #     - pipefail
+  #     - |
+  #       find /root/.terraform.d/
+  #       ls -lh /root/.terraform.d/plugins/linux_amd64/
+  #       echo $$HOME
+  #       ls /root/.terraformrc
+  #       exit 1
 
   - id: Setup
     name: gcr.io/cloud-builders/git
@@ -116,6 +116,10 @@ steps:
       - -ceuo
       - pipefail
       - |
+        # FIXME: delete this
+        find /root/.terraform.d
+        find /workspace -name '.terragrunt-cache'
+
         terragrunt apply-all --terragrunt-non-interactive \
           --terragrunt-include-external-dependencies
         argocd app wait hipstershop-staging --health --sync --timeout 300
