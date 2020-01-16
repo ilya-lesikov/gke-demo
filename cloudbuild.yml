@@ -1,14 +1,14 @@
 ---
 steps:
-  - id: Test
-    name: gcr.io/cloud-builders/git
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        pwd
-        find
-        exit 1
+  # - id: Test
+  #   name: gcr.io/cloud-builders/git
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       pwd
+  #       find
+  #       exit 1
 
   - id: Setup
     name: gcr.io/cloud-builders/git
@@ -18,6 +18,14 @@ steps:
       - |
         mkdir -p /root/.ssh /config
 
+        # restore .git dir removed by GCB:
+        git init
+        git remote add origin git@github.com:${_GITHUB_DEMO_OWNER}/${_GITHUB_DEMO_REPONAME}
+        git fetch
+        git reset --hard origin/master
+
+        git config --global user.name "Google Cloud Build"
+        git config --global user.email "gcb@example.org"
         git submodule update --init
 
         apps="$(echo $TAG_NAME | cut -d'_' -f2- | tr '_' ' ')"
@@ -49,7 +57,7 @@ steps:
         gcloud kms decrypt --ciphertext-file=- --plaintext-file=/root/.ssh/id_rsa \
           --location=global --keyring=$_KMS_KEYRING_NAME --key=$_KMS_KEY_NAME_GITHUB
 
-  - id: Setup git repo
+  - id: Setup git authorization
     name: gcr.io/cloud-builders/git
     # dir: ./${_GITHUB_DEMO_REPONAME}
     entrypoint: bash
@@ -63,10 +71,6 @@ steps:
 
         chmod 600 /root/.ssh/id_rsa
         ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
-
-        git config --global user.name "Google Cloud Build"
-        git config --global user.email "gcb@example.org"
-    # git remote set-url origin git@github.com:${_GITHUB_DEMO_OWNER}/${_GITHUB_DEMO_REPONAME}
 
   - id: "[staging] Update images tags to new versions in Kubernetes manifests"
     name: ilyalesikov/kustomize

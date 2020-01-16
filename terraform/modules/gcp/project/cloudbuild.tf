@@ -14,8 +14,8 @@ resource "google_cloudbuild_trigger" "release-microservices" {
   }
   substitutions = {
     # _APPS = join(" ", var.microservices)
-    # _GITHUB_DEMO_OWNER = var.github_demo_owner
-    # _GITHUB_DEMO_REPONAME = var.github_demo_reponame
+    _GITHUB_DEMO_OWNER = var.github_demo_owner
+    _GITHUB_DEMO_REPONAME = var.github_demo_reponame
     _KMS_KEYRING_NAME = data.google_kms_key_ring.keyring-main.name
     _KMS_KEY_NAME_GITHUB = data.google_kms_crypto_key.key-github.name
     # _SSH_PK_ENC = google_kms_secret_ciphertext.ssh-pk.ciphertext
