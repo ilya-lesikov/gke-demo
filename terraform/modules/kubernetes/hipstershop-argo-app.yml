@@ -29,7 +29,7 @@ spec:
     server: "${k8s_cluster_url}"
     namespace: "${app_namespace}"
 
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  # syncPolicy:
+  #   automated:
+  #     prune: true
+  #     selfHeal: true

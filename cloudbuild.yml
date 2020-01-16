@@ -116,7 +116,8 @@ steps:
       - |
         terragrunt apply-all --terragrunt-non-interactive \
           --terragrunt-include-external-dependencies
-        argocd app wait hipstershop-staging --health --sync --timeout 300
+        argocd app sync hipstershop-staging --prune --timeout 300
+        argocd app wait hipstershop-staging --health --timeout 300
 
         # TODO: implement proper e2e testing
         ip="$(kubectl get services -n hipstershop frontend-external \
@@ -166,18 +167,16 @@ steps:
         git commit -m '[CI/prod] Update images tags' && \
         git push
 
-  - id: "[prod] Wait for application to be synced and healthy"
+  - id: "[prod] Canary deploy applications"
     name: ilyalesikov/gke-demo
     dir: ./terraform/environments/staging/kubernetes
-    entrypoint: argocd
+    entrypoint: bash
     args:
-      - app
-      - wait
-      - hipstershop-prod
-      - --health
-      - --sync
-      - --timeout
-      - "300"
+      - -ceuo
+      - pipefail
+      - |
+        argocd app sync hipstershop-prod --prune --timeout 300
+        argocd app wait hipstershop-prod --health --timeout 300
 
 timeout: 45m
 options:
