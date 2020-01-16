@@ -20,8 +20,6 @@ steps:
       - -ceuo
       - pipefail
       - |
-        mkdir -p /root/.ssh /config
-
         # restore .git dir removed by GCB:
         ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
         git init
@@ -31,8 +29,8 @@ steps:
         git branch -u origin/master
 
         # setup git
-        git config --global user.name "Google Cloud Build"
-        git config --global user.email "gcb@example.org"
+        git config user.name "Google Cloud Build"
+        git config user.email "gcb@example.org"
         git submodule update --init
 
         apps="$(echo $TAG_NAME | cut -d'_' -f2- | tr '_' ' ')"
@@ -116,10 +114,6 @@ steps:
       - -ceuo
       - pipefail
       - |
-        # FIXME: delete this
-        find /root/.terraform.d
-        find /workspace -name '.terragrunt-cache'
-
         terragrunt apply-all --terragrunt-non-interactive \
           --terragrunt-include-external-dependencies
         argocd app wait hipstershop-staging --health --sync --timeout 300
@@ -188,10 +182,14 @@ steps:
 timeout: 45m
 options:
   volumes:
-    - name: root
-      path: /root
     - name: config
       path: /config
+    - name: ssh
+      path: /root/.ssh
+    - name: argocd
+      path: /root/.argocd
+    - name: kubectl
+      path: /root/.kube
   env:
     - HOME=/root
     - TF_VAR_project_id=$PROJECT_ID
