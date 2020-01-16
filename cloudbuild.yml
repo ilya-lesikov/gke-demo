@@ -7,11 +7,14 @@ steps:
       - -c
       - |
         git submodule update --init
+
         apps="$(echo $TAG_NAME | cut -d'_' -f2- | tr '_' ' ')"
         if [[ "$$apps" == "all" ]]; then
           apps="$(ls -m third-party/microservices/src/ | tr -d ',')"
         fi
         echo export APPS="$$apps" >> /root/.profile
+
+        mkdir -p /root/.ssh
 
   - id: Build, push microservices to GCR
     name: gcr.io/kaniko-project/executor:debug
