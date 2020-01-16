@@ -7,7 +7,7 @@ resources:
 images:
 - name: adservice
   newName: gcr.io/gke-demo-1577719075/adservice
-  newTag: ab90fde
+  newTag: abfa18f
 - name: cartservice
   newName: gcr.io/gke-demo-1577719075/cartservice
   newTag: 0a3641a
