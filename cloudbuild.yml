@@ -14,8 +14,8 @@ steps:
         echo export APPS="$$apps" >> /root/.profile
 
   - id: Build, push microservices to GCR
-    name: gcr.io/kaniko-project/executor
-    entrypoint: /bin/bash
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: sh
     args:
       - -c
       - |
