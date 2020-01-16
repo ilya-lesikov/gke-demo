@@ -145,7 +145,7 @@ steps:
       - --health
       - --sync
       - --timeout
-      - 300
+      - "300"
 
 timeout: 45m
 options:
