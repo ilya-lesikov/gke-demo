@@ -15,12 +15,13 @@ steps:
 
   - id: Build, push microservices to GCR
     name: gcr.io/kaniko-project/executor
-    entrypoint: bash
+    entrypoint: sh
     args:
       - -c
       - |
         for app in $$APPS; do
-          executor --cache=true --single-snapshot=true --context=./src/$$app \
+          executor --cache=true --single-snapshot=true \
+            --context=third-party/microservices/src/$$app \
             --destination=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
         done
 
