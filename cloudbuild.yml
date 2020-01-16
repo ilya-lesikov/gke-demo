@@ -95,7 +95,7 @@ steps:
             -o custom-columns=IP:.status.loadBalancer.ingress[0].ip --no-headers)"
         tries=0
         until (curl -sSL "http://$$ip" | grep '>Buy<' 1>/dev/null); do
-          if [[ $tries -gt 20 ]]; then
+          if [[ $$tries -gt 20 ]]; then
             break
           fi
           tries=$((tries+1))
