@@ -1,20 +1,24 @@
 ---
 steps:
-  # - id: Test
-  #   name: gcr.io/cloud-builders/git
-  #   entrypoint: bash
-  #   args:
-  #     - -c
-  #     - |
-  #       pwd
-  #       find
-  #       exit 1
+  - id: Test
+    name: ilyalesikov/gke-demo
+    entrypoint: bash
+    args:
+      - -ceuo
+      - pipefail
+      - |
+        find /root/.terraform.d/
+        ls -lh /root/.terraform.d/plugins/linux_amd64/
+        echo $$HOME
+        ls /root/.terraformrc
+        exit 1
 
   - id: Setup
     name: gcr.io/cloud-builders/git
     entrypoint: bash
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         mkdir -p /root/.ssh /config
 
@@ -41,7 +45,8 @@ steps:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: sh
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         for app in $(cat /config/apps); do
           executor --context=third-party/microservices/src/$$app \
@@ -53,7 +58,8 @@ steps:
     # dir: ./${_GITHUB_DEMO_REPONAME}
     entrypoint: bash
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         base64 -d id_rsa.enc | \
         gcloud kms decrypt --ciphertext-file=- --plaintext-file=/root/.ssh/id_rsa \
@@ -64,7 +70,8 @@ steps:
     # dir: ./${_GITHUB_DEMO_REPONAME}
     entrypoint: bash
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         cat <<EOF > /root/.ssh/config
         Hostname github.com
@@ -81,7 +88,8 @@ steps:
     entrypoint: bash
     # entrypoint: kustomize
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         for app in $(cat /config/apps); do
           kustomize edit set image $$app=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
@@ -93,7 +101,8 @@ steps:
     dir: ./kubernetes/overlays/staging
     entrypoint: bash
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         git add kustomization.yml && \
         git commit -m '[CI/staging] Update images tags' && \
@@ -104,7 +113,8 @@ steps:
     dir: ./terraform/environments/staging/kubernetes
     entrypoint: bash
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         terragrunt apply-all --terragrunt-non-interactive \
           --terragrunt-include-external-dependencies
@@ -116,7 +126,8 @@ steps:
         tries=0
         until (curl -sSL "http://$$ip" | grep '>Buy<' 1>/dev/null); do
           if [[ $$tries -gt 20 ]]; then
-            break
+            echo "Can't reach application on http://$$ip with curl. Aborting"
+            exit 1
           fi
           tries=$((tries+1))
           sleep 2
@@ -127,7 +138,8 @@ steps:
     dir: ./terraform/environments/staging/kubernetes
     entrypoint: bash
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         terragrunt destroy -target=k8s_manifest.hipstershop-argo-app -auto-approve
 
@@ -136,7 +148,8 @@ steps:
     dir: ./kubernetes/overlays/prod
     entrypoint: bash
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         for app in $(cat /config/apps); do
           kustomize edit set image $$app=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
@@ -147,7 +160,8 @@ steps:
     dir: ./kubernetes/overlays/prod
     entrypoint: bash
     args:
-      - -c
+      - -ceuo
+      - pipefail
       - |
         git pull --rebase --autostash && \
         git add kustomization.yml && \
