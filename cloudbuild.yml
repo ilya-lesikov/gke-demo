@@ -8,6 +8,7 @@ steps:
       - |
         pwd
         find
+        exit 1
 
   - id: Setup
     name: gcr.io/cloud-builders/git
