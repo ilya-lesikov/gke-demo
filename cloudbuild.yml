@@ -23,17 +23,6 @@ steps:
       - -c
       - |
         for app in $(cat /config/apps); do
-          echo $$app
-        done
-        cat /etc/profile
-        cat /etc/environment
-        find /etc
-        echo $$HOME
-        env
-        echo $$APPS
-        exit 1
-
-        for app in $$APPS; do
           executor --cache=true --single-snapshot=true \
             --context=third-party/microservices/src/$$app \
             --destination=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
@@ -78,7 +67,7 @@ steps:
     args:
       - -c
       - |
-        for app in $$APPS; do
+        for app in $(cat /config/apps); do
           kustomize edit set image $$app=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
         done
 
@@ -133,7 +122,7 @@ steps:
     args:
       - -c
       - |
-        for app in $$APPS; do
+        for app in $(cat /config/apps); do
           kustomize edit set image $$app=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
         done
 
