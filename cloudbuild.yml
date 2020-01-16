@@ -6,15 +6,15 @@ steps:
     args:
       - -c
       - |
+        mkdir -p /root/.ssh /config
+
         git submodule update --init
 
         apps="$(echo $TAG_NAME | cut -d'_' -f2- | tr '_' ' ')"
         if [[ "$$apps" == "all" ]]; then
           apps="$(ls -m third-party/microservices/src/ | tr -d ',')"
         fi
-        echo export APPS=\"$$apps\" >> /etc/environment
-
-        mkdir -p /root/.ssh
+        echo "$$apps" > /config/apps
 
   - id: Build, push microservices to GCR
     name: gcr.io/kaniko-project/executor:debug
@@ -22,6 +22,9 @@ steps:
     args:
       - -c
       - |
+        for app in $(cat /config/apps); do
+          echo $$app
+        done
         cat /etc/profile
         cat /etc/environment
         find /etc
@@ -164,8 +167,8 @@ options:
   volumes:
     - name: root
       path: /root
-    - name: environ
-      path: /etc/environment
+    - name: config
+      path: /config
   env:
     - HOME=/root
     - TF_VAR_project_id=$PROJECT_ID
