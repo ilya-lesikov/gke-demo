@@ -12,7 +12,7 @@ steps:
         if [[ "$$apps" == "all" ]]; then
           apps="$(ls -m third-party/microservices/src/ | tr -d ',')"
         fi
-        echo export APPS=\"$$apps\" >> /etc/profile
+        echo export APPS=\"$$apps\" >> /etc/environment
 
         mkdir -p /root/.ssh
 
@@ -164,6 +164,8 @@ options:
   volumes:
     - name: root
       path: /root
+    - name: environ
+      path: /etc/environment
   env:
     - HOME=/root
     - TF_VAR_project_id=$PROJECT_ID
