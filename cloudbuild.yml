@@ -15,7 +15,7 @@ steps:
 
   - id: Build, push microservices to GCR
     name: gcr.io/kaniko-project/executor
-    entrypoint: sh
+    entrypoint: /bin/bash
     args:
       - -c
       - |
