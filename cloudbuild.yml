@@ -187,6 +187,10 @@ options:
       path: /root/.ssh
     - name: argocd
       path: /root/.argocd
+    - name: gsutil
+      path: /root/.gsutil
+    - name: gcloud
+      path: /root/.config/gcloud
     - name: kubectl
       path: /root/.kube
   env:
