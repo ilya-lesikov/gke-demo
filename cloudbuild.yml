@@ -12,7 +12,7 @@ steps:
         if [[ "$$apps" == "all" ]]; then
           apps="$(ls -m third-party/microservices/src/ | tr -d ',')"
         fi
-        echo export APPS=\"$$apps\" >> /root/.profile
+        echo export APPS=\"$$apps\" >> /etc/profile
 
         mkdir -p /root/.ssh
 
@@ -22,7 +22,9 @@ steps:
     args:
       - -c
       - |
-        cat /root/.profile
+        cat /etc/profile
+        cat /etc/environment
+        find /etc
         echo $$HOME
         env
         echo $$APPS
