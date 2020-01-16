@@ -1,5 +1,14 @@
 ---
 steps:
+  - id: Test
+    name: gcr.io/cloud-builders/git
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        pwd
+        find
+
   - id: Setup
     name: gcr.io/cloud-builders/git
     entrypoint: bash
