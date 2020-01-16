@@ -19,11 +19,13 @@ steps:
         mkdir -p /root/.ssh /config
 
         # restore .git dir removed by GCB:
+        ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
         git init
-        git remote add origin git@github.com:${_GITHUB_DEMO_OWNER}/${_GITHUB_DEMO_REPONAME}
+        git remote add origin https://github.com/${_GITHUB_DEMO_OWNER}/${_GITHUB_DEMO_REPONAME}
         git fetch
         git reset --hard origin/master
 
+        # setup git
         git config --global user.name "Google Cloud Build"
         git config --global user.email "gcb@example.org"
         git submodule update --init
@@ -70,7 +72,7 @@ steps:
         EOF
 
         chmod 600 /root/.ssh/id_rsa
-        ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
+        git remote set-url origin git@github.com:${_GITHUB_DEMO_OWNER}/${_GITHUB_DEMO_REPONAME}
 
   - id: "[staging] Update images tags to new versions in Kubernetes manifests"
     name: ilyalesikov/kustomize
