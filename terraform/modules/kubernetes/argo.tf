@@ -170,6 +170,8 @@ resource "k8s_manifest" "argo-rollouts" {
 resource "null_resource" "argocd-login" {
   provisioner "local-exec" {
     command = <<SCRIPT
+      sleep 15
+
       IP="$(kubectl get services argocd-server --context "${local.context}" -n argocd \
       --no-headers -o "custom-columns=IP:.status.loadBalancer.ingress[0].ip")"
 
@@ -183,5 +185,8 @@ resource "null_resource" "argocd-login" {
     service_changed = data.kubernetes_service.argocd-server[0].metadata[0].resource_version
   }
   count = var.argocd_install ? 1 : 0
-  depends_on = [null_resource.expose-argocd]
+  depends_on = [
+    null_resource.expose-argocd,
+    k8s_manifest.argo-rollouts,
+  ]
 }

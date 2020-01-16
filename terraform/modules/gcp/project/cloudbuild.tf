@@ -9,7 +9,6 @@ resource "google_cloudbuild_trigger" "release-microservices" {
     owner = var.github_demo_owner
     name = var.github_demo_reponame
     push {
-      branch = "master"
       tag = "release_*"
     }
   }
