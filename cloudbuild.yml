@@ -24,6 +24,7 @@ steps:
         git remote add origin https://github.com/${_GITHUB_DEMO_OWNER}/${_GITHUB_DEMO_REPONAME}
         git fetch
         git reset --hard origin/master
+        git branch -u origin/master
 
         # setup git
         git config --global user.name "Google Cloud Build"
@@ -43,8 +44,7 @@ steps:
       - -c
       - |
         for app in $(cat /config/apps); do
-          executor --cache=true --single-snapshot=true \
-            --context=third-party/microservices/src/$$app \
+          executor --context=third-party/microservices/src/$$app \
             --destination=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
         done
 
