@@ -1,18 +1,5 @@
 ---
 steps:
-  # - id: Test
-  #   name: ilyalesikov/gke-demo
-  #   entrypoint: bash
-  #   args:
-  #     - -ceuo
-  #     - pipefail
-  #     - |
-  #       find /root/.terraform.d/
-  #       ls -lh /root/.terraform.d/plugins/linux_amd64/
-  #       echo $$HOME
-  #       ls /root/.terraformrc
-  #       exit 1
-
   - id: Setup
     name: gcr.io/cloud-builders/git
     entrypoint: bash
@@ -20,7 +7,7 @@ steps:
       - -ceuo
       - pipefail
       - |
-        # restore .git dir removed by GCB:
+        # Restore .git dir removed by GCB:
         ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
         git init
         git remote add origin https://github.com/${_GITHUB_DEMO_OWNER}/${_GITHUB_DEMO_REPONAME}
@@ -28,11 +15,12 @@ steps:
         git reset --hard origin/master
         git branch -u origin/master
 
-        # setup git
+        # Setup git
         git config user.name "Google Cloud Build"
         git config user.email "gcb@example.org"
         git submodule update --init
 
+        # Get list of apps to update
         apps="$(echo $TAG_NAME | cut -d'_' -f2- | tr '_' ' ')"
         if [[ "$$apps" == "all" ]]; then
           apps="$(ls -m third-party/microservices/src/ | tr -d ',')"
@@ -53,7 +41,6 @@ steps:
 
   - id: Decrypt ssh private key
     name: gcr.io/cloud-builders/gcloud
-    # dir: ./${_GITHUB_DEMO_REPONAME}
     entrypoint: bash
     args:
       - -ceuo
@@ -65,7 +52,6 @@ steps:
 
   - id: Setup git authorization
     name: gcr.io/cloud-builders/git
-    # dir: ./${_GITHUB_DEMO_REPONAME}
     entrypoint: bash
     args:
       - -ceuo
@@ -81,10 +67,8 @@ steps:
 
   - id: "[staging] Update images tags to new versions in Kubernetes manifests"
     name: ilyalesikov/kustomize
-    # dir: ./${_GITHUB_DEMO_REPONAME}/kubernetes/overlays/staging
     dir: ./kubernetes/overlays/staging
     entrypoint: bash
-    # entrypoint: kustomize
     args:
       - -ceuo
       - pipefail
@@ -95,7 +79,6 @@ steps:
 
   - id: "[staging] Commit, push images tags update"
     name: gcr.io/cloud-builders/git
-    # dir: ./${_GITHUB_DEMO_REPONAME}/kubernetes/overlays/staging
     dir: ./kubernetes/overlays/staging
     entrypoint: bash
     args:

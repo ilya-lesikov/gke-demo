@@ -11,11 +11,11 @@ dependency "gcp-k8s-cluster" {
 }
 
 inputs = {
-  environment = "prod"
-  region = dependency.gcp-k8s-cluster.outputs.region
-  zones = dependency.gcp-k8s-cluster.outputs.zones
-  cluster = dependency.gcp-k8s-cluster.outputs.cluster
-  endpoint = dependency.gcp-k8s-cluster.outputs.endpoint
-  argocd_install = true
+  environment           = "prod"
+  region                = dependency.gcp-k8s-cluster.outputs.region
+  zones                 = dependency.gcp-k8s-cluster.outputs.zones
+  cluster               = dependency.gcp-k8s-cluster.outputs.cluster
+  endpoint              = dependency.gcp-k8s-cluster.outputs.endpoint
+  argocd_install        = true
   argo_rollouts_install = true
 }

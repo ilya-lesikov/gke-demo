@@ -17,7 +17,3 @@ output "cluster" {
 output "endpoint" {
   value = module.gke.endpoint
 }
-
-# output "cluster_ca_certificate" {
-#   value = module.gke.ca_certificate
-# }

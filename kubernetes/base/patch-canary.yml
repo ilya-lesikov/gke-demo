@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: adservice
+  name: irrelevant
 spec:
   strategy:
     canary:

@@ -10,7 +10,3 @@ for tgfile in $tgfiles; do
   cd "$(dirname "$tgfile")"
   terragrunt init -input=false || true
 done
-
-
-# | \
-#   xargs dirname | xargs -I $(cd 

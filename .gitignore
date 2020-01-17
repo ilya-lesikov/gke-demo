@@ -120,8 +120,4 @@ zsdoc/data
 **/.terragrunt-cache/*
 
 # End of https://www.gitignore.io/api/terragrunt
-
-/bin/kustomize
-/bin/terraform
-/bin/terragrunt
 tmp/

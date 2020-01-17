@@ -1,5 +1,11 @@
-#!/bin/bash -u
-# DON'T USE IT UNLESS YOU REALLY KNOW WHAT YOU ARE DOING
+#!/bin/bash
+
+if [[ "${2}" != "iSuck" ]] || [[ "${1}" == "" ]]; then
+  echo "You don't know wtf you are doing, why would you ever run a script with
+a name \"cleanup\" that is not documented anywhere, when dealing with IaC? You
+are lucky I'm so stupid and bored, this saved your GCloud from being ANNIHILATED"
+  exit 1
+fi
 
 project="$1"
 service_account="terraform@$project.iam.gserviceaccount.com"

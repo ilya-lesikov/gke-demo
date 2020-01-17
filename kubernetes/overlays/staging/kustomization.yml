@@ -35,3 +35,6 @@ images:
 - name: shippingservice
   newName: gcr.io/gke-demo-1577719075/shippingservice
   newTag: f063135
+- name: redis
+  newName: redis
+  newTag: 5.0.7-alpine3.11

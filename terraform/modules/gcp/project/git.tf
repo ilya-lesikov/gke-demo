@@ -3,15 +3,11 @@ resource "null_resource" "ssh-config" {
     command = <<SCRIPT
       echo "Hostname github.com" > /root/.ssh/config
       echo "  IdentityFile /root/.ssh/id_rsa" >> /root/.ssh/config
+      sleep 5
     SCRIPT
   }
-  provisioner "local-exec" {
-    command = "sleep 5"
-  }
   triggers = {
-    always_recreate = "${timestamp()}"
-    # Workaround for https://github.com/hashicorp/terraform/issues/18303
-    # before = "${data.google_project.main.project_id}"
+    always = uuid()
   }
 }
 
@@ -20,15 +16,11 @@ resource "null_resource" "git-config" {
     command = <<SCRIPT
       git config --global user.name "Robot (beeEEeEEEEEEEEP)"
       git config --global user.email "robot@example.org"
+      sleep 5
     SCRIPT
   }
-  provisioner "local-exec" {
-    command = "sleep 5"
-  }
   triggers = {
-    always_recreate = "${timestamp()}"
-    # Workaround for https://github.com/hashicorp/terraform/issues/18303
-    # before = "${data.google_project.main.project_id}"
+    always = uuid()
   }
 }
 
@@ -41,16 +33,14 @@ resource "null_resource" "known-hosts-github" {
     SCRIPT
   }
   triggers = {
-    always_recreate = "${timestamp()}"
-    # Workaround for https://github.com/hashicorp/terraform/issues/18303
-    # before = "${data.google_project.main.project_id}"
+    always = uuid()
   }
 }
 
 resource "gitfile_checkout" "repo-gke-demo" {
-    repo = "git@github.com:${var.github_demo_owner}/${var.github_demo_reponame}"
+    repo   = "git@github.com:${var.github_demo_owner}/${var.github_demo_reponame}"
     branch = "master"
-    path = "./tmp/gke-demo"
+    path   = "./tmp/gke-demo"
     depends_on = [
       null_resource.ssh-config,
       null_resource.known-hosts-github,

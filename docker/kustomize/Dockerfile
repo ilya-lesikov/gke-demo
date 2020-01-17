@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:bionic-20200112
 
 ENV KUSTOMIZE_VER 3.5.3
 

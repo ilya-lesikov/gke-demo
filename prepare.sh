@@ -1,27 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-# project="$1"
-# region="$2"
-# zone="$3"
-
-# TERRAFORM_VER=0.12.18
-# TERRAGRUNT_VER=0.21.10
-# KUSTOMIZE_VER=3.5.3
-
-# MICROSERVICES=(
-#   adservice
-#   cartservice
-#   checkoutservice
-#   currencyservice
-#   emailservice
-#   frontend
-#   paymentservice
-#   productcatalogservice
-#   recommendationservice
-#   shippingservice
-# )
-
 info() {
   echo "[[ INFO ]] $1"
 }
@@ -41,7 +20,10 @@ if (gcloud -q auth print-access-token 2>&1 1>/dev/null); then
   info "You are already authenticated in gcloud, skipping authenication"
 else
   info "Authenticating in GCP with gcloud"
-  printf '\n\nSecurity notice: here we are authenticating you in your GCP account for you to be able to use "gcloud" command:\n\n'
+  echo
+  echo "[Security notice] Here we are authenticating you in your GCP account"
+  echo "for you to be able to use \"gcloud\" command:"
+  echo
   gcloud -q auth login
 fi
 
@@ -53,7 +35,11 @@ fi
 
 if [[ ! -f "$GOOGLE_CLOUD_KEYFILE_JSON" ]]; then
   info "Setting up application-default service account for GCP"
-  printf '\n\nSecurity notice: and here we are getting your application-default key to access your GCP account with any program/SDK that is not "gcloud" command line utility:\n\n'
+  echo
+  echo "[Security notice] And here we are getting your application-default"
+  echo "key to access your GCP account with any program/SDK that is not"
+  echo "\"gcloud\" command line utility:"
+  echo
   gcloud auth application-default login --no-launch-browser
 fi
 
@@ -77,47 +63,23 @@ else
   gsutil versioning set on "gs://${TF_VAR_project_id}_terraform-state"
 fi
 
-if [[ -f "/root/.ssh/id_rsa" ]]; then
+if [[ -f "$HOME/.ssh/id_rsa" ]]; then
   info "SSH key already exists, skipping"
 else
   info "Creating new SSH key"
-  ssh-keygen -N '' -t rsa -b 4096 -f /root/.ssh/id_rsa
+  ssh-keygen -N '' -t rsa -b 4096 -f "$HOME/.ssh/id_rsa"
 fi
 
-printf "\n[[ USER ACTION REQUIRED ]]\n\nGo to https://github.com/ilya-lesikov/gke-demo/settings/keys/new (change repo owner and name to the owner and name of your forked repo), check \"Allow write access\" and put this public key in \"Key\" textbox:\n\n$(cat /root/.ssh/id_rsa.pub)\n\nIf you already added this key as a Deploy key, just ignore this.\nSecurity note: adding this key as \"Deploy key\" will only give write/read access to this particular repo. We will use this in Google Cloud Build to Kustomize, commit and push some manifests.\n\n[[ USER ACTION REQUIRED (see above)]]\n"
-
-# if [[ ! -f "./bin/terraform" ]]; then
-#   info "Downloading Terraform"
-#   cd ./bin
-#   wget -O terraform.zip "https://releases.hashicorp.com/terraform/$TERRAFORM_VER/terraform_${TERRAFORM_VER}_linux_amd64.zip"
-#   unzip terraform.zip
-#   chmod +x terraform
-#   rm terraform.zip
-#   cd -
-# fi
-
-# if [[ ! -f "./bin/terragrunt" ]]; then
-#   info "Downloading Terragrunt"
-#   cd ./bin/
-#   wget -O terragrunt "https://github.com/gruntwork-io/terragrunt/releases/download/v$TERRAGRUNT_VER/terragrunt_linux_amd64"
-#   chmod +x terragrunt
-#   cd -
-# fi
-
-# if [[ ! -f "./bin/kustomize" ]]; then
-#   info "Downloading Kustomize"
-#   cd ./bin/
-#   curl -sSL --output - "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv$KUSTOMIZE_VER/kustomize_v${KUSTOMIZE_VER}_linux_amd64.tar.gz" | tar xz
-#   chmod +x kustomize
-#   cd -
-# fi
-
-# info "Kustomizing image tags in k8s manifests"
-# cd ./kubernetes/
-# for microservice in "${MICROSERVICES[@]}"; do
-#   ../bin/kustomize edit set image "$microservice=gcr.io/$TF_VAR_project_id/$microservice"
-# done
-# cd -
-
-# gcloud config set -q compute/region $region
-# gcloud config set -q compute/zone $zone
+echo "[[ USER ACTION REQUIRED ]]"
+echo
+echo "Go to https://github.com/\${YOUR_GITHUB_USERNAME}/gke-demo/settings/keys/new,"
+echo "check \"Allow write access\" and put this public key in \"Key\" textbox:"
+echo
+echo "$(cat $HOME/.ssh/id_rsa.pub)"
+echo
+echo "If you already added this key as a Deploy key, just ignore this."
+echo "[Security note] Adding this key as \"Deploy key\" will only give"
+echo "write/read access to this particular repo. We will use this in"
+echo "Google Cloud Build to Kustomize, commit and push apps manifests."
+echo
+echo "[[ USER ACTION REQUIRED (see above)]]"

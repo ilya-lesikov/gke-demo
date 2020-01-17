@@ -1,7 +1,10 @@
-FROM golang:alpine AS terraform-bundler-builder
+FROM golang:1.13.6-alpine AS terraform-bundler-builder
+
+ENV TERRAFORM_VERSION 0.12.19
+ENV GO111MODULE on
 
 RUN apk --no-cache add git unzip && \
-    go get -d -v github.com/hashicorp/terraform && \
+    go get -d -v "github.com/hashicorp/terraform@v${TERRAFORM_VERSION}" && \
     go install ./src/github.com/hashicorp/terraform/tools/terraform-bundle
 
 COPY terraform-bundle.hcl .
@@ -14,7 +17,7 @@ RUN terraform-bundle package terraform-bundle.hcl && \
 
 ################################################################
 
-FROM gcr.io/cloud-builders/gcloud-slim
+FROM gcr.io/cloud-builders/gcloud-slim@sha256:590a3a16fab3461c625511d26ddcf7731bdfb11db7d3c2155286c93ad760a5e9
 
 ENV TERRAGRUNT_VER 0.21.10
 ENV KUSTOMIZE_VER 3.5.3
