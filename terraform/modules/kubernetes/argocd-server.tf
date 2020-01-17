@@ -37,6 +37,7 @@ resource "null_resource" "expose-argocd" {
         -n "${element(concat(kubernetes_namespace.argocd.*.id, list("")), 0)}" \
         --context "${local.context}" --patch '{"spec": {"type": "LoadBalancer"}}'
     SCRIPT
+    interpreter = ["bash", "-ceuo", "pipefail"]
   }
   triggers = {
     service_changed = data.kubernetes_service.argocd-server[0].metadata[0].resource_version
@@ -61,6 +62,7 @@ resource "null_resource" "argocd-login" {
 
       argocd login "$IP" --username admin --password "$PASS" --insecure
     SCRIPT
+    interpreter = ["bash", "-ceuo", "pipefail"]
   }
   triggers = {
     service_changed = data.kubernetes_service.argocd-server[0].metadata[0].resource_version

@@ -5,6 +5,7 @@ resource "null_resource" "ssh-config" {
       echo "  IdentityFile /root/.ssh/id_rsa" >> /root/.ssh/config
       sleep 5
     SCRIPT
+    interpreter = ["bash", "-ceuo", "pipefail"]
   }
   triggers = {
     always = uuid()
@@ -18,6 +19,7 @@ resource "null_resource" "git-config" {
       git config --global user.email "robot@example.org"
       sleep 5
     SCRIPT
+    interpreter = ["bash", "-ceuo", "pipefail"]
   }
   triggers = {
     always = uuid()
@@ -31,6 +33,7 @@ resource "null_resource" "known-hosts-github" {
         ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts && sleep 5
       fi
     SCRIPT
+    interpreter = ["bash", "-ceuo", "pipefail"]
   }
   triggers = {
     always = uuid()
