@@ -27,6 +27,8 @@ steps:
         fi
         echo "$$apps" > /config/apps
 
+        gcloud auth configure-docker
+
   - id: Build, push microservices to GCR
     name: gcr.io/cloud-builders/docker
     entrypoint: bash
@@ -34,7 +36,6 @@ steps:
       - -ceuo
       - pipefail
       - |
-        gcloud auth configure-docker
         for app in $(cat /config/apps); do
           docker build -t "gcr.io/$PROJECT_ID/$$app:$SHORT_SHA" \
             third-party/microservices/src/$$app
