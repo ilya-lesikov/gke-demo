@@ -1,6 +1,4 @@
-FROM node:8-alpine3.11 as base
-
-FROM base as builder
+FROM node:8-alpine3.11 as builder
 
 # Some packages (e.g. @google-cloud/profiler) require additional
 # deps for post-install scripts
@@ -15,7 +13,7 @@ COPY package*.json ./
 
 RUN npm install --only=production
 
-FROM base
+FROM node:8-alpine3.11
 
 RUN GRPC_HEALTH_PROBE_VERSION=v0.2.0 && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
