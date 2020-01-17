@@ -27,7 +27,7 @@ steps:
         fi
         echo "$$apps" > /config/apps
 
-        gcloud auth configure-docker
+        gcloud -q auth configure-docker
 
   - id: Build, push microservices to GCR
     name: gcr.io/cloud-builders/docker
@@ -62,7 +62,7 @@ steps:
       - pipefail
       - |
         base64 -d id_rsa.enc | \
-        gcloud kms decrypt --ciphertext-file=- --plaintext-file=/root/.ssh/id_rsa \
+        gcloud -q kms decrypt --ciphertext-file=- --plaintext-file=/root/.ssh/id_rsa \
           --location=global --keyring=$_KMS_KEYRING_NAME --key=$_KMS_KEY_NAME_GITHUB
 
   - id: Setup git authorization
@@ -191,6 +191,8 @@ options:
       path: /root/.config/gcloud
     - name: kubectl
       path: /root/.kube
+    - name: docker
+      path: /root/.docker
   env:
     - HOME=/root
     - TF_VAR_project_id=$PROJECT_ID
