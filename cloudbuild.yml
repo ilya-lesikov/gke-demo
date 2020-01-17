@@ -27,7 +27,7 @@ steps:
         fi
         echo "$$apps" > /config/apps
 
-        gcloud -q auth configure-docker
+        # gcloud -q auth configure-docker
 
   - id: Build, push microservices to GCR
     name: gcr.io/cloud-builders/docker
@@ -39,7 +39,7 @@ steps:
         for app in $(cat /config/apps); do
           docker build -t "gcr.io/$PROJECT_ID/$$app:$SHORT_SHA" \
             third-party/microservices/src/$$app
-          docker push "gcr.io/$PROJECT_ID/$$app:$SHORT_SHA"
+          # docker push "gcr.io/$PROJECT_ID/$$app:$SHORT_SHA"
         done
 
   # - id: Build, push microservices to GCR
@@ -196,3 +196,6 @@ options:
   env:
     - HOME=/root
     - TF_VAR_project_id=$PROJECT_ID
+images:
+  - gcr.io/$PROJECT_ID/adservice:$SHORT_SHA
+  - gcr.io/$PROJECT_ID/test:$SHORT_SHA
