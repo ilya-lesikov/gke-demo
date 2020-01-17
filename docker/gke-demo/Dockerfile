@@ -1,7 +1,6 @@
 FROM golang:1.13.6-alpine AS terraform-bundler-builder
 
 ENV TERRAFORM_VERSION 0.12.19
-ENV GO111MODULE on
 
 RUN apk --no-cache add git unzip && \
     go get -d -v "github.com/hashicorp/terraform@v${TERRAFORM_VERSION}" && \
