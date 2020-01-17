@@ -25,7 +25,7 @@ images:
   newTag: b228d95
 - name: paymentservice
   newName: gcr.io/gke-demo-1577719075/paymentservice
-  newTag: b228d95
+  newTag: 9dc9bbe
 - name: productcatalogservice
   newName: gcr.io/gke-demo-1577719075/productcatalogservice
   newTag: b228d95
