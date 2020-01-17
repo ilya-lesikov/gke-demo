@@ -48,10 +48,13 @@ resource "null_resource" "expose-argocd" {
 resource "null_resource" "argocd-login" {
   provisioner "local-exec" {
     command = <<SCRIPT
-      sleep 15
-
-      IP="$(kubectl get services argocd-server --context "${local.context}" -n argocd \
-      --no-headers -o "custom-columns=IP:.status.loadBalancer.ingress[0].ip")"
+      IP=""
+      for ((i=0; i<30; i++)); do
+        IP="$(kubectl get services argocd-server --context "${local.context}" -n argocd \
+        --no-headers -o "custom-columns=IP:.status.loadBalancer.ingress[0].ip")"
+        [[ "$IP" != "<none>" ]] && break
+        sleep 2
+      done
 
       PASS="$(kubectl get pods --context "${local.context}" -n argocd \
       -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2)"
@@ -63,7 +66,7 @@ resource "null_resource" "argocd-login" {
     service_changed = data.kubernetes_service.argocd-server[0].metadata[0].resource_version
   }
   depends_on = [
-    null_resource.expose-argocd,
+    null_resource.expose-argocd,   # TODO: does the reference to null_resource works at all?
     k8s_manifest.argo-rollouts,
   ]
   count = var.argocd_install ? 1 : 0
