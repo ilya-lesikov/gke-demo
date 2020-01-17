@@ -1,7 +1,7 @@
 ---
 steps:
   - id: Setup
-    name: gcr.io/cloud-builders/git
+    name: gcr.io/cloud-builders/git@sha256:00557896b9dbae78e37f6e1ad10dab7edbc54d425fb222031545523e35a897fc
     entrypoint: bash
     args:
       - -ceuo
@@ -27,35 +27,19 @@ steps:
         fi
         echo "$$apps" > /config/apps
 
-        # gcloud -q auth configure-docker
-
   - id: Build, push microservices to GCR
-    name: gcr.io/cloud-builders/docker
-    entrypoint: bash
+    name: gcr.io/kaniko-project/executor:debug-v0.15.0
+    entrypoint: sh
     args:
-      - -ceuo
-      - pipefail
+      - -ce
       - |
         for app in $(cat /config/apps); do
-          docker build -t "gcr.io/$PROJECT_ID/$$app:$SHORT_SHA" \
-            third-party/microservices/src/$$app
-          # docker push "gcr.io/$PROJECT_ID/$$app:$SHORT_SHA"
+          executor --context=third-party/microservices/src/$$app \
+            --destination=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
         done
 
-  # - id: Build, push microservices to GCR
-  #   name: gcr.io/kaniko-project/executor:debug
-  #   entrypoint: sh
-  #   args:
-  #     - -ceuo
-  #     - pipefail
-  #     - |
-  #       for app in $(cat /config/apps); do
-  #         executor --context=third-party/microservices/src/$$app \
-  #           --destination=gcr.io/$PROJECT_ID/$$app:$SHORT_SHA
-  #       done
-
   - id: Decrypt ssh private key
-    name: gcr.io/cloud-builders/gcloud
+    name: gcr.io/cloud-builders/gcloud@sha256:4d329656103c8a5851e966f177a4d45c70d6d63f0de5fbeabd21e1a4947c32f9
     entrypoint: bash
     args:
       - -ceuo
@@ -66,7 +50,7 @@ steps:
           --location=global --keyring=$_KMS_KEYRING_NAME --key=$_KMS_KEY_NAME_GITHUB
 
   - id: Setup git authorization
-    name: gcr.io/cloud-builders/git
+    name: gcr.io/cloud-builders/git@sha256:00557896b9dbae78e37f6e1ad10dab7edbc54d425fb222031545523e35a897fc
     entrypoint: bash
     args:
       - -ceuo
@@ -93,7 +77,7 @@ steps:
         done
 
   - id: "[staging] Commit, push images tags update"
-    name: gcr.io/cloud-builders/git
+    name: gcr.io/cloud-builders/git@sha256:00557896b9dbae78e37f6e1ad10dab7edbc54d425fb222031545523e35a897fc
     dir: ./kubernetes/overlays/staging
     entrypoint: bash
     args:
@@ -153,7 +137,7 @@ steps:
         done
 
   - id: "[prod] Commit, push images tags update"
-    name: gcr.io/cloud-builders/git
+    name: gcr.io/cloud-builders/git@sha256:00557896b9dbae78e37f6e1ad10dab7edbc54d425fb222031545523e35a897fc
     dir: ./kubernetes/overlays/prod
     entrypoint: bash
     args:
@@ -196,6 +180,3 @@ options:
   env:
     - HOME=/root
     - TF_VAR_project_id=$PROJECT_ID
-images:
-  - gcr.io/$PROJECT_ID/adservice:$SHORT_SHA
-  - gcr.io/$PROJECT_ID/test:$SHORT_SHA
