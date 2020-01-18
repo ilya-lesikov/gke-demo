@@ -8,7 +8,7 @@ steps:
       - pipefail
       - |
         function get_build_trigger_id() {
-          return "$(gcloud builds describe "$$1" | awk '$$1 == "buildTriggerId:" {print $$2}')"
+          echo "$(gcloud builds describe "$$1" | awk '$$1 == "buildTriggerId:" {print $$2}')"
         }
 
         cur_build_trigger_id="$(get_build_trigger_id "$BUILD_ID")"
