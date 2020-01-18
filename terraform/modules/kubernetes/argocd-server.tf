@@ -50,17 +50,26 @@ resource "null_resource" "argocd-login" {
   provisioner "local-exec" {
     command = <<SCRIPT
       IP=""
-      for ((i=0; i<30; i++)); do
+      max_tries=30
+      for ((i=0; i<=$max_tries; i++)); do
         IP="$(kubectl get services argocd-server --context "${local.context}" -n argocd \
         --no-headers -o "custom-columns=IP:.status.loadBalancer.ingress[0].ip")"
         [[ "$IP" != "<none>" ]] && break
+
+        [[ $i -eq $max_tries ]] && echo "Can't get argocd server IP" && exit 1
         sleep 2
       done
 
       PASS="$(kubectl get pods --context "${local.context}" -n argocd \
       -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2)"
 
-      argocd login "$IP" --username admin --password "$PASS" --insecure
+      max_tries=20
+      for ((i=0; i<=$max_tries; i++)); do
+        argocd login "$IP" --username admin --password "$PASS" --insecure && break
+
+        [[ $i -eq $max_tries ]] && echo "Can't log in to Argocd" && exit 1
+        sleep 2
+      done
     SCRIPT
     interpreter = ["bash", "-ceuo", "pipefail"]
   }

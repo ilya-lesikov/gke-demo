@@ -85,8 +85,8 @@ steps:
       - -ceuo
       - pipefail
       - |
-        git add kustomization.yml && \
-        git commit -m '[CI/staging] Update images tags' && \
+        git add kustomization.yml
+        git commit -m '[CI/staging] Update images tags' || true
         git push
 
   - id: "[staging] Deploy, test applications"
@@ -145,9 +145,9 @@ steps:
       - -ceuo
       - pipefail
       - |
-        git pull --rebase --autostash && \
-        git add kustomization.yml && \
-        git commit -m '[CI/prod] Update images tags' && \
+        git pull --rebase --autostash
+        git add kustomization.yml
+        git commit -m '[CI/prod] Update images tags' || true
         git push
 
   - id: "[prod] Canary deploy applications"

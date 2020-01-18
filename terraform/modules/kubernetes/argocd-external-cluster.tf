@@ -73,5 +73,8 @@ resource "kubernetes_secret" "argocd-cluster-secret" {
       }
     CONFIG
   }
+  depends_on = [
+    kubernetes_cluster_role_binding.argocd-manager,
+  ]
   count = var.argocd_manager_install ? 1 : 0
 }

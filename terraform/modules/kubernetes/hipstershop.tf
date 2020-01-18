@@ -24,5 +24,6 @@ resource "k8s_manifest" "hipstershop-argo-app" {
   depends_on = [
     k8s_manifest.argocd,
     kubernetes_namespace.current,
+    kubernetes_secret.argocd-cluster-secret,
   ]
 }

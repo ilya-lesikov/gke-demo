@@ -16,7 +16,7 @@ if [[ -z "$TF_VAR_project_id" ]]; then
 fi
 set -u
 
-if (gcloud -q auth print-access-token 2>&1 1>/dev/null); then
+if (gcloud -q --verbosity=none auth print-access-token 2>&1 1>/dev/null); then
   info "You are already authenticated in gcloud, skipping authenication"
 else
   info "Authenticating in GCP with gcloud"
