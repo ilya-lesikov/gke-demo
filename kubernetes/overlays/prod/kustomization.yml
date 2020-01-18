@@ -7,34 +7,34 @@ resources:
 images:
 - name: adservice
   newName: gcr.io/gke-demo-1577719075/adservice
-  newTag: 3f299c9
+  newTag: 9e9c9b7
 - name: cartservice
   newName: gcr.io/gke-demo-1577719075/cartservice
-  newTag: f063135
+  newTag: 9e9c9b7
 - name: checkoutservice
   newName: gcr.io/gke-demo-1577719075/checkoutservice
-  newTag: f063135
+  newTag: 9e9c9b7
 - name: currencyservice
   newName: gcr.io/gke-demo-1577719075/currencyservice
-  newTag: f063135
+  newTag: 9e9c9b7
 - name: emailservice
   newName: gcr.io/gke-demo-1577719075/emailservice
-  newTag: f063135
+  newTag: 9e9c9b7
 - name: frontend
   newName: gcr.io/gke-demo-1577719075/frontend
-  newTag: f063135
+  newTag: 9e9c9b7
 - name: paymentservice
   newName: gcr.io/gke-demo-1577719075/paymentservice
-  newTag: 87bb27d
+  newTag: 9e9c9b7
 - name: productcatalogservice
   newName: gcr.io/gke-demo-1577719075/productcatalogservice
-  newTag: f063135
+  newTag: 9e9c9b7
 - name: recommendationservice
   newName: gcr.io/gke-demo-1577719075/recommendationservice
-  newTag: f063135
+  newTag: 9e9c9b7
 - name: redis
   newName: redis
   newTag: 5.0.7-alpine3.11
 - name: shippingservice
   newName: gcr.io/gke-demo-1577719075/shippingservice
-  newTag: f063135
+  newTag: 9e9c9b7
