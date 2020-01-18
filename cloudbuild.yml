@@ -15,7 +15,7 @@ steps:
 
         while (true); do
           retry=1
-          for build_id in "gcloud builds list --ongoing | awk 'NR > 1 {print $$1}'"; do
+          for build_id in $(gcloud builds list --ongoing | awk 'NR > 1 {print $$1}'); do
             [[ "$BUILD_ID" == "$$build_id" ]] && continue
 
             build_trigger_id="$(get_build_trigger_id "$$build_id")"
