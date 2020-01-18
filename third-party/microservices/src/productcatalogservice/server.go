@@ -110,7 +110,7 @@ func main() {
 		port = os.Getenv("PORT")
 	}
 	log.Infof("starting grpc server at :%s", port)
-	run(port)
+	// run(port)
 	select {}
 }
 
