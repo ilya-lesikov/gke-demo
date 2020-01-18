@@ -25,16 +25,16 @@ images:
   newTag: f063135
 - name: paymentservice
   newName: gcr.io/gke-demo-1577719075/paymentservice
-  newTag: f063135
+  newTag: 87bb27d
 - name: productcatalogservice
   newName: gcr.io/gke-demo-1577719075/productcatalogservice
   newTag: f063135
 - name: recommendationservice
   newName: gcr.io/gke-demo-1577719075/recommendationservice
   newTag: f063135
-- name: shippingservice
-  newName: gcr.io/gke-demo-1577719075/shippingservice
-  newTag: f063135
 - name: redis
   newName: redis
   newTag: 5.0.7-alpine3.11
+- name: shippingservice
+  newName: gcr.io/gke-demo-1577719075/shippingservice
+  newTag: f063135
