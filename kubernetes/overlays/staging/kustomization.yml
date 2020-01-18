@@ -4,6 +4,13 @@ kind: Kustomization
 resources:
 - ../../base
 
+patches:
+- path: patch-canary.yml
+  target:
+    group: argoproj.io
+    kind: Rollout
+    version: v1alpha1
+
 images:
 - name: adservice
   newName: gcr.io/gke-demo-1577719075/adservice
