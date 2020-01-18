@@ -38,3 +38,10 @@ images:
 - name: shippingservice
   newName: gcr.io/gke-demo-1577719075/shippingservice
   newTag: 9e9c9b7
+
+patches:
+- path: ../../patch-canary.yml
+  target:
+    group: argoproj.io
+    kind: Rollout
+    version: v1alpha1
