@@ -1,5 +1,41 @@
 ---
 steps:
+  - id: Wait until parallel instances of this build completed
+    name: gcr.io/cloud-builders/gcloud@sha256:4d329656103c8a5851e966f177a4d45c70d6d63f0de5fbeabd21e1a4947c32f9
+    entrypoint: bash
+    args:
+      - -ceuo
+      - pipefail
+      - |
+        function get_build_trigger_id() {
+          return "$(gcloud builds describe "$$1" | awk '$$1 == "buildTriggerId:" {print $$2}')"
+        }
+
+        cur_build_trigger_id="$(get_build_trigger_id "$BUILD_ID")"
+
+        while (true); do
+          retry=1
+          for build_id in "gcloud builds list --ongoing | awk 'NR > 1 {print $$1}'"; do
+            [[ "$BUILD_ID" == "$$build_id" ]] && continue
+
+            build_trigger_id="$(get_build_trigger_id "$$build_id")"
+            if [[ "$$cur_build_trigger_id" == "$$build_trigger_id" ]]; then
+              echo "Other instances of this build running. Waiting for them to finish."
+              sleep 10
+              retry=0
+              break
+            fi
+          done
+
+          [[ $$retry -eq 1 ]] && break
+        done
+
+  # FIXME:
+  - id: Test
+    name: gcr.io/cloud-builders/gcloud@sha256:4d329656103c8a5851e966f177a4d45c70d6d63f0de5fbeabd21e1a4947c32f9
+    entrypoint: bash
+    args: ["sleep", "9999999"]
+
   - id: Setup
     name: gcr.io/cloud-builders/git@sha256:00557896b9dbae78e37f6e1ad10dab7edbc54d425fb222031545523e35a897fc
     entrypoint: bash
@@ -161,7 +197,7 @@ steps:
         argocd app sync hipstershop-prod --prune --timeout 300
         argocd app wait hipstershop-prod --health --timeout 300
 
-timeout: 45m
+timeout: 2h
 options:
   volumes:
     - name: config
