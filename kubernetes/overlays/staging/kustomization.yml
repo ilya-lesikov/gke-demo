@@ -28,7 +28,7 @@ images:
   newTag: 9e9c9b7
 - name: productcatalogservice
   newName: gcr.io/gke-demo-1577719075/productcatalogservice
-  newTag: fc2ae64
+  newTag: d064507
 - name: recommendationservice
   newName: gcr.io/gke-demo-1577719075/recommendationservice
   newTag: 9e9c9b7
