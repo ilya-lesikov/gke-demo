@@ -77,6 +77,12 @@ RUN curl -sSL -o /usr/local/bin/kubectl-argo-rollouts \
     "https://github.com/argoproj/argo-rollouts/releases/download/v${ARGO_ROLLOUTS_VER}/kubectl-argo-rollouts-linux-amd64" && \
     chmod +x /usr/local/bin/kubectl-argo-rollouts
 
+# Set up bash prompt
+COPY bash_prompt.sh /root/.bash_prompt.sh
+RUN curl -sSL -o /root/.kube-ps1.sh \
+    "https://raw.githubusercontent.com/jonmosco/kube-ps1/c685ac80c14605f47a440018e2d03aff58683c81/kube-ps1.sh" && \
+    echo "source /root/.bash_prompt.sh" >> /root/.bashrc
+
 # Cleanup
 RUN apt-get remove --purge -y unzip && \
     apt-get --purge -y autoremove && \

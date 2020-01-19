@@ -19,6 +19,13 @@ variable "services" {
     "cloudbilling.googleapis.com",
     "dns.googleapis.com",   # for pulling images from GCR from private cluster
     "cloudkms.googleapis.com",
+    "cloudprofiler.googleapis.com",
+    "stackdriver.googleapis.com",
+    "monitoring.googleapis.com",
+    "logging.googleapis.com",
+    "cloudtrace.googleapis.com",
+    "clouddebugger.googleapis.com",
+    "clouderrorreporting.googleapis.com",
   ]
   type = list(string)
 }
@@ -32,7 +39,12 @@ variable "terraform_sa_roles" {
     "roles/resourcemanager.projectIamAdmin",
     "roles/compute.networkAdmin",
     "roles/storage.objectViewer",   # for pulling images from GCR
-    "roles/monitoring.metricWriter",   # to write metrics
+    "roles/monitoring.metricWriter",
+    "roles/logging.logWriter",
+    "roles/cloudtrace.agent",
+    "roles/cloudprofiler.agent",
+    "roles/errorreporting.writer",
+    "roles/clouddebugger.agent",
   ]
   type = list(string)
 }
