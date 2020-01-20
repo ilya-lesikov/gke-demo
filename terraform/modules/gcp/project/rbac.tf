@@ -20,21 +20,3 @@ resource "google_project_iam_member" "cloudbuild" {
   member     = local.cloudbuild_sa
   depends_on = [module.project-services]
 }
-
-# resource "google_storage_bucket_iam_binding" "artifacts-viewer" {
-#   bucket  = google_storage_bucket.cloudbuild-bucket.name
-#   role    = "roles/storage.objectViewer"
-#   members = [
-#     local.terraform_sa,
-#   ]
-# }
-
-# # TODO: Cloudbuild SA needs pretty extensive permissions to run our
-# # Terraform automation, there has to be better way
-# resource "google_storage_bucket_iam_binding" "artifacts-admin" {
-#   bucket  = google_storage_bucket.cloudbuild-bucket.name
-#   role    = "roles/storage.admin"
-#   members = [
-#     local.cloudbuild_sa,
-#   ]
-# }

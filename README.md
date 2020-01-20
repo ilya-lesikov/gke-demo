@@ -1,37 +1,37 @@
-Automation of microservices lifecycle done with Google Cloud Platform and Google Kubernetes Engine.
-
-Cloud automation: Terraform + Terragrunt
-Container orchestration: GKE/Kubernetes
-CI: Google Cloud Build
-CD: ArgoCD + Argo Rollouts
-Monitoring, logging, tracing: Stackdriver
-Other GCP goodies (Cloud KMS, ...), Kustomize
-
-Application: 10 microservices from Google
+>End-to-end automation of cloud provisioning and CI/CD done with GCP/GKE
 
 ## Features
 
-* End-to-end automated cloud provisioning and CI/CD
 * Multistage deployments (staging, prod)
-* Canary deployments
+* Canary deployment
 * Horizontal pod/instance autoscaling
 * Rollbacks, self-healing
 * Distributed tracing, monitoring, logging
 
+## Software
+
+Cloud automation: Terraform + Terragrunt \
+Container orchestration: Kubernetes (GKE) \
+CI: Google Cloud Build \
+CD: ArgoCD + Argo Rollouts \
+Monitoring, logging, tracing: Stackdriver \
++ other GCP goodies (Cloud KMS, ...), Kustomize for ~~templating~~
+
+Example applications: 10 microservices from Google
+
 ## Quick start
 
-* You need GCP account with Free Trial activated
-* You need GitHub account
-* Fork this repo (we can't setup GCB triggers for repositories you don't own)
+1. You need GCP account with Free Trial activated
+1. You need GitHub account
+1. Fork this repo (we can't setup GCB triggers for repositories you don't own)
 
+Then:
 ```bash
-# Run container with all the tooling we need.
-# Change "TF_VAR_project_id" here if you don't like the GCP project name that
-# will be used (gke-demo-XXXXXXXXX), or if you already have GCP project created
-# for this demo.
-docker run -d --name gke-demo \
-  -e TF_VAR_project_id=gke-demo-$(date +'%s') \
-  ilyalesikov/gke-demo
+# Change "TF_VAR_project_id" in this command if you don't like the GCP project
+# name that will be used (gke-demo-XXXXXXXXX), or if you already have GCP project
+# created for this demo.
+# Run container with all the tooling we need:
+docker run -d --name gke-demo -e TF_VAR_project_id=gke-demo-$(date +'%s') ilyalesikov/gke-demo
 
 # Attach to the container
 docker exec -it gke-demo bash
