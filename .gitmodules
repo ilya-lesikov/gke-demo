@@ -4,3 +4,6 @@
 [submodule "third-party/terraform/modules/google-kubernetes-engine"]
 	path = third-party/terraform/modules/google-kubernetes-engine
 	url = https://github.com/terraform-google-modules/terraform-google-kubernetes-engine
+[submodule "third-party/terraform/modules/google-project-factory"]
+	path = third-party/terraform/modules/google-project-factory
+	url = https://github.com/terraform-google-modules/terraform-google-project-factory

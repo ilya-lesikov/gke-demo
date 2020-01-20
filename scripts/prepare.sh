@@ -82,6 +82,7 @@ else
   sleep 60
 fi
 
+echo
 echo "[[ USER ACTION REQUIRED ]]"
 echo
 echo "Go to https://github.com/\${YOUR_GITHUB_USERNAME}/gke-demo/settings/keys/new,"
@@ -94,5 +95,22 @@ echo "[Security note] Adding this key as \"Deploy key\" will only give"
 echo "write/read access to this particular repo. We will use this in"
 echo "Google Cloud Build to Kustomize, commit and push apps manifests."
 echo
-
 read -p "[[ USER ACTION REQUIRED (see above)]]. Press ENTER afterwards "
+
+echo
+echo "[[ USER ACTION REQUIRED ]]"
+echo
+echo "Go to https://console.cloud.google.com/cloud-build/triggers/connect?project=$TF_VAR_project_id&provider=github_app"
+echo "and follow instructions to install GoogleCloudBuild Github app."
+echo "Access required only to the forked \"gke-demo\" repository, we don't need"
+echo "access to other repositories on your account."
+echo "After installing GCB Github App, connect \"gke-demo\" repo from the GCP"
+echo "Web Console that we opened, but don't create Push Trigger for this repo,"
+echo "just press \"Skip for now\" on \"Create a push trigger\" step. Triggers"
+echo "will be set up by Terraform."
+echo
+read -p "[[ USER ACTION REQUIRED (see above)]]. Press ENTER afterwards "
+
+echo
+echo "DONE!"
+echo

@@ -37,6 +37,7 @@ variable "terraform_sa_roles" {
     "roles/container.developer",
     "roles/iam.serviceAccountAdmin",
     "roles/resourcemanager.projectIamAdmin",
+    "roles/serviceusage.serviceUsageAdmin",
     "roles/compute.networkAdmin",
     "roles/storage.objectViewer",   # for pulling images from GCR
     "roles/monitoring.metricWriter",
@@ -60,6 +61,7 @@ variable "cloudbuild_sa_roles" {
     "roles/monitoring.admin",
     "roles/cloudkms.admin",
     "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+    "roles/serviceusage.serviceUsageAdmin",
   ]
   type = list(string)
 }

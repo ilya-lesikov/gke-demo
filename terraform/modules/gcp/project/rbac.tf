@@ -11,30 +11,30 @@ resource "google_project_iam_member" "terraform" {
   for_each   = toset(var.terraform_sa_roles)
   role       = each.key
   member     = local.terraform_sa
-  depends_on = [google_project_service.services]
+  depends_on = [module.project-services]
 }
 
 resource "google_project_iam_member" "cloudbuild" {
   for_each   = toset(var.cloudbuild_sa_roles)
   role       = each.key
   member     = local.cloudbuild_sa
-  depends_on = [google_project_service.services]
+  depends_on = [module.project-services]
 }
 
-resource "google_storage_bucket_iam_binding" "artifacts-viewer" {
-  bucket  = "artifacts.${var.project_id}.appspot.com"
-  role    = "roles/storage.objectViewer"
-  members = [
-    local.terraform_sa,
-  ]
-}
+# resource "google_storage_bucket_iam_binding" "artifacts-viewer" {
+#   bucket  = google_storage_bucket.cloudbuild-bucket.name
+#   role    = "roles/storage.objectViewer"
+#   members = [
+#     local.terraform_sa,
+#   ]
+# }
 
-# TODO: Cloudbuild SA needs pretty extensive permissions to run our
-# Terraform automation, there has to be better way
-resource "google_storage_bucket_iam_binding" "artifacts-admin" {
-  bucket  = "artifacts.${var.project_id}.appspot.com"
-  role    = "roles/storage.admin"
-  members = [
-    local.cloudbuild_sa,
-  ]
-}
+# # TODO: Cloudbuild SA needs pretty extensive permissions to run our
+# # Terraform automation, there has to be better way
+# resource "google_storage_bucket_iam_binding" "artifacts-admin" {
+#   bucket  = google_storage_bucket.cloudbuild-bucket.name
+#   role    = "roles/storage.admin"
+#   members = [
+#     local.cloudbuild_sa,
+#   ]
+# }

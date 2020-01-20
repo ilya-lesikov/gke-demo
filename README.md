@@ -40,7 +40,7 @@ docker exec -it gke-demo bash
 git clone https://github.com/$YOUR_GITHUB_USERNAME/gke-demo
 
 # Run this script and follow the instructions on your screen.
-# This will authorize us to access your GCP account and this repo that you forked.
+# This will authorize us to access your GCP account and the "gke-demo" repo you forked.
 ./gke-demo/scripts/prepare.sh
 
 # Provision cloud infrastructure with Terraform/Terragrunt

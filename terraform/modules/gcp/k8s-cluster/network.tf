@@ -1,5 +1,5 @@
 module "gcp-network" {
-  source       = "../../../../third-party/terraform/modules//google-network"
+  source       = "../../../third-party/modules//google-network"
   project_id   = var.project_id
   network_name = local.net_name
   subnets      = [
