@@ -1,5 +1,5 @@
 module "gke" {
-  source                   = "..//google-gke"
+  source = "../../../../third-party/terraform/modules/google-kubernetes-engine/modules//beta-private-cluster"
   project_id               = var.project_id
   name                     = local.cluster
   regional                 = false

@@ -24,7 +24,7 @@ else
   echo "[Security notice] Here we are authenticating you in your GCP account"
   echo "for you to be able to use \"gcloud\" command:"
   echo
-  gcloud -q auth login
+  gcloud -q --verbosity=error auth login
 fi
 
 info "Setting up \$GOOGLE_CLOUD_KEYFILE_JSON environment variable"
@@ -40,34 +40,46 @@ if [[ ! -f "$GOOGLE_CLOUD_KEYFILE_JSON" ]]; then
   echo "key to access your GCP account with any program/SDK that is not"
   echo "\"gcloud\" command line utility:"
   echo
-  gcloud auth application-default login --no-launch-browser
+  gcloud -q --verbosity=error auth application-default login --no-launch-browser
 fi
 
 if (gcloud projects describe -q --verbosity=none "$TF_VAR_project_id" 2>&1 1>/dev/null); then
   info "Project already exists, skipping creation"
 else
   info "Creating GCP project"
-  gcloud projects create -q "$TF_VAR_project_id"
+  gcloud -q --verbosity=error projects create "$TF_VAR_project_id"
 fi
-gcloud config set -q project "$TF_VAR_project_id"
+gcloud -q --verbosity=error config set project "$TF_VAR_project_id"
 
 info "Attaching billing account to the project"
 billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
-gcloud beta billing projects link -q "$TF_VAR_project_id" --billing-account "$billing_id"
+gcloud -q --verbosity=error beta billing projects link \
+  "$TF_VAR_project_id" --billing-account "$billing_id"
 
-if (gsutil ls -b "gs://${TF_VAR_project_id}_terraform-state/" 2>&1 1>/dev/null); then
+if (gsutil -q ls -b "gs://${TF_VAR_project_id}_terraform-state/" 2>&1 1>/dev/null); then
   info "Cloud Storage bucket for Terraform state already exists, skipping creation"
 else
   info "Creating Cloud Storage bucket for Terraform state"
-  gsutil mb -l eu "gs://${TF_VAR_project_id}_terraform-state"
-  gsutil versioning set on "gs://${TF_VAR_project_id}_terraform-state"
+  # If we try to do something just after billing account attached sometimes we get
+  # "The project to be billed is associated with an absent billing account" error.
+  sleep 90
+  gsutil -q mb -l eu "gs://${TF_VAR_project_id}_terraform-state"
+  gsutil -q versioning set on "gs://${TF_VAR_project_id}_terraform-state"
 fi
 
 if [[ -f "$HOME/.ssh/id_rsa" ]]; then
   info "SSH key already exists, skipping"
 else
   info "Creating new SSH key"
-  ssh-keygen -N '' -t rsa -b 4096 -f "$HOME/.ssh/id_rsa"
+  ssh-keygen -q -N '' -t rsa -b 4096 -f "$HOME/.ssh/id_rsa"
+fi
+
+if (gcloud -q services list | grep cloudkms.googleapis.com); then
+  info "Cloud KMS API already enabled, skipping"
+else
+  info "Enabling Cloud KMS"
+  gcloud -q --verbosity=error services enable "cloudkms.googleapis.com"
+  sleep 60
 fi
 
 echo "[[ USER ACTION REQUIRED ]]"
@@ -82,4 +94,5 @@ echo "[Security note] Adding this key as \"Deploy key\" will only give"
 echo "write/read access to this particular repo. We will use this in"
 echo "Google Cloud Build to Kustomize, commit and push apps manifests."
 echo
-echo "[[ USER ACTION REQUIRED (see above)]]"
+
+read -p "[[ USER ACTION REQUIRED (see above)]]. Press ENTER afterwards "
