@@ -18,7 +18,9 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 * CD: `ArgoCD` + `Argo Rollouts`
 * Monitoring, logging, tracing, profiling, debugging: `Google Stackdriver`
 * `Cloud KMS`, `Cloud Container Registry` and other `GCP` goodies
+
 <!-- -->
+
 * Example applications: [10 microservices from Google](./third-party/microservices)
 
 ## Quick start
