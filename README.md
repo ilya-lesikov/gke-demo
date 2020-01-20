@@ -6,25 +6,26 @@
 * Canary deployments
 * Horizontal pod/instance autoscaling
 * Rollbacks, self-healing
-* Distributed tracing, monitoring, logging
+* Distributed tracing, monitoring, logging, profiling, debugging
 
-Setup/deployment is heavily automated so it will be easy for you to deploy it yourself with GCP Free Trial.
+Setup/deployment is heavily automated so it will be easy for you to deploy it yourself using [GCP account with Free Trial](https://cloud.google.com/free).
 
 ## Software used
 
-Cloud automation: Terraform + Terragrunt \
-Container orchestration: Kubernetes (GKE) \
-CI: Google Cloud Build \
-CD: ArgoCD + Argo Rollouts \
-Monitoring, logging, tracing: Google Stackdriver \
-Other GCP goodies (Cloud KMS, ...), Kustomize for ~~templating~~
+* Cloud automation: `Terraform` + `Terragrunt`
+* Container orchestration: `Kubernetes` (GKE)
+* CI: `Google Cloud Build`
+* CD: `ArgoCD` + `Argo Rollouts`
+* Monitoring, logging, tracing, profiling, debugging:
+    `Google Stackdriver` + instrumentation on the applications side
+* Other GCP goodies (`Cloud KMS`, ...), `Kustomize`
 
-Example applications: 10 microservices from Google
+* Example applications: [10 microservices from Google](./third-party/microservices)
 
 ## Quick start
 
-1. You need GCP account with Free Trial activated
-1. You will need GitHub account
+1. You need [GCP account with Free Trial](https://cloud.google.com/free) activated
+1. You need [GitHub account](https://github.com/join)
 1. Fork this repo (we can't setup GCB triggers for repositories you don't own)
 
 Then prepare for cloud provisioning:
@@ -58,7 +59,7 @@ cd gke-demo/terraform/environments
 terragrunt apply-all --terragrunt-include-external-dependencies --terragrunt-non-interactive
 ```
 
-Now we are going to build and deploy *all* of our applications:
+Now we are going to build and deploy **all** of our applications:
 ```bash
 git tag release_all         # This tag will trigger our CI/CD
 git push origin release_all
@@ -66,6 +67,8 @@ git push origin release_all
 
 Monitor the progress of our build here:
 https://console.cloud.google.com/cloud-build/builds
+
+## Poking around
 
 After the build you can find more about our application this way:
 ```bash
@@ -90,3 +93,7 @@ printf '\nThe web-interface is here: https://%s, username is "admin", password i
 IP="$(kubectl get service frontend-external | awk 'NR==2 {print $4}')"
 printf '\nApplication is here: http://%s\n\n' "$IP"
 ```
+
+TODO: explain about Stackdriver capabilites and maybe showcase updating the app
+source code with broken and non-broken functionality. Images can help in "Poking
+around" section for sure.

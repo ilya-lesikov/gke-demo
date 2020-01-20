@@ -1,6 +1,6 @@
-Note by Ilya Lesikov:
+## Note
 
-This is a slightly modified and cleaned up version of [microservices-demo](https://github.com/GoogleCloudPlatform/microservices-demo) from Google.
+This is a slightly modified and cleaned up version of [microservices-demo](https://github.com/GoogleCloudPlatform/microservices-demo) by Google.
 
 Relevant parts of the original README follow:
 
