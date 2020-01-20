@@ -1,8 +1,0 @@
-name: submodule_network_peering
-attributes:
-  - name: project_id
-    required: true
-    type: string
-  - name: peerings
-    type: hash
-    required: true
