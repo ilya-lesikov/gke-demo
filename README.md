@@ -8,18 +8,17 @@
 * Rollbacks, self-healing
 * Distributed tracing, monitoring, logging, profiling, debugging
 
-Setup/deployment is heavily automated so it will be easy for you to deploy it yourself using [GCP account with Free Trial](https://cloud.google.com/free).
+Setup/deployment is heavily automated so it will be easy for you to deploy it by yourself using [GCP account with Free Trial](https://cloud.google.com/free).
 
 ## Software used
 
 * Cloud automation: `Terraform` + `Terragrunt`
-* Container orchestration: `Kubernetes` (`GKE`) + `Kustomize`
+* Container orchestration: `Kubernetes on GKE` + `Kustomize`
 * CI: `Google Cloud Build`
 * CD: `ArgoCD` + `Argo Rollouts`
 * Monitoring, logging, tracing, profiling, debugging: `Google Stackdriver`
 * `Cloud KMS`, `Cloud Container Registry` and other `GCP` goodies
-
-
+<!-- -->
 * Example applications: [10 microservices from Google](./third-party/microservices)
 
 ## Quick start
