@@ -27,3 +27,15 @@ resource "k8s_manifest" "hipstershop-argo-app" {
     kubernetes_secret.argocd-cluster-secret,
   ]
 }
+
+resource "null_resource" "switch-default-namespace" {
+  provisioner "local-exec" {
+    command = <<SCRIPT
+      kubectl config set-context "${local.context}" --namespace "${var.hipstershop_namespace}"
+    SCRIPT
+  }
+  triggers = {
+    always = uuid()
+  }
+  depends_on = [kubernetes_namespace.current]
+}

@@ -85,8 +85,9 @@ fi
 echo
 echo "[[ USER ACTION REQUIRED ]]"
 echo
-echo "Go to https://github.com/\${YOUR_GITHUB_USERNAME}/gke-demo/settings/keys/new,"
-echo "check \"Allow write access\" and put this public key in \"Key\" textbox:"
+echo "Go to..."
+echo "https://github.com/${TF_VAR_github_demo_owner}/gke-demo/settings/keys/new"
+echo "... check \"Allow write access\" and put this public key in \"Key\" textbox:"
 echo
 echo "$(cat $HOME/.ssh/id_rsa.pub)"
 echo
