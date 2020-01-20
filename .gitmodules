@@ -1,6 +1,0 @@
-[submodule "third-party/terraform/modules/google-kubernetes-engine"]
-	path = third-party/terraform/modules/google-kubernetes-engine
-	url = https://github.com/terraform-google-modules/terraform-google-kubernetes-engine
-[submodule "third-party/terraform/modules/google-network"]
-	path = third-party/terraform/modules/google-network
-	url = https://github.com/terraform-google-modules/terraform-google-network
