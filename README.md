@@ -10,9 +10,9 @@
 
 Setup/deployment is heavily automated so it will be easy for you to deploy it by yourself using [GCP account with Free Trial](https://cloud.google.com/free)
 
-## Software used
+## Software
 
-|                                                                     | |
+|      What                                                               | For                                               |
 |---------------------------------------------------------------------|-------------------------------------------------------|
 | `Terraform, Terragrunt`                                             | Cloud automation                                      |
 | `Kubernetes (GKE), Kustomize`                                       | Container orchestration                               |
@@ -22,6 +22,10 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 | `Cloud KMS, Container Registry,`<br>`Storage and other GCP goodies` |                                                       |
 
 Also we are using [10 microservices from Google](./third-party/microservices) with built-in instrumentation for `Stackdriver`
+
+## How it works (simplified)
+
+![Diagram](./res/diagram.svg)
 
 ## Quick start
 
