@@ -1,4 +1,4 @@
->Complete cloud automation and CI/CD for microservices, done with GCP/GKE
+> Demonstration of complete cloud automation and CI/CD for microservices, done with GCP/GKE
 
 ## Features
 
@@ -12,14 +12,14 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 
 ## Software
 
-|      What                                                               | For                                               |
-|---------------------------------------------------------------------|-------------------------------------------------------|
-| `Terraform, Terragrunt`                                             | Cloud automation                                      |
-| `Kubernetes (GKE), Kustomize`                                       | Container orchestration                               |
-| `Google Cloud Build`                                                | CI                                                    |
-| `ArgoCD, Argo Rollouts`                                             | CD                                                    |
-| `Google Stackdriver`                                                | Monitoring, logging, tracing,<br>profiling, debugging |
-| `Cloud KMS, Container Registry,`<br>`Storage and other GCP goodies` |                                                       |
+| What                                                            | For                                                   |
+|-----------------------------------------------------------------|-------------------------------------------------------|
+| Terraform, Terragrunt                                           | Cloud automation                                      |
+| Kubernetes (GKE), Kustomize                                     | Container orchestration                               |
+| Google Cloud Build                                              | CI                                                    |
+| ArgoCD, Argo Rollouts                                           | CD                                                    |
+| Google Stackdriver                                              | Monitoring, logging, tracing,<br>profiling, debugging |
+| Cloud KMS, Container Registry,<br>Storage and other GCP goodies |                                                       |
 
 Also we are using [10 microservices from Google](./third-party/microservices) with built-in instrumentation for `Stackdriver`
 
