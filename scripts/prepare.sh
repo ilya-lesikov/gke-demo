@@ -27,11 +27,15 @@ else
   gcloud -q --verbosity=error auth login
 fi
 
-info "Setting up \$GOOGLE_CLOUD_KEYFILE_JSON environment variable"
-export GOOGLE_CLOUD_KEYFILE_JSON="$HOME/.config/gcloud/application_default_credentials.json"
-if ! (grep "GOOGLE_CLOUD_KEYFILE_JSON" "$HOME/.profile" 2>&1 1>/dev/null); then
-  echo "export GOOGLE_CLOUD_KEYFILE_JSON=\"$GOOGLE_CLOUD_KEYFILE_JSON\"" >> "$HOME/.profile"
-fi
+keyfile="$HOME/.config/gcloud/application_default_credentials.json"
+for var in GOOGLE_CLOUD_KEYFILE_JSON GOOGLE_APPLICATION_CREDENTIALS; do
+  for file in "$HOME/.profile" "$HOME/.bashrc"; do
+    if ! (grep "$var" "$file" 2>&1 1>/dev/null); then
+      info "Adding \$$var environment variable to $file"
+      echo "export $var=\"$keyfile\"" >> "$file"
+    fi
+  done
+done
 
 if [[ ! -f "$GOOGLE_CLOUD_KEYFILE_JSON" ]]; then
   info "Setting up application-default service account for GCP"
@@ -56,17 +60,6 @@ billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
 gcloud -q --verbosity=error beta billing projects link \
   "$TF_VAR_project_id" --billing-account "$billing_id"
 
-if (gsutil -q ls -b "gs://${TF_VAR_project_id}_terraform-state/" 2>&1 1>/dev/null); then
-  info "Cloud Storage bucket for Terraform state already exists, skipping creation"
-else
-  info "Creating Cloud Storage bucket for Terraform state"
-  # If we try to do something just after billing account attached sometimes we get
-  # "The project to be billed is associated with an absent billing account" error.
-  sleep 90
-  gsutil -q mb -l eu "gs://${TF_VAR_project_id}_terraform-state"
-  gsutil -q versioning set on "gs://${TF_VAR_project_id}_terraform-state"
-fi
-
 if [[ -f "$HOME/.ssh/id_rsa" ]]; then
   info "SSH key already exists, skipping"
 else
@@ -74,7 +67,7 @@ else
   ssh-keygen -q -N '' -t rsa -b 4096 -f "$HOME/.ssh/id_rsa"
 fi
 
-if (gcloud -q services list | grep cloudkms.googleapis.com); then
+if (gcloud -q services list | grep cloudkms.googleapis.com 1>/dev/null); then
   info "Cloud KMS API already enabled, skipping"
 else
   info "Enabling Cloud KMS"
@@ -85,9 +78,9 @@ fi
 echo
 echo "[[ USER ACTION REQUIRED ]]"
 echo
-echo "Go to..."
+echo "Go to"
 echo "https://github.com/${TF_VAR_github_demo_owner}/gke-demo/settings/keys/new"
-echo "... check \"Allow write access\" and put this public key in \"Key\" textbox:"
+echo "then check \"Allow write access\" and put this public key in \"Key\" textbox:"
 echo
 echo "$(cat $HOME/.ssh/id_rsa.pub)"
 echo
@@ -101,10 +94,12 @@ read -p "[[ USER ACTION REQUIRED (see above)]]. Press ENTER afterwards "
 echo
 echo "[[ USER ACTION REQUIRED ]]"
 echo
-echo "Go to https://console.cloud.google.com/cloud-build/triggers/connect?project=$TF_VAR_project_id&provider=github_app"
+echo "Go to..."
+echo "https://console.cloud.google.com/cloud-build/triggers/connect?project=$TF_VAR_project_id&provider=github_app"
 echo "and follow instructions to install GoogleCloudBuild Github app."
-echo "Access required only to the forked \"gke-demo\" repository, we don't need"
+echo "NOTE: Access required only to the forked \"gke-demo\" repository, we don't need"
 echo "access to other repositories on your account."
+echo
 echo "After installing GCB Github App, connect \"gke-demo\" repo from the GCP"
 echo "Web Console that we opened, but don't create Push Trigger for this repo,"
 echo "just press \"Skip for now\" on \"Create a push trigger\" step. Triggers"
@@ -113,5 +108,5 @@ echo
 read -p "[[ USER ACTION REQUIRED (see above)]]. Press ENTER afterwards "
 
 echo
-echo "DONE!"
+echo "DONE! Follow further instructions from the README"
 echo
