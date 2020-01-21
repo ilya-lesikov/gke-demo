@@ -13,35 +13,35 @@ patches:
 
 images:
 - name: adservice
-  newName: gcr.io/gke-demo-muirtj/adservice
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/adservice
+  newTag: 2f0901d
 - name: cartservice
-  newName: gcr.io/gke-demo-muirtj/cartservice
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/cartservice
+  newTag: 2f0901d
 - name: checkoutservice
-  newName: gcr.io/gke-demo-muirtj/checkoutservice
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/checkoutservice
+  newTag: 2f0901d
 - name: currencyservice
-  newName: gcr.io/gke-demo-muirtj/currencyservice
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/currencyservice
+  newTag: 2f0901d
 - name: emailservice
-  newName: gcr.io/gke-demo-muirtj/emailservice
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/emailservice
+  newTag: 2f0901d
 - name: frontend
-  newName: gcr.io/gke-demo-muirtj/frontend
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/frontend
+  newTag: 2f0901d
 - name: paymentservice
-  newName: gcr.io/gke-demo-muirtj/paymentservice
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/paymentservice
+  newTag: 2f0901d
 - name: productcatalogservice
-  newName: gcr.io/gke-demo-muirtj/productcatalogservice
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/productcatalogservice
+  newTag: 2f0901d
 - name: recommendationservice
-  newName: gcr.io/gke-demo-muirtj/recommendationservice
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/recommendationservice
+  newTag: 2f0901d
 - name: redis
   newName: redis
   newTag: 5.0.7-alpine3.11
 - name: shippingservice
-  newName: gcr.io/gke-demo-muirtj/shippingservice
-  newTag: 221a742
+  newName: gcr.io/gke-demo-jdkfjuuu/shippingservice
+  newTag: 2f0901d
