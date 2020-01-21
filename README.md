@@ -35,45 +35,45 @@ Also we are using [10 microservices from Google](./third-party/microservices) wi
 1. You need `Docker` installed (any OS)
 
 1. Run and attach to the docker container:
-  ```bash
-  # Change this to the owner of the forked "gke-demo" repo, don't leave it like this
-  GITHUB_USERNAME=ilya-lesikov
+   ```bash
+   # Change this to the owner of the forked "gke-demo" repo, don't leave it like this
+   GITHUB_USERNAME=ilya-lesikov
 
-  # Run container with all the tooling we need:
-  # NOTE: you can change "TF_VAR_project_id" in this command to point to the existing GCP project
-  docker run -d --name gke-demo \
-    -e TF_VAR_project_id=gke-demo-$GITHUB_USERNAME \
-    -e TF_VAR_github_demo_owner=$GITHUB_USERNAME \
-    ilyalesikov/gke-demo
+   # Run container with all the tooling we need:
+   # NOTE: you can change "TF_VAR_project_id" in this command to point to the existing GCP project
+   docker run -d --name gke-demo \
+     -e TF_VAR_project_id=gke-demo-$GITHUB_USERNAME \
+     -e TF_VAR_github_demo_owner=$GITHUB_USERNAME \
+     ilyalesikov/gke-demo
 
-  # Attach to the container
-  docker exec -it gke-demo bash
-  ```
+   # Attach to the container
+   docker exec -it gke-demo bash
+   ```
 
 1. Prepare for cloud provisioning (this is run from the inside of the container):
-  ```bash
-  # Clone the repo you forked
-  git clone https://github.com/${TF_VAR_github_demo_owner}/gke-demo
+   ```bash
+   # Clone the repo you forked
+   git clone https://github.com/${TF_VAR_github_demo_owner}/gke-demo
 
-  # Run this and follow the instructions on your screen.
-  # This will authorize us to access your GCP account and the "gke-demo" repo you forked.
-  ./gke-demo/scripts/prepare.sh && source /root/.bashrc
-  ```
+   # Run this and follow the instructions on your screen.
+   # This will authorize us to access your GCP account and the "gke-demo" repo you forked.
+   ./gke-demo/scripts/prepare.sh && source /root/.bashrc
+   ```
 
 1. Provision our cloud infrastructure with Terraform/Terragrunt:
-  > On any transient errors (e.g. SSL/TLS errors or `remote server closed connection`) just rerun the `terragrunt` command. `Terragrunt` handles _most_ of these automatically, but `Terraform` sucks so much it'll need 10 wrappers to be truly reliable
-  ```bash
-  cd gke-demo/terraform/environments
-  terragrunt apply-all --terragrunt-include-external-dependencies --terragrunt-non-interactive
-  ```
+   > On any transient errors (e.g. SSL/TLS errors or `remote server closed connection`) just rerun the `terragrunt` command. `Terragrunt` handles _most_ of these automatically, but `Terraform` sucks so much it'll need 10 wrappers to be truly reliable
+   ```bash
+   cd gke-demo/terraform/environments
+   terragrunt apply-all --terragrunt-include-external-dependencies --terragrunt-non-interactive
+   ```
 
 1. Build and deploy **all** of our applications:
-  ```bash
-  git tag -d release_all
-  git push --delete origin release_all
-  git tag release_all
-  git push origin release_all   # This will trigger our CI/CD
-  ```
+   ```bash
+   git tag -d release_all
+   git push --delete origin release_all
+   git tag release_all
+   git push origin release_all   # This will trigger our CI/CD
+   ```
 
 1. Wait for the build to complete here: https://console.cloud.google.com/cloud-build/builds
 
