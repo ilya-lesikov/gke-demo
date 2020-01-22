@@ -15,8 +15,9 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 1. [How it works](#how)
 1. [Quick start](#quick-start)
 1. [Looking around](#looking-around)
+1. [Cleanup](#cleanup)
 1. [Implementing this in the real-world](#real-world)
-1. [Halp!](#halp)
+1. [Halp?](#halp)
 
 ## Software <a name="software"/>
 
@@ -168,12 +169,12 @@ cd /git/gke-demo/terraform/environments
 terragrunt destroy-all --terragrunt-non-interactive
 ```
 
-This will completely delete the project, cleaning up everything we've created:
+As an alternative, this will completely delete the project, cleaning up everything we've created:
 ```bash
 gcloud projects delete $TF_VAR_project_id
 ```
 
-Stop and remove container with the tooling from your system (run this outside container):
+Stop and remove the container with the tooling from your system (run this outside the container):
 ```bash
 docker rm -f gke-demo
 ```
@@ -204,7 +205,7 @@ This project has some nice (and useful in production systems) things implemented
 
 1. `$ grep -RE 'TODO|FIXME'`
 
-## Halp! <a name="halp"/>
+## Halp? <a name="halp"/>
 
-I tested it many times, but I could've missed something. \
+I tested it many times, but I could have missed something. \
 If you experience any problems, let me know and leave an issue, thanks.
