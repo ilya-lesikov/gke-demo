@@ -10,7 +10,15 @@
 
 Setup/deployment is heavily automated so it will be easy for you to deploy it by yourself using [GCP account with Free Trial](https://cloud.google.com/free)
 
-## Software
+## Contents
+1. [Software](#software)
+1. [How it works](#how)
+1. [Quick start](#quick-start)
+1. [Looking around](#looking-around)
+1. [Implementing this in the real-world](#real-world)
+1. [Halp!](#halp)
+
+## Software <a name="software"/>
 
 | What                                                            | For                                                   |
 |-----------------------------------------------------------------|-------------------------------------------------------|
@@ -23,11 +31,11 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 
 Also we are using [10 microservices from Google](./third-party/microservices) with built-in instrumentation for Stackdriver
 
-## How it works (simplified)
+## How it works (simplified) <a name="how"/>
 
 ![Diagram](./res/diagram.svg)
 
-## Quick start
+## Quick start <a name="quick-start"/>
 
 1. You need [GCP account with Free Trial](https://cloud.google.com/free) activated
 1. You need [GitHub account](https://github.com/join)
@@ -75,14 +83,14 @@ Also we are using [10 microservices from Google](./third-party/microservices) wi
    git push origin release_all   # This will trigger our CI/CD
    ```
 
-1. Wait for the build to complete: https://console.cloud.google.com/cloud-build/builds
-   > In the meantime, open this page to activate Stackdriver: https://console.cloud.google.com/monitoring/dashboards
+1. Wait for the build to complete: https://console.cloud.google.com/cloud-build/builds \
+   In the meantime, open this page to activate Stackdriver: https://console.cloud.google.com/monitoring/dashboards
 
 1. Works now!
 
 <img src="./res/build.png" width="692" height="605">
 
-## Looking around
+## Looking around <a name="looking-around"/>
 
 First, switch to our production cluster:
 ```bash
@@ -152,7 +160,7 @@ There are lots of metrics out of the box, thanks to GCP, GKE, Kubernetes, Istio 
 
 ![debugger](./res/debugger.png)
 
-## Cleanup
+## Cleanup <a name="cleanup"/>
 
 This should destroy everything, except Terraform remote state bucket and enabled services/APIs:
 ```bash
@@ -160,7 +168,7 @@ cd /git/gke-demo/terraform/environments
 terragrunt destroy-all --terragrunt-non-interactive
 ```
 
-This will completely delete the project, cleaning up everything we created:
+This will completely delete the project, cleaning up everything we've created:
 ```bash
 gcloud projects delete $TF_VAR_project_id
 ```
@@ -172,7 +180,7 @@ docker rm -f gke-demo
 
 You might want to remove GCB application from your GitHub account too.
 
-## Implementing this in the real world
+## Implementing this in the real world <a name="real-world"/>
 
 This project has some nice (and useful in production systems) things implemented, but this is nevertheless a demonstration. What I would do differently if this would be making me $$$:
 
@@ -195,3 +203,8 @@ This project has some nice (and useful in production systems) things implemented
 1. ???
 
 1. `$ grep -RE 'TODO|FIXME'`
+
+## Halp! <a name="halp"/>
+
+I tested it many times, but I could've missed something. \
+If you experience any problems, let me know and leave an issue, thanks.
