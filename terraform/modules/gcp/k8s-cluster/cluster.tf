@@ -16,6 +16,7 @@ module "gke" {
   service_account          = var.terraform_sa_fqdn
   enable_private_nodes     = true
   remove_default_node_pool = true
+  istio                    = true
   # TODO: delete this when upstream monitoring_service changed from `monitoring.googleapis.com`
   monitoring_service       = "monitoring.googleapis.com/kubernetes"
   # TODO: delete this when upstream logging_service changed from `logging.googleapis.com`

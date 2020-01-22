@@ -1,7 +1,7 @@
 ---
 steps:
   # FIXME: if two builds started at the same time they will block each other
-  # indefinetly. We need to have some kind of queue to know which build started
+  # indefinitely. We need to have some kind of queue to know which build started
   # first, and let this one proceed if needed. Maybe Pub/Sub from GCP can help?
   - id: Wait until parallel instances of this build completed
     name: gcr.io/cloud-builders/gcloud@sha256:4d329656103c8a5851e966f177a4d45c70d6d63f0de5fbeabd21e1a4947c32f9

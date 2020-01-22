@@ -1,6 +1,9 @@
 resource "kubernetes_namespace" "current" {
   metadata {
     name = var.hipstershop_namespace
+    labels = {
+      istio-injection = "enabled"
+    }
   }
 }
 
