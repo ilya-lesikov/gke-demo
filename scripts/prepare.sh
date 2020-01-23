@@ -37,7 +37,7 @@ for var in GOOGLE_CLOUD_KEYFILE_JSON GOOGLE_APPLICATION_CREDENTIALS; do
   done
 done
 
-if [[ ! -f "$GOOGLE_CLOUD_KEYFILE_JSON" ]]; then
+if [[ ! -f "$keyfile" ]]; then
   info "Setting up application-default service account for GCP"
   echo
   echo "[Security notice] And here we are getting your application-default"

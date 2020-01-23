@@ -1,6 +1,6 @@
 > Demonstration of advanced CI/CD and cloud automation for microservices, done with GCP/GKE
 
-## Features
+## Features <a name="features"/>
 
 * Multistage deployments (staging, prod)
 * Canary deployments
@@ -11,12 +11,14 @@
 Setup/deployment is heavily automated so it will be easy for you to deploy it by yourself using [GCP account with Free Trial](https://cloud.google.com/free)
 
 ## Contents
+1. [Features](#features)
 1. [Software](#software)
 1. [How it works](#how)
 1. [Quick start](#quick-start)
 1. [Looking around](#looking-around)
 1. [Cleanup](#cleanup)
 1. [Implementing this in the real-world](#real-world)
+1. [Known issues](#known-issues)
 1. [Halp?](#halp)
 
 ## Software <a name="software"/>
@@ -84,12 +86,13 @@ Also we are using [10 microservices from Google](./third-party/microservices) wi
    git push origin release_all   # This will trigger our CI/CD
    ```
 
-1. Wait for the build to complete: https://console.cloud.google.com/cloud-build/builds \
-   In the meantime, open this page to activate Stackdriver: https://console.cloud.google.com/monitoring/dashboards
+1. Opening this page should start creation of Monitoring workspace and will activate Stackdriver: https://console.cloud.google.com/monitoring/dashboards
+
+1. Now just wait for the build to complete: https://console.cloud.google.com/cloud-build/builds
+
+   <img src="./res/build.png" width="692" height="605">
 
 1. Works now!
-
-<img src="./res/build.png" width="692" height="605">
 
 ## Looking around <a name="looking-around"/>
 
@@ -100,17 +103,29 @@ kubectl config use-context "gke_${TF_VAR_project_id}_europe-west2-a_cluster-demo
 
 Check if our app is synced and healthy:
 
+```bash
+argocd app get hipstershop-prod
+```
+
 ![app-get](./res/app-get.png)
 
 ---
 
 List our canary rollouts:
 
+```bash
+kubectl argo rollouts list rollouts
+```
+
 <img src="./res/list-rollouts.png" width="715" height="209">
 
 ---
 
 Check out details for some particular rollout/microservice:
+
+```bash
+kubectl argo rollouts get rollout adservice
+```
 
 <img src="./res/get-rollout-adservice.png" width="533" height="341">
 
@@ -143,21 +158,31 @@ printf '\nApplication is here: http://%s\n\n' "$IP"
 
 Simple k8s monitoring dashboard:
 
+https://console.cloud.google.com/monitoring/dashboards/resourceList/kubernetes
+
 ![dashboard](./res/dashboard.png)
 
-There are lots of metrics out of the box, thanks to GCP, GKE, Kubernetes, Istio and instrumentation on applications side.
+There are lots of metrics out of the box, thanks to GCP, GKE, Kubernetes, Istio and instrumentation on applications side:
+
+https://console.cloud.google.com/monitoring/metrics-explorer
 
 ![metrics](./res/metrics.png)
 
 #### Distributed tracing
 
+https://console.cloud.google.com/traces/list
+
 ![trace](./res/trace.png)
 
 #### Profiling
 
+https://console.cloud.google.com/profiler
+
 ![profiler](./res/profiler.png)
 
 #### Debugging
+
+https://console.cloud.google.com/debug
 
 ![debugger](./res/debugger.png)
 
@@ -191,7 +216,7 @@ This project has some nice (and useful in production systems) things implemented
 
 1. The repo should be split at least in two — one for the shared infrastructure automation code (e.g. Terraform), the other one for microservices. I would say that you better split your microservices in different repos too, this will allow for cleaner CI, though I heard about people using monorepos. There is still some glue needed to avoid versioning mess and race conditions in your CI/CD when you have multiple microservices developed, tested and deployed simultaneously.
 
-1. You'll need to streamline developers workflow on their local machines with something like Minikube and Skaffold. Developer should be able to deploy microservices and accompanying software (DBs) that is needed to properly develop/test his own microservice on his local machine, to minimize testing in staging environment (it's much slower and more expensive). It will be a sort of a replacement for... I love you btw... `docker-compose.yml` files in the root of application repo that helps you deploy DBs and stuff and maybe even microservices you are heavily depend on.
+1. You'll need to streamline developers workflow on their local machines with something like Minikube and Skaffold. Developer should be able to deploy microservices and accompanying software (DBs) that is needed to properly develop/test his own microservice on his local machine, to minimize testing in staging environment (it's much slower and more expensive). It will be a sort of a replacement for `docker-compose.yml` files in the root of application repo that helps you deploy DBs and stuff and maybe even microservices you are heavily depend on.
 
 1. For all of this to actually be reliable and resilient you need comprehensive testing on many levels, including E2E and load testing.
 
@@ -201,9 +226,23 @@ This project has some nice (and useful in production systems) things implemented
 
 1. I didn't use more traditional CMS like Ansible, since all my needs were covered by Terraform and Kubernetes. It still might be useful when working with VMs, but with hosted K8S I didn't really need that.
 
-1. ???
+1. There might be something else ~~that I didn't know~~ ~~that I forgot~~ that I didn't know.
 
 1. `$ grep -RE 'TODO|FIXME'`
+
+## Known issues <a name="known-issues"/>
+
+1. `Missing required GCS remote state configuration project` \
+   Reason: sometimes Terragrunt can't parse few keys (e.g. `project`) in `remote_state.config`. \
+   Workaround: `/git/gke-demo/scripts/terragrunt-cleanup.sh`
+
+2. Terragrunt/Terraform fail during init phase \
+   Workaround: `/git/gke-demo/scripts/terragrunt-reinit.sh` \
+   If didn't help: `/git/gke-demo/scripts/terragrunt-cleanup.sh`
+
+3. `connection reset by peer`, `connection closed`, SSL/TLS errors \
+   Reason: Terraform sucks \
+   Workaround: rerun failed command
 
 ## Halp? <a name="halp"/>
 
