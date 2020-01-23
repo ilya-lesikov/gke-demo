@@ -13,35 +13,35 @@ patches:
 
 images:
 - name: adservice
-  newName: gcr.io/gke-demo-jdkfjuuu/adservice
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/adservice
+  newTag: 3324f10
 - name: cartservice
-  newName: gcr.io/gke-demo-jdkfjuuu/cartservice
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/cartservice
+  newTag: 3324f10
 - name: checkoutservice
-  newName: gcr.io/gke-demo-jdkfjuuu/checkoutservice
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/checkoutservice
+  newTag: 3324f10
 - name: currencyservice
-  newName: gcr.io/gke-demo-jdkfjuuu/currencyservice
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/currencyservice
+  newTag: 3324f10
 - name: emailservice
-  newName: gcr.io/gke-demo-jdkfjuuu/emailservice
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/emailservice
+  newTag: 3324f10
 - name: frontend
-  newName: gcr.io/gke-demo-jdkfjuuu/frontend
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/frontend
+  newTag: 3324f10
 - name: paymentservice
-  newName: gcr.io/gke-demo-jdkfjuuu/paymentservice
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/paymentservice
+  newTag: 3324f10
 - name: productcatalogservice
-  newName: gcr.io/gke-demo-jdkfjuuu/productcatalogservice
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/productcatalogservice
+  newTag: 3324f10
 - name: recommendationservice
-  newName: gcr.io/gke-demo-jdkfjuuu/recommendationservice
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/recommendationservice
+  newTag: 3324f10
 - name: redis
   newName: redis
   newTag: 5.0.7-alpine3.11
 - name: shippingservice
-  newName: gcr.io/gke-demo-jdkfjuuu/shippingservice
-  newTag: 2f0901d
+  newName: gcr.io/gke-demo-jk23j4789/shippingservice
+  newTag: 3324f10
