@@ -1,4 +1,4 @@
-> Demonstration of advanced CI/CD and cloud automation for microservices, done with GCP/GKE
+> Demonstration of complete, fully-featured CI/CD and cloud automation for microservices, done with GCP/GKE
 
 ## Features <a name="features"/>
 
