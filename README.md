@@ -251,6 +251,6 @@ If you experience any problems, let me know and leave an issue, thanks.
 
 ## Hire me
 
-<img src="./res/email.png" width="15mm" height="15mm" style="vertical-align: text-top;"> [hire@lesikov.com](mailto:hire@lesikov.com) \
-<img src="./res/linkedin.png" width="15mm" height="15mm" style="vertical-align: text-top;"> [ilya-lesikov](www.linkedin.com/in/ilya-lesikov) \
-<img src="./res/web.png" width="15mm" height="15mm" style="vertical-align: text-top;"> [ilya-lesikov.com](https://ilya-lesikov.com)
+<img src="./res/email-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> [hire@lesikov.com](mailto:hire@lesikov.com) \
+<img src="./res/linkedin-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> [ilya-lesikov](www.linkedin.com/in/ilya-lesikov) \
+<img src="./res/web-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> [ilya-lesikov.com](https://ilya-lesikov.com)
