@@ -219,6 +219,8 @@ This project has some nice (and useful in production systems) things implemented
 
 1. You'll need to streamline developers workflow on their local machines with something like Minikube and Skaffold. Developer should be able to deploy microservices and accompanying software (DBs) that is needed to properly develop/test his own microservice on his local machine, to minimize testing in staging environment (it's much slower and more expensive). It will be a sort of a replacement for `docker-compose.yml` files in the root of application repo that helps you deploy DBs and stuff and maybe even microservices you are heavily depend on.
 
+1. Versions are pinned as precisely as they could in all the places, this is just to keep this demo working without much maintenance. Updating these pinned versions programmatically is always a big PITA, but this is a right way and you need to figure it out. As a simplified workflow you can pin to the minor (not patch) version, so that patch updates applied automatically. This way you'll need to go through your code and repin minor versions manually from time to time. And of course uncontrolled patch updates can break things sometimes, but that will happen rarely, so it's a kind of a trade-off between reliable and simple.
+
 1. For all of this to actually be reliable and resilient you need comprehensive testing on many levels, including E2E and load testing.
 
 1. You might not want to instantly and without any confirmation deploy to production every thing that passed staging environment.
