@@ -252,6 +252,6 @@ If you experience any problems, let me know and leave an issue, thanks.
 
 ## Hire me <a name="hire-me"/>
 
-<img src="./res/email-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> [hire@lesikov.com](mailto:hire@lesikov.com) \
-<img src="./res/linked-in-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> [ilya-lesikov](www.linkedin.com/in/ilya-lesikov) \
-<img src="./res/web-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> [ilya-lesikov.com](https://ilya-lesikov.com)
+<img src="./res/web-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> Website: [ilya-lesikov.com](https://ilya-lesikov.com) \
+<img src="./res/email-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> Email: [hire@lesikov.com](mailto:hire@lesikov.com) \
+<img src="./res/linked-in-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> LinkedIn: [ilya-lesikov](www.linkedin.com/in/ilya-lesikov)
