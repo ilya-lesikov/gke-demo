@@ -239,7 +239,7 @@ This project has some nice (and useful in production systems) things implemented
    Reason: sometimes Terragrunt can't parse few keys (e.g. `project`) in `remote_state.config`. \
    Workaround: `/git/gke-demo/scripts/terragrunt-cleanup.sh`
 
-2. Terragrunt/Terraform fail during init phase \
+2. Terragrunt/Terraform fails during init phase \
    Workaround: `/git/gke-demo/scripts/terragrunt-reinit.sh` \
    If didn't help: `/git/gke-demo/scripts/terragrunt-cleanup.sh`
 
