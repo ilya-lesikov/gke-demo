@@ -20,7 +20,6 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 1. [Implementing this in the real-world](#real-world)
 1. [Known issues](#known-issues)
 1. [Halp?](#halp)
-1. [Hire me](#hire-me)
 
 ## Software <a name="software"/>
 
@@ -251,9 +250,3 @@ This project has some nice (and useful in production systems) things implemented
 
 I tested it many times, but I could have missed something. \
 If you experience any problems, let me know and leave an issue, thanks.
-
-## Hire me <a name="hire-me"/>
-
-<img src="./res/web-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> Website: [ilya-lesikov.com](https://ilya-lesikov.com) \
-<img src="./res/email-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> Email: [hire@lesikov.com](mailto:hire@lesikov.com) \
-<img src="./res/linked-in-icon.png" width="15mm" height="15mm" style="vertical-align: text-top;"> LinkedIn: [ilya-lesikov](www.linkedin.com/in/ilya-lesikov)
