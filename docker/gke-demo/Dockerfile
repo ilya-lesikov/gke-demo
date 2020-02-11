@@ -52,7 +52,8 @@ RUN curl -sSL -o kustomize.tar.gz \
     "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VER}/kustomize_v${KUSTOMIZE_VER}_linux_amd64.tar.gz" && \
     tar xvzf kustomize.tar.gz && \
     chmod +x kustomize && \
-    mv kustomize /usr/local/bin/kustomize
+    mv kustomize /usr/local/bin/kustomize && \
+    rm -rf kustomize.tar.gz
 
 # Install Terragrunt
 RUN curl -sSL -o /usr/local/bin/terragrunt \
@@ -64,7 +65,8 @@ RUN curl -sSL -o terraform-provider-k8s.tar.gz \
     "https://github.com/banzaicloud/terraform-provider-k8s/releases/download/v${TF_PROVIDER_K8S_VER}/terraform-provider-k8s_${TF_PROVIDER_K8S_VER}_linux_amd64.tar.gz" && \
     tar xvf terraform-provider-k8s.tar.gz && \
     chmod +x terraform-provider-k8s && \
-    mv terraform-provider-k8s /root/.terraform.d/plugins/linux_amd64
+    mv terraform-provider-k8s /root/.terraform.d/plugins/linux_amd64 && \
+    rm -rf terraform-provider-k8s.tar.gz
 
 # Install Terraform "gitfile" provider
 RUN curl -sSL -o /root/.terraform.d/plugins/linux_amd64/terraform-provider-gitfile \
