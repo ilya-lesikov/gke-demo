@@ -33,7 +33,11 @@ RUN apt-get update && \
     apt-get install -y unzip curl ca-certificates jq vim-tiny && \
     gcloud -q components install beta kubectl && \
     gcloud -q components update && \
-    mkdir -p /git /root/.terraform.d/plugins/linux_amd64
+    mkdir -p /git /root/.terraform.d/plugins/linux_amd64 && \
+    apt-get remove --purge -y unzip && \
+    apt-get --purge -y autoremove && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Terraform
 COPY --from=terraform-bundler-builder /go/terraform-bundle/terraform \
@@ -82,12 +86,6 @@ COPY bash_prompt.sh /root/.bash_prompt.sh
 RUN curl -sSL -o /root/.kube-ps1.sh \
     "https://raw.githubusercontent.com/jonmosco/kube-ps1/c685ac80c14605f47a440018e2d03aff58683c81/kube-ps1.sh" && \
     echo "source /root/.bash_prompt.sh" >> /root/.bashrc
-
-# Cleanup
-RUN apt-get remove --purge -y unzip && \
-    apt-get --purge -y autoremove && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /git
 ENTRYPOINT []
