@@ -56,7 +56,7 @@ fi
 gcloud -q --verbosity=error config set project "$TF_VAR_project_id"
 
 info "Attaching billing account to the project"
-billing_id="$(gcloud beta billing accounts list | awk 'NR == 2 {print $1}')"
+billing_id="$(gcloud beta billing accounts list --filter=open=true | awk 'NR == 2 {print $1}')"
 gcloud -q --verbosity=error beta billing projects link \
   "$TF_VAR_project_id" --billing-account "$billing_id"
 
