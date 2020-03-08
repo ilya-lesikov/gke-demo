@@ -64,7 +64,7 @@ Also we are using [10 microservices from Google](./third-party/microservices) wi
 1. Prepare for cloud provisioning (this is run from the inside of the container):
    ```bash
    # Clone the repo you forked
-   git clone https://github.com/${TF_VAR_github_demo_owner}/gke-demo
+   git clone --recursive https://github.com/${TF_VAR_github_demo_owner}/gke-demo
 
    # Run this and follow the instructions on your screen.
    # This will authorize us to access your GCP account and the "gke-demo" repo you forked.
