@@ -1,6 +1,6 @@
 > Demonstration of complete, fully-featured CI/CD and cloud automation for microservices, done with GCP/GKE
 
-## Features <a name="features"/>
+## <a name="features"></a>Features
 
 * Multistage deployments (staging, prod)
 * Canary deployments
@@ -21,7 +21,7 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 1. [Known issues](#known-issues)
 1. [Halp?](#halp)
 
-## Software <a name="software"/>
+## <a name="software"></a>Software
 
 | What                                                            | For                                                   |
 |-----------------------------------------------------------------|-------------------------------------------------------|
@@ -34,7 +34,7 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 
 Also we are using [10 microservices from Google](./third-party/microservices) with built-in instrumentation for Stackdriver
 
-## How it works (simplified) <a name="how"/>
+## <a name="how"></a>How it works (simplified)
 
 ![Diagram](./res/diagram.png)
 
@@ -94,7 +94,7 @@ Also we are using [10 microservices from Google](./third-party/microservices) wi
 
 1. Works now!
 
-## Looking around <a name="looking-around"/>
+## <a name="looking-around"></a>Looking around
 
 First, switch to our production cluster:
 ```bash
@@ -186,7 +186,7 @@ https://console.cloud.google.com/debug
 
 ![debugger](./res/debugger.png)
 
-## Cleanup <a name="cleanup"/>
+## <a name="cleanup"></a>Cleanup
 
 This should destroy everything, except Terraform remote state bucket and enabled services/APIs:
 ```bash
@@ -206,7 +206,7 @@ docker rm -f gke-demo
 
 You might want to remove GCB application from your GitHub account too.
 
-## Implementing this in the real world <a name="real-world"/>
+## <a name="real-world"></a>Implementing this in the real world
 
 This project has some nice (and useful in production systems) things implemented, but this is nevertheless a demonstration. What I would do differently if this would be making me $$$:
 
@@ -232,7 +232,7 @@ This project has some nice (and useful in production systems) things implemented
 
 1. `$ grep -RE 'TODO|FIXME'`
 
-## Known issues <a name="known-issues"/>
+## <a name="known-issues"></a>Known issues
 
 1. `Missing required GCS remote state configuration project` \
    Reason: sometimes Terragrunt can't parse few keys (e.g. `project`) in `remote_state.config`. \
@@ -246,7 +246,7 @@ This project has some nice (and useful in production systems) things implemented
    Reason: Terraform sucks \
    Workaround: rerun failed command
 
-## Halp? <a name="halp"/>
+## <a name="halp"></a>Halp? 
 
 I tested it many times, but I could have missed something. \
 If you experience any problems, let me know and leave an issue, thanks.
