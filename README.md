@@ -1,5 +1,3 @@
-## Quick start <a name="quick-start"/>
-
 1. You need [GCP account with Free Trial](https://cloud.google.com/free) activated
 1. You need [GitHub account](https://github.com/join)
 1. Fork this repo (we can't setup GCB triggers for repositories you don't own)
