@@ -38,7 +38,7 @@ Also we are using [10 microservices from Google](./third-party/microservices) wi
 
 ![Diagram](./res/diagram.png)
 
-## Quick start <a name="quick-start"/>
+## Quick start
 
 1. You need [GCP account with Free Trial](https://cloud.google.com/free) activated
 1. You need [GitHub account](https://github.com/join)
