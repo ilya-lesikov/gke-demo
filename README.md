@@ -10,7 +10,7 @@
 
 Setup/deployment is heavily automated so it will be easy for you to deploy it by yourself using [GCP account with Free Trial](https://cloud.google.com/free)
 
-## Contents
+## Contents <a name="testt"/>
 1. [Features](#features)
 1. [Software](#software)
 1. [How it works](#how)
@@ -21,7 +21,7 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 1. [Known issues](#known-issues)
 1. [Halp?](#halp)
 
-## Software <a name="testt"/>
+## Software <br name="testt"/>
 
 
 
