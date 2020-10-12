@@ -36,7 +36,7 @@ Also we are using [10 microservices from Google](./third-party/microservices) wi
 
 ## How it works (simplified) <a name="how"/>
 
-![Diagram](./res/diagram.svg)
+![Diagram](./res/diagram.png)
 
 ## Quick start <a name="quick-start"/>
 
