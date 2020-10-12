@@ -1,3 +1,45 @@
+> Demonstration of complete, fully-featured CI/CD and cloud automation for microservices, done with GCP/GKE
+
+## Features <a name="features"/>
+
+* Multistage deployments (staging, prod)
+* Canary deployments
+* Horizontal pod/instance autoscaling
+* Rollbacks, self-healing
+* Distributed tracing, monitoring, logging, profiling, debugging
+
+Setup/deployment is heavily automated so it will be easy for you to deploy it by yourself using [GCP account with Free Trial](https://cloud.google.com/free)
+
+## Contents
+1. [Features](#features)
+1. [Software](#software)
+1. [How it works](#how)
+1. [Quick start](#quick-start)
+1. [Looking around](#looking-around)
+1. [Cleanup](#cleanup)
+1. [Implementing this in the real-world](#real-world)
+1. [Known issues](#known-issues)
+1. [Halp?](#halp)
+
+## Software <a name="software"/>
+
+| What                                                            | For                                                   |
+|-----------------------------------------------------------------|-------------------------------------------------------|
+| Terraform, Terragrunt                                           | Cloud automation                                      |
+| Kubernetes (GKE), Kustomize                                     | Container orchestration                               |
+| Google Cloud Build                                              | CI                                                    |
+| ArgoCD, Argo Rollouts                                           | CD                                                    |
+| Google Stackdriver                                              | Monitoring, logging, tracing,<br>profiling, debugging |
+| Cloud KMS, Container Registry,<br>Storage and other GCP goodies |                                                       |
+
+Also we are using [10 microservices from Google](./third-party/microservices) with built-in instrumentation for Stackdriver
+
+## How it works (simplified) <a name="how"/>
+
+![Diagram](./res/diagram.png)
+
+
+
 1. You need [GCP account with Free Trial](https://cloud.google.com/free) activated
 1. You need [GitHub account](https://github.com/join)
 1. Fork this repo (we can't setup GCB triggers for repositories you don't own)
