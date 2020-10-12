@@ -21,22 +21,7 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 1. [Known issues](#known-issues)
 1. [Halp?](#halp)
 
-## Software <a name="software"/>
 
-| What                                                            | For                                                   |
-|-----------------------------------------------------------------|-------------------------------------------------------|
-| Terraform, Terragrunt                                           | Cloud automation                                      |
-| Kubernetes (GKE), Kustomize                                     | Container orchestration                               |
-| Google Cloud Build                                              | CI                                                    |
-| ArgoCD, Argo Rollouts                                           | CD                                                    |
-| Google Stackdriver                                              | Monitoring, logging, tracing,<br>profiling, debugging |
-| Cloud KMS, Container Registry,<br>Storage and other GCP goodies |                                                       |
-
-Also we are using [10 microservices from Google](./third-party/microservices) with built-in instrumentation for Stackdriver
-
-## How it works (simplified) <a name="how"/>
-
-![Diagram](./res/diagram.png)
 
 
 
