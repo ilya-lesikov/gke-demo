@@ -1,6 +1,6 @@
 > Demonstration of complete, fully-featured CI/CD and cloud automation for microservices, done with GCP/GKE
 
-## Features <a name="features"/>
+## Features 
 
 * Multistage deployments (staging, prod)
 * Canary deployments
@@ -21,7 +21,7 @@ Setup/deployment is heavily automated so it will be easy for you to deploy it by
 1. [Known issues](#known-issues)
 1. [Halp?](#halp)
 
-## Software <a name="software"/>
+## Software 
 
 
 
