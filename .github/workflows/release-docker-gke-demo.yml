@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build and push to Docker Hub
-      uses: elgohr/Publish-Docker-Github-Action@2.12
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         name: ilyalesikov/gke-demo
         username: ${{ secrets.DOCKER_USERNAME }}
